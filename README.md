@@ -57,11 +57,11 @@ print(processed_data.head())
 The development of NEMDataTools is divided into several phases and milestones. The roadmap is subject to change based on community feedback and project requirements. See the [Project Board](./docs/dev/project-structure.md) for more details.
 
 - [ ] **Phase 1: Project Setup**
-    - [ ] **Milestone 1:** Development environment setup
+    - [x] **Milestone 1:** Development environment setup
         - [x] Project structure setup
-        - [ ] Base configuration handling
+        - [x] Base configuration handling
     - [ ] **Milestone 2:** Core Module Skeletons
-        - [ ] Basic module structure
+        - [x] Basic module structure
         - [ ] Testing framework setup
         - [ ] GitHub Actions workflows
 
