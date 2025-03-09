@@ -64,7 +64,7 @@ The development of NEMDataTools is divided into several phases and milestones. T
         - [x] Basic module structure
         - [x] Testing framework setup
         - [x] Setup Documentation with Sphinx
-        - [ ] GitHub Actions workflows
+        - [x] GitHub Actions workflows
 
 - [ ] **Phase 2: Core Functionality Implementation**
     - [ ] **Milestone 3:** Time Utilities and Cache Management
