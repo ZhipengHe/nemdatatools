@@ -69,16 +69,17 @@ dependencies = [
 dev = [
     "pytest>=6.0",
     "pytest-cov>=2.12",
-    "black>=21.5b2",
-    "mypy>=0.812",
-    "isort>=5.9.1",
+    "black>=25.0.0",
+    "mypy>=1.14.0",
+    "isort>=6.0.0",
     "pre-commit>=3.3.2",
-    "flake8>=6.0.0",
-    "commitizen>=3.2.2",
+    "flake8>=7.0.0",
+    "commitizen>=4.4.0",
 ]
 docs = [
-    "sphinx>=4.0.2",
-    "sphinx-rtd-theme>=0.5.2",
+    "sphinx>=8.0.0",
+    "sphinx-rtd-theme>=3.0.0",
+    "myst-parser>=4.0.0",
 ]
 
 [project.urls]
@@ -109,7 +110,7 @@ EOF
 cat > .pre-commit-config.yaml << 'EOF'
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
@@ -120,26 +121,26 @@ repos:
     -   id: debug-statements
 
 -   repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 25.1.0
     hooks:
     -   id: black
         language_version: python3
 
 -   repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 6.0.1
     hooks:
     -   id: isort
         args: ["--profile", "black"]
 
 -   repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
+    rev: 7.1.2
     hooks:
     -   id: flake8
         additional_dependencies: [flake8-docstrings]
         args: ["--max-line-length=88", "--extend-ignore=E203"]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.3.0
+    rev: v1.15.0
     hooks:
     -   id: mypy
         additional_dependencies: [types-requests]
@@ -147,13 +148,13 @@ repos:
         args: ["--ignore-missing-imports"]
 
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.4.0
+    rev: v3.19.1
     hooks:
     -   id: pyupgrade
         args: [--py310-plus]
 
 -   repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.2.2
+    rev: v4.4.1
     hooks:
     -   id: commitizen
         stages: [commit-msg]

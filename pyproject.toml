@@ -31,16 +31,17 @@ dependencies = [
 dev = [
     "pytest>=6.0",
     "pytest-cov>=2.12",
-    "black>=21.5b2",
-    "mypy>=0.812",
-    "isort>=5.9.1",
+    "black>=25.0.0",
+    "mypy>=1.14.0",
+    "isort>=6.0.0",
     "pre-commit>=3.3.2",
-    "flake8>=6.0.0",
-    "commitizen>=3.2.2",
+    "flake8>=7.0.0",
+    "commitizen>=4.4.0",
 ]
 docs = [
-    "sphinx>=4.0.2",
-    "sphinx-rtd-theme>=0.5.2",
+    "sphinx>=8.0.0",
+    "sphinx-rtd-theme>=3.0.0",
+    "myst-parser>=4.0.0",
 ]
 
 [project.urls]
