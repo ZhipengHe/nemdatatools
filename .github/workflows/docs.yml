@@ -88,7 +88,8 @@ jobs:
         fi
 
         cd docs
-        sphinx-build -b html . _build/html
+        sphinx-build -b html -v . _build/html
+        touch _build/html/.nojekyll
 
     - name: Archive documentation
       uses: actions/upload-artifact@v4
