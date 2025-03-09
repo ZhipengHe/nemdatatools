@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEMDataTools Implementation Plan &mdash; NEMDataTools  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick Start Guide: Setting Up NEMDataTools with UV" href="quickstart-with-uv.html" />
+    <link rel="prev" title="NEMDataTools Project Board" href="project-structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project-structure.html">NEMDataTools Project Board</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NEMDataTools Implementation Plan</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#downloader-module">1. Downloader Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cache-manager">2. Cache Manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-utilities">3. Time Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-processor">4. Data Processor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-type-handlers">5. Data Type Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#development-timeline">Development Timeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-details">Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#aemo-data-access">AEMO Data Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caching-strategy">Caching Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#future-extensions">Future Extensions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commitizen-guide.html">Commitizen Conventional Commit Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">NEMDataTools Implementation Plan</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/implementation-plan.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nemdatatools-implementation-plan">
+<h1>NEMDataTools Implementation Plan<a class="headerlink" href="#nemdatatools-implementation-plan" title="Link to this heading"></a></h1>
+<p>This document outlines the detailed implementation plan for the NEMDataTools package. It describes the key components, their functionality, and the development timeline.</p>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h2>
+<section id="downloader-module">
+<h3>1. Downloader Module<a class="headerlink" href="#downloader-module" title="Link to this heading"></a></h3>
+<p>The downloader module will be responsible for retrieving data from AEMO’s public data sources.</p>
+<p><strong>Key functionalities:</strong></p>
+<ul class="simple">
+<li><p>Determine the correct URLs for different data types</p></li>
+<li><p>Handle authentication if required by AEMO</p></li>
+<li><p>Manage HTTP requests with proper error handling</p></li>
+<li><p>Support different data formats (CSV, XML, JSON)</p></li>
+<li><p>Implement retry logic for failed requests</p></li>
+<li><p>Provide flexible date range handling</p></li>
+</ul>
+<p><strong>Implementation approach:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">regions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main function to fetch data from AEMO.</span>
+
+<span class="sd">    1. Validate input parameters</span>
+<span class="sd">    2. Map data_type to appropriate endpoint</span>
+<span class="sd">    3. Check cache for existing data</span>
+<span class="sd">    4. If not cached, download from AEMO</span>
+<span class="sd">    5. Parse response</span>
+<span class="sd">    6. Cache results if cache_path provided</span>
+<span class="sd">    7. Return as DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="cache-manager">
+<h3>2. Cache Manager<a class="headerlink" href="#cache-manager" title="Link to this heading"></a></h3>
+<p>The cache manager will handle local storage of downloaded data to avoid unnecessary requests.</p>
+<p><strong>Key functionalities:</strong></p>
+<ul class="simple">
+<li><p>Store downloaded data in a structured format</p></li>
+<li><p>Check if requested data is already cached</p></li>
+<li><p>Handle partial cache hits (when part of the requested date range is cached)</p></li>
+<li><p>Support cache invalidation</p></li>
+<li><p>Manage disk space usage</p></li>
+</ul>
+<p><strong>Implementation approach:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CacheManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages local caching of AEMO data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize with cache directory.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cached_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">regions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if data is cached and return it if available.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">cache_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">regions</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store data in cache.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">older_than</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear cache entries older than specified date.&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="time-utilities">
+<h3>3. Time Utilities<a class="headerlink" href="#time-utilities" title="Link to this heading"></a></h3>
+<p>The time utilities module will handle the various time-related operations needed for AEMO data.</p>
+<p><strong>Key functionalities:</strong></p>
+<ul class="simple">
+<li><p>Convert between different time formats</p></li>
+<li><p>Generate time periods for queries</p></li>
+<li><p>Handle time zones correctly (NEM operates in AEST/AEDT)</p></li>
+<li><p>Support different interval types (5-minute, 30-minute)</p></li>
+<li><p>Calculate forecast horizons</p></li>
+</ul>
+<p><strong>Implementation approach:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_intervals</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;5min&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate time intervals between dates.&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_nem_datetime</span><span class="p">(</span><span class="n">date_string</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert AEMO datetime format to Python datetime.&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_forecast_horizon</span><span class="p">(</span><span class="n">run_time</span><span class="p">,</span> <span class="n">target_time</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate forecast horizon between run time and target time.&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="data-processor">
+<h3>4. Data Processor<a class="headerlink" href="#data-processor" title="Link to this heading"></a></h3>
+<p>The data processor will standardize and clean the raw data from AEMO.</p>
+<p><strong>Key functionalities:</strong></p>
+<ul class="simple">
+<li><p>Normalize column names</p></li>
+<li><p>Convert data types</p></li>
+<li><p>Handle missing values</p></li>
+<li><p>Reshape data if needed</p></li>
+<li><p>Provide consistent output format</p></li>
+</ul>
+<p><strong>Implementation approach:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">standardize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">format_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Standardize raw AEMO data.</span>
+
+<span class="sd">    1. Normalize column names</span>
+<span class="sd">    2. Set appropriate index</span>
+<span class="sd">    3. Convert data types</span>
+<span class="sd">    4. Handle missing values</span>
+<span class="sd">    5. Apply any specific formatting</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_datasets</span><span class="p">(</span><span class="n">datasets</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge multiple datasets into one.&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="data-type-handlers">
+<h3>5. Data Type Handlers<a class="headerlink" href="#data-type-handlers" title="Link to this heading"></a></h3>
+<p>Specialized handlers for different AEMO data types with specific processing requirements.</p>
+<p><strong>Data types to support:</strong></p>
+<ul class="simple">
+<li><p>DISPATCHPRICE</p></li>
+<li><p>DISPATCHREGIONSUM</p></li>
+<li><p>PREDISPATCH</p></li>
+<li><p>P5MIN</p></li>
+</ul>
+<p><strong>Implementation approach:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DispatchPriceHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handler for DISPATCHPRICE data type.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process DISPATCHPRICE data.&quot;&quot;&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PredispatchHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handler for PREDISPATCH data type.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process PREDISPATCH data.&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="development-timeline">
+<h2>Development Timeline<a class="headerlink" href="#development-timeline" title="Link to this heading"></a></h2>
+<p>See the <a class="reference internal" href="project-structure.html"><span class="std std-doc">Project Board</span></a> for a detailed breakdown of tasks and milestones.</p>
+</section>
+<section id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<section id="aemo-data-access">
+<h3>AEMO Data Access<a class="headerlink" href="#aemo-data-access" title="Link to this heading"></a></h3>
+<p>AEMO provides data through several mechanisms:</p>
+<ol class="arabic simple">
+<li><p>MMS Data Model</p></li>
+<li><p>Public data files</p></li>
+<li><p>NEMWeb portal</p></li>
+</ol>
+<p>Our implementation will focus on accessing publicly available data without requiring special credentials. We’ll use the following approach:</p>
+<ol class="arabic simple">
+<li><p>Map data types to appropriate public URLs</p></li>
+<li><p>Use standard HTTP requests to fetch data</p></li>
+<li><p>Parse returned data (typically CSV or XML)</p></li>
+<li><p>Convert to pandas DataFrames for easy analysis</p></li>
+</ol>
+</section>
+<section id="caching-strategy">
+<h3>Caching Strategy<a class="headerlink" href="#caching-strategy" title="Link to this heading"></a></h3>
+<p>Our caching strategy will be:</p>
+<ol class="arabic simple">
+<li><p>Create a directory structure based on data_type, regions, and date ranges</p></li>
+<li><p>Store data in parquet format for efficiency</p></li>
+<li><p>Implement metadata for each cache entry</p></li>
+<li><p>Support partial cache hits by combining cached and newly fetched data</p></li>
+<li><p>Provide cache management functions to control disk usage</p></li>
+</ol>
+</section>
+<section id="error-handling">
+<h3>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<p>We’ll implement robust error handling:</p>
+<ol class="arabic simple">
+<li><p>Validate all input parameters</p></li>
+<li><p>Handle HTTP errors with appropriate retries and backoffs</p></li>
+<li><p>Provide clear error messages for common issues</p></li>
+<li><p>Log detailed diagnostic information</p></li>
+<li><p>Support graceful degradation when services are unavailable</p></li>
+</ol>
+</section>
+</section>
+<section id="future-extensions">
+<h2>Future Extensions<a class="headerlink" href="#future-extensions" title="Link to this heading"></a></h2>
+<p>After the initial implementation, we plan to extend the package with:</p>
+<ol class="arabic simple">
+<li><p>Support for more AEMO data types</p></li>
+<li><p>Advanced visualization tools</p></li>
+<li><p>Integration with other energy data sources</p></li>
+<li><p>Time series analysis utilities</p></li>
+<li><p>Forecasting tools</p></li>
+</ol>
+<p>These extensions will be prioritized based on user feedback after the initial release.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="project-structure.html" class="btn btn-neutral float-left" title="NEMDataTools Project Board" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quickstart-with-uv.html" class="btn btn-neutral float-right" title="Quick Start Guide: Setting Up NEMDataTools with UV" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

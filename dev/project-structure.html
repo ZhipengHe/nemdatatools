@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEMDataTools Project Board &mdash; NEMDataTools  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NEMDataTools Implementation Plan" href="implementation-plan.html" />
+    <link rel="prev" title="Welcome to NEMDataTools documentation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NEMDataTools Project Board</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#phase-1-project-setup-milestones-1-2">Phase 1: Project Setup (Milestones 1-2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-1-development-environment-setup">Milestone 1: Development Environment Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-2-core-module-skeletons">Milestone 2: Core Module Skeletons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-2-core-functionality-implementation-milestones-3-4">Phase 2: Core Functionality Implementation (Milestones 3-4)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-3-time-utilities-and-cache-management">Milestone 3: Time Utilities and Cache Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-4-data-downloading">Milestone 4: Data Downloading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-3-data-processing-milestones-5-6">Phase 3: Data Processing (Milestones 5-6)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-5-basic-data-processing">Milestone 5: Basic Data Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-6-advanced-processing">Milestone 6: Advanced Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-4-documentation-and-examples-milestone-7">Phase 4: Documentation and Examples (Milestone 7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-5-quality-assurance-and-release-milestone-8">Phase 5: Quality Assurance and Release (Milestone 8)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-6-continuous-improvement-ongoing">Phase 6: Continuous Improvement (Ongoing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-practices">Development Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation-plan.html">NEMDataTools Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commitizen-guide.html">Commitizen Conventional Commit Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">NEMDataTools Project Board</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/project-structure.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nemdatatools-project-board">
+<h1>NEMDataTools Project Board<a class="headerlink" href="#nemdatatools-project-board" title="Link to this heading"></a></h1>
+<p>This guide outlines the project structure and implementation plan for the NEMDataTools Python package. The project is designed to provide a comprehensive toolkit for accessing, processing, and analyzing Australian Energy Market Operator (AEMO) data.</p>
+<blockquote>
+<div><p><strong>Note</strong>: This guide just provides a basic structure and setup for a Python package project. You may need to adapt it based on your specific requirements.</p>
+</div></blockquote>
+<section id="phase-1-project-setup-milestones-1-2">
+<h2>Phase 1: Project Setup (Milestones 1-2)<a class="headerlink" href="#phase-1-project-setup-milestones-1-2" title="Link to this heading"></a></h2>
+<section id="milestone-1-development-environment-setup">
+<h3>Milestone 1: Development Environment Setup<a class="headerlink" href="#milestone-1-development-environment-setup" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Install UV</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">uv</span></code> or use the recommended curl installation method</p></li>
+<li><p>Configure UV with a <code class="docutils literal notranslate"><span class="pre">.uv.toml</span></code> file</p></li>
+</ul>
+</li>
+<li><p><strong>Create Project Structure</strong></p>
+<ul>
+<li><p>Initialize git repository</p></li>
+<li><p>Create directory structure following the src layout:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>nemdatatools/
+├── .github/workflows/
+├── docs/
+├── src/nemdatatools/
+├── tests/
+├── .gitignore
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── .uv.toml
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Configure Packaging</strong></p>
+<ul class="simple">
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> with minimal dependencies</p></li>
+<li><p>Create virtual environment: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">venv</span></code></p></li>
+<li><p>Activate the environment: <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">.venv/bin/activate</span></code></p></li>
+<li><p>Install in development mode: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">&quot;.[dev]&quot;</span></code></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="milestone-2-core-module-skeletons">
+<h3>Milestone 2: Core Module Skeletons<a class="headerlink" href="#milestone-2-core-module-skeletons" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Implement Basic Module Structure</strong></p>
+<ul class="simple">
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> with version info</p></li>
+<li><p>Add skeleton implementations for:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">downloader.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeutils.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processor.py</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Set Up Testing Framework</strong></p>
+<ul class="simple">
+<li><p>Configure pytest with coverage</p></li>
+<li><p>Create basic test files</p></li>
+<li><p>Set up GitHub Actions workflows</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="phase-2-core-functionality-implementation-milestones-3-4">
+<h2>Phase 2: Core Functionality Implementation (Milestones 3-4)<a class="headerlink" href="#phase-2-core-functionality-implementation-milestones-3-4" title="Link to this heading"></a></h2>
+<section id="milestone-3-time-utilities-and-cache-management">
+<h3>Milestone 3: Time Utilities and Cache Management<a class="headerlink" href="#milestone-3-time-utilities-and-cache-management" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Implement Time Utilities</strong></p>
+<ul class="simple">
+<li><p>Date parsing and formatting</p></li>
+<li><p>Interval generation</p></li>
+<li><p>Time period handling for AEMO data types</p></li>
+<li><p>Forecast horizon calculations</p></li>
+<li><p>Write comprehensive tests</p></li>
+</ul>
+</li>
+<li><p><strong>Implement Cache Management</strong></p>
+<ul class="simple">
+<li><p>Cache directory structure</p></li>
+<li><p>Metadata tracking</p></li>
+<li><p>Cache lookup and retrieval</p></li>
+<li><p>Cache invalidation</p></li>
+<li><p>Write tests for caching logic</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="milestone-4-data-downloading">
+<h3>Milestone 4: Data Downloading<a class="headerlink" href="#milestone-4-data-downloading" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Map AEMO Data Sources</strong></p>
+<ul class="simple">
+<li><p>Identify public endpoints for each data type</p></li>
+<li><p>Create URL templates</p></li>
+<li><p>Implement data source mapping</p></li>
+</ul>
+</li>
+<li><p><strong>Implement Downloader</strong></p>
+<ul class="simple">
+<li><p>HTTP request handling with retries</p></li>
+<li><p>Error handling</p></li>
+<li><p>Authentication (if needed)</p></li>
+<li><p>Input validation</p></li>
+<li><p>Integration with cache</p></li>
+</ul>
+</li>
+<li><p><strong>Test Downloading</strong></p>
+<ul class="simple">
+<li><p>Create mock responses for testing</p></li>
+<li><p>Implement end-to-end tests</p></li>
+<li><p>Verify cache integration</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="phase-3-data-processing-milestones-5-6">
+<h2>Phase 3: Data Processing (Milestones 5-6)<a class="headerlink" href="#phase-3-data-processing-milestones-5-6" title="Link to this heading"></a></h2>
+<section id="milestone-5-basic-data-processing">
+<h3>Milestone 5: Basic Data Processing<a class="headerlink" href="#milestone-5-basic-data-processing" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Implement Data Standardization</strong></p>
+<ul class="simple">
+<li><p>Column normalization</p></li>
+<li><p>Data type conversion</p></li>
+<li><p>Date parsing</p></li>
+<li><p>Missing value handling</p></li>
+</ul>
+</li>
+<li><p><strong>Data Type Handlers</strong></p>
+<ul class="simple">
+<li><p>DISPATCHPRICE handler</p></li>
+<li><p>DISPATCHREGIONSUM handler</p></li>
+<li><p>Write tests for each handler</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="milestone-6-advanced-processing">
+<h3>Milestone 6: Advanced Processing<a class="headerlink" href="#milestone-6-advanced-processing" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Implement Time Series Processing</strong></p>
+<ul class="simple">
+<li><p>Resampling and aggregation</p></li>
+<li><p>Rolling statistics</p></li>
+<li><p>Time-based filtering</p></li>
+<li><p>Region-based processing</p></li>
+<li><p>Tests for time series functions</p></li>
+</ul>
+</li>
+<li><p><strong>Implement Predispatch Handlers</strong></p>
+<ul class="simple">
+<li><p>PREDISPATCH processing</p></li>
+<li><p>P5MIN processing</p></li>
+<li><p>Tests for forecast data handling</p></li>
+</ul>
+</li>
+<li><p><strong>Statistical Functions</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>Price statistics</p></li>
+<li><p>Demand statistics</p></li>
+<li><p>Data aggregation utilities</p></li>
+<li><p>Visualization helpers</p></li>
+</ul>
+</section>
+</section>
+<section id="phase-4-documentation-and-examples-milestone-7">
+<h2>Phase 4: Documentation and Examples (Milestone 7)<a class="headerlink" href="#phase-4-documentation-and-examples-milestone-7" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>API Documentation</strong></p>
+<ul class="simple">
+<li><p>Set up Sphinx (or other documentation tool)</p></li>
+<li><p>Document all public functions</p></li>
+<li><p>Create API reference</p></li>
+</ul>
+</li>
+<li><p><strong>Usage Examples</strong></p>
+<ul class="simple">
+<li><p>Basic usage examples</p></li>
+<li><p>Advanced usage examples</p></li>
+<li><p>Jupyter notebooks with real-world data</p></li>
+</ul>
+</li>
+<li><p><strong>Installation and Setup Guide</strong></p>
+<ul class="simple">
+<li><p>UV-specific installation instructions</p></li>
+<li><p>Development setup instructions</p></li>
+<li><p>Dependency management guide</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="phase-5-quality-assurance-and-release-milestone-8">
+<h2>Phase 5: Quality Assurance and Release (Milestone 8)<a class="headerlink" href="#phase-5-quality-assurance-and-release-milestone-8" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Code Quality</strong></p>
+<ul class="simple">
+<li><p>Run and fix linting issues (black, isort)</p></li>
+<li><p>Run and fix type checking issues (mypy)</p></li>
+<li><p>Ensure 90%+ test coverage</p></li>
+</ul>
+</li>
+<li><p><strong>Comprehensive Test Suite</strong></p>
+<ul class="simple">
+<li><p>Add edge cases to tests</p></li>
+<li><p>Implement integration tests</p></li>
+<li><p>Test on multiple Python versions</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Optimization</strong></p>
+<ul class="simple">
+<li><p>Profile code for bottlenecks</p></li>
+<li><p>Optimize data loading and processing</p></li>
+<li><p>Implement caching improvements</p></li>
+</ul>
+</li>
+<li><p><strong>Prepare for Release</strong></p>
+<ul class="simple">
+<li><p>Update version number</p></li>
+<li><p>Finalize README</p></li>
+<li><p>Create CHANGELOG</p></li>
+<li><p>Update package metadata</p></li>
+</ul>
+</li>
+<li><p><strong>CI/CD Pipeline Setup</strong></p>
+<ul class="simple">
+<li><p>Set up GitHub Actions workflows</p></li>
+<li><p>Include linting, testing, and deployment steps</p></li>
+<li><p>Automate versioning and release tagging</p></li>
+</ul>
+</li>
+<li><p><strong>Release</strong></p>
+<ul class="simple">
+<li><p>Build package with UV</p></li>
+<li><p>Test installation in clean environment</p></li>
+<li><p>Publish to PyPI</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="phase-6-continuous-improvement-ongoing">
+<h2>Phase 6: Continuous Improvement (Ongoing)<a class="headerlink" href="#phase-6-continuous-improvement-ongoing" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Monitor and Fix Issues</strong></p>
+<ul class="simple">
+<li><p>Address bug reports</p></li>
+<li><p>Implement feature requests</p></li>
+</ul>
+</li>
+<li><p><strong>Expand Supported Data Types</strong></p>
+<ul class="simple">
+<li><p>Add support for additional AEMO data types</p></li>
+<li><p>Enhance processing capabilities</p></li>
+</ul>
+</li>
+<li><p><strong>Community Building</strong></p>
+<ul class="simple">
+<li><p>Respond to user questions</p></li>
+<li><p>Review and merge contributions</p></li>
+<li><p>Update documentation based on user feedback</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="development-practices">
+<h2>Development Practices<a class="headerlink" href="#development-practices" title="Link to this heading"></a></h2>
+<p>Throughout the implementation, adhere to these practices:</p>
+<ol class="arabic simple">
+<li><p><strong>Dependency Management with UV</strong></p>
+<ul class="simple">
+<li><p>Add new dependencies to pyproject.toml</p></li>
+<li><p>Install with <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">&quot;.[dev,docs]&quot;</span></code></p></li>
+<li><p>Periodically update with <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">-e</span> <span class="pre">&quot;.[dev,docs]&quot;</span></code></p></li>
+<li><p>Create requirements.lock file: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">freeze</span> <span class="pre">&gt;</span> <span class="pre">requirements.lock</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Version Control</strong></p>
+<ul class="simple">
+<li><p>Commit frequently with descriptive messages</p></li>
+<li><p>Use feature branches for development</p></li>
+<li><p>Create pull requests for code review</p></li>
+</ul>
+</li>
+<li><p><strong>Testing</strong></p>
+<ul class="simple">
+<li><p>Write tests before implementation (TDD)</p></li>
+<li><p>Maintain high test coverage</p></li>
+<li><p>Include edge cases in tests</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong></p>
+<ul class="simple">
+<li><p>Document code as you write it</p></li>
+<li><p>Keep README and user guides up-to-date</p></li>
+<li><p>Include examples for new features</p></li>
+</ul>
+</li>
+<li><p><strong>Code Quality</strong></p>
+<ul class="simple">
+<li><p>Run black and isort before commits</p></li>
+<li><p>Use mypy for type checking</p></li>
+<li><p>Follow PEP 8 guidelines</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to NEMDataTools documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="implementation-plan.html" class="btn btn-neutral float-right" title="NEMDataTools Implementation Plan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commitizen Conventional Commit Guide &mdash; NEMDataTools  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Adding pre-commit to NEMDataTools" href="quickstart-with-pre-commit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project-structure.html">NEMDataTools Project Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation-plan.html">NEMDataTools Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Commitizen Conventional Commit Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-commitizen">What is Commitizen?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commit-message-format">Commit Message Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-commits-with-commitizen">Creating Commits with Commitizen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-mode">Interactive Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conventional-git-commit">Conventional git commit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#breaking-changes">Breaking Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#referencing-issues">Referencing Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benefits-of-using-commitizen">Benefits of Using Commitizen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commitizen-cli-commands">Commitizen CLI Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-with-nemdatatools">Integration with NEMDataTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-commitizen">Customizing Commitizen</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Commitizen Conventional Commit Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/commitizen-guide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="commitizen-conventional-commit-guide">
+<h1>Commitizen Conventional Commit Guide<a class="headerlink" href="#commitizen-conventional-commit-guide" title="Link to this heading"></a></h1>
+<p>This guide explains how to use commitizen with NEMDataTools to follow the <a class="reference external" href="https://www.conventionalcommits.org/">Conventional Commits</a> specification.</p>
+<section id="what-is-commitizen">
+<h2>What is Commitizen?<a class="headerlink" href="#what-is-commitizen" title="Link to this heading"></a></h2>
+<p>Commitizen is a tool that helps you write standardized commit messages according to the Conventional Commits format. When used with pre-commit, it ensures all commit messages follow the same format.</p>
+</section>
+<section id="commit-message-format">
+<h2>Commit Message Format<a class="headerlink" href="#commit-message-format" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">optional</span> <span class="n">scope</span><span class="p">):</span> <span class="n">description</span>
+
+<span class="p">[</span><span class="n">optional</span> <span class="n">body</span><span class="p">]</span>
+
+<span class="p">[</span><span class="n">optional</span> <span class="n">footer</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span>
+</pre></div>
+</div>
+<section id="types">
+<h3>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h3>
+<p>The type must be one of the following:</p>
+<ul class="simple">
+<li><p><strong>feat</strong>: A new feature</p></li>
+<li><p><strong>fix</strong>: A bug fix</p></li>
+<li><p><strong>docs</strong>: Documentation changes</p></li>
+<li><p><strong>style</strong>: Code style changes (whitespace, formatting, etc.)</p></li>
+<li><p><strong>refactor</strong>: Code changes that neither fix bugs nor add features</p></li>
+<li><p><strong>perf</strong>: Performance improvements</p></li>
+<li><p><strong>test</strong>: Adding or fixing tests</p></li>
+<li><p><strong>build</strong>: Changes to the build system or dependencies</p></li>
+<li><p><strong>ci</strong>: Changes to CI configuration files and scripts</p></li>
+<li><p><strong>chore</strong>: Other changes that don’t modify src or test files</p></li>
+</ul>
+</section>
+<section id="scope">
+<h3>Scope<a class="headerlink" href="#scope" title="Link to this heading"></a></h3>
+<p>The scope is optional and should be a noun describing the section of the codebase affected:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">downloader</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processor</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeutils</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs</span></code></p></li>
+</ul>
+</section>
+<section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>The description is a short summary of the code changes. It should:</p>
+<ul class="simple">
+<li><p>Use imperative, present tense (e.g., “change” not “changed” or “changes”)</p></li>
+<li><p>Not capitalize the first letter</p></li>
+<li><p>Not end with a period</p></li>
+</ul>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">feat</span><span class="p">(</span><span class="n">downloader</span><span class="p">):</span> <span class="n">add</span> <span class="n">retry</span> <span class="n">mechanism</span> <span class="k">for</span> <span class="n">HTTP</span> <span class="n">requests</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span><span class="p">(</span><span class="n">cache</span><span class="p">):</span> <span class="n">resolve</span> <span class="n">file</span> <span class="n">permission</span> <span class="n">issue</span> <span class="n">when</span> <span class="n">creating</span> <span class="n">cache</span> <span class="n">directory</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span><span class="p">:</span> <span class="n">update</span> <span class="n">installation</span> <span class="n">instructions</span> <span class="k">with</span> <span class="n">UV</span> <span class="n">commands</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">refactor</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span> <span class="n">simplify</span> <span class="n">data</span> <span class="n">standardization</span> <span class="n">function</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="creating-commits-with-commitizen">
+<h2>Creating Commits with Commitizen<a class="headerlink" href="#creating-commits-with-commitizen" title="Link to this heading"></a></h2>
+<section id="interactive-mode">
+<h3>Interactive Mode<a class="headerlink" href="#interactive-mode" title="Link to this heading"></a></h3>
+<p>Use commitizen in interactive mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cz<span class="w"> </span>commit
+</pre></div>
+</div>
+<p>This will guide you through creating a valid commit message by asking for:</p>
+<ol class="arabic simple">
+<li><p>The type of change</p></li>
+<li><p>The scope (optional)</p></li>
+<li><p>A short description</p></li>
+<li><p>A longer description (optional)</p></li>
+<li><p>Breaking changes (optional)</p></li>
+<li><p>Issues closed (optional)</p></li>
+</ol>
+</section>
+<section id="conventional-git-commit">
+<h3>Conventional git commit<a class="headerlink" href="#conventional-git-commit" title="Link to this heading"></a></h3>
+<p>You can also write commits directly using the conventional format:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(downloader): add support for P5MIN data type&quot;</span>
+</pre></div>
+</div>
+<p>Pre-commit will validate if the message conforms to the conventional format.</p>
+</section>
+</section>
+<section id="breaking-changes">
+<h2>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading"></a></h2>
+<p>For breaking changes, add a <code class="docutils literal notranslate"><span class="pre">!</span></code> after the type/scope and include a <code class="docutils literal notranslate"><span class="pre">BREAKING</span> <span class="pre">CHANGE:</span></code> footer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>feat(api)!: remove deprecated endpoints
+
+BREAKING CHANGE: The following endpoints have been removed as they were deprecated in v0.5.0
+</pre></div>
+</div>
+</section>
+<section id="referencing-issues">
+<h2>Referencing Issues<a class="headerlink" href="#referencing-issues" title="Link to this heading"></a></h2>
+<p>Reference issues at the end of the commit message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span> <span class="n">handle</span> <span class="n">missing</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">CSV</span> <span class="n">data</span>
+
+<span class="n">Closes</span> <span class="c1">#123</span>
+</pre></div>
+</div>
+</section>
+<section id="benefits-of-using-commitizen">
+<h2>Benefits of Using Commitizen<a class="headerlink" href="#benefits-of-using-commitizen" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Standardized history</strong>: Makes the project history readable and structured</p></li>
+<li><p><strong>Automated versioning</strong>: Can be used to automatically determine version numbers</p></li>
+<li><p><strong>Automated changelog</strong>: Simplifies generating changelogs from commit messages</p></li>
+<li><p><strong>Clarity</strong>: Clearly communicates the intent of changes</p></li>
+</ol>
+</section>
+<section id="commitizen-cli-commands">
+<h2>Commitizen CLI Commands<a class="headerlink" href="#commitizen-cli-commands" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a commit interactively</span>
+cz<span class="w"> </span>commit
+
+<span class="c1"># Check if the last commit message follows the convention</span>
+cz<span class="w"> </span>check<span class="w"> </span>--rev-range<span class="w"> </span>HEAD
+
+<span class="c1"># Bump version based on commits (when ready for release)</span>
+cz<span class="w"> </span>bump
+</pre></div>
+</div>
+</section>
+<section id="integration-with-nemdatatools">
+<h2>Integration with NEMDataTools<a class="headerlink" href="#integration-with-nemdatatools" title="Link to this heading"></a></h2>
+<p>Commitizen is integrated with NEMDataTools through:</p>
+<ol class="arabic simple">
+<li><p><strong>pre-commit hook</strong>: Validates commit messages automatically</p></li>
+<li><p><strong>pyproject.toml</strong>: Configuration for commitizen</p></li>
+<li><p><strong>Development workflow</strong>: Used throughout the project development</p></li>
+</ol>
+</section>
+<section id="customizing-commitizen">
+<h2>Customizing Commitizen<a class="headerlink" href="#customizing-commitizen" title="Link to this heading"></a></h2>
+<p>You can customize commitizen by adding a configuration to your <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.commitizen]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;cz_conventional_commits&quot;</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span>
+<span class="n">tag_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;v$version&quot;</span>
+</pre></div>
+</div>
+<p>This ensures everyone on the project follows the same commit conventions.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart-with-pre-commit.html" class="btn btn-neutral float-left" title="Adding pre-commit to NEMDataTools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

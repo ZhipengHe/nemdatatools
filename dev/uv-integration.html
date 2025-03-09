@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using UV for Dependency Management in NEMDataTools &mdash; NEMDataTools  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adding pre-commit to NEMDataTools" href="quickstart-with-pre-commit.html" />
+    <link rel="prev" title="Quick Start Guide: Setting Up NEMDataTools with UV" href="quickstart-with-uv.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project-structure.html">NEMDataTools Project Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation-plan.html">NEMDataTools Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using UV for Dependency Management in NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-uv">Installing UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-setup-with-uv">Project Setup with UV</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-project-structure">1. Create Project Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-virtual-environment-with-uv">2. Create Virtual Environment with UV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialize-dependencies-with-uv">3. Initialize Dependencies with UV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uv-configuration">4. UV Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#development-workflow-with-uv">Development Workflow with UV</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-new-dependencies">Installing New Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-dependencies">Updating Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#managing-specific-versions">Managing Specific Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#locking-dependencies">Locking Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-with-ci-cd">Integration with CI/CD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-considerations">Performance Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commitizen-guide.html">Commitizen Conventional Commit Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using UV for Dependency Management in NEMDataTools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/uv-integration.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-uv-for-dependency-management-in-nemdatatools">
+<h1>Using UV for Dependency Management in NEMDataTools<a class="headerlink" href="#using-uv-for-dependency-management-in-nemdatatools" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://github.com/astral-sh/uv">UV</a> is a fast, reliable Python package installer and resolver written in Rust. This guide explains how to leverage UV to manage dependencies in the NEMDataTools project.</p>
+<section id="installing-uv">
+<h2>Installing UV<a class="headerlink" href="#installing-uv" title="Link to this heading"></a></h2>
+<p>Before setting up the project, you need to install UV:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install UV using pip</span>
+pip<span class="w"> </span>install<span class="w"> </span>uv
+
+<span class="c1"># Or using curl (alternative method)</span>
+curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</pre></div>
+</div>
+</section>
+<section id="project-setup-with-uv">
+<h2>Project Setup with UV<a class="headerlink" href="#project-setup-with-uv" title="Link to this heading"></a></h2>
+<p>Follow these steps to set up NEMDataTools using UV:</p>
+<section id="create-project-structure">
+<h3>1. Create Project Structure<a class="headerlink" href="#create-project-structure" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create project directory</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>nemdatatools
+<span class="nb">cd</span><span class="w"> </span>nemdatatools
+
+<span class="c1"># Create initial directory structure</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>src/nemdatatools<span class="w"> </span>tests<span class="w"> </span>docs<span class="w"> </span>.github/workflows
+</pre></div>
+</div>
+</section>
+<section id="create-virtual-environment-with-uv">
+<h3>2. Create Virtual Environment with UV<a class="headerlink" href="#create-virtual-environment-with-uv" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a virtual environment in .venv</span>
+uv<span class="w"> </span>venv
+
+<span class="c1"># Activate the virtual environment</span>
+<span class="c1"># On Linux/macOS:</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<span class="c1"># On Windows:</span>
+<span class="c1"># .venv\Scripts\activate</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-dependencies-with-uv">
+<h3>3. Initialize Dependencies with UV<a class="headerlink" href="#initialize-dependencies-with-uv" title="Link to this heading"></a></h3>
+<p>After setting up your <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the project in development mode with all dependencies</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev,docs]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="uv-configuration">
+<h3>4. UV Configuration<a class="headerlink" href="#uv-configuration" title="Link to this heading"></a></h3>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.uv.toml</span></code> file in your project root for UV-specific configuration:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[pip]</span>
+<span class="n">resolution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;highest&quot;</span>
+<span class="n">upgrade-strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;eager&quot;</span>
+
+<span class="k">[venv]</span>
+<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;3.10&quot;</span><span class="w">  </span><span class="c1"># Specify your preferred Python version</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="development-workflow-with-uv">
+<h2>Development Workflow with UV<a class="headerlink" href="#development-workflow-with-uv" title="Link to this heading"></a></h2>
+<section id="installing-new-dependencies">
+<h3>Installing New Dependencies<a class="headerlink" href="#installing-new-dependencies" title="Link to this heading"></a></h3>
+<p>When you need to add new dependencies:</p>
+<ol class="arabic">
+<li><p>Add them to <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p></li>
+<li><p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev,docs]&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="updating-dependencies">
+<h3>Updating Dependencies<a class="headerlink" href="#updating-dependencies" title="Link to this heading"></a></h3>
+<p>To update all dependencies to their latest compatible versions:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev,docs]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="managing-specific-versions">
+<h3>Managing Specific Versions<a class="headerlink" href="#managing-specific-versions" title="Link to this heading"></a></h3>
+<p>UV handles specific versions well. When you need a specific version in your pyproject.toml:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;requests&gt;=2.25.0,&lt;3.0.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pandas==1.3.0&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="locking-dependencies">
+<h3>Locking Dependencies<a class="headerlink" href="#locking-dependencies" title="Link to this heading"></a></h3>
+<p>UV can generate a lock file to ensure reproducible installations:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>freeze<span class="w"> </span>&gt;<span class="w"> </span>requirements.lock
+</pre></div>
+</div>
+<p>To install from the lock file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.lock
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-with-ci-cd">
+<h2>Integration with CI/CD<a class="headerlink" href="#integration-with-ci-cd" title="Link to this heading"></a></h2>
+<p>For GitHub Actions, include these steps in your workflow file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python</span>
+<span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v4</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.10&#39;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install UV</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install uv</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv pip install -e &quot;.[dev]&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run tests</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<p>UV offers several performance benefits for NEMDataTools:</p>
+<ol class="arabic simple">
+<li><p><strong>Faster installation:</strong> Dependencies install much faster, especially on CI/CD</p></li>
+<li><p><strong>More reliable resolution:</strong> Fewer dependency conflicts</p></li>
+<li><p><strong>Reduced environment sizes:</strong> More efficient management of dependencies</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<p>If you encounter issues with UV:</p>
+<ol class="arabic simple">
+<li><p>Check that your <code class="docutils literal notranslate"><span class="pre">.uv.toml</span></code> configuration is correct</p></li>
+<li><p>Try running with the verbose flag: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-v</span> <span class="pre">-e</span> <span class="pre">&quot;.[dev,docs]&quot;</span></code></p></li>
+<li><p>Clear the UV cache if needed: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">cache</span> <span class="pre">clear</span></code></p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart-with-uv.html" class="btn btn-neutral float-left" title="Quick Start Guide: Setting Up NEMDataTools with UV" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quickstart-with-pre-commit.html" class="btn btn-neutral float-right" title="Adding pre-commit to NEMDataTools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

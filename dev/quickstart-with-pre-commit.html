@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding pre-commit to NEMDataTools &mdash; NEMDataTools  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Commitizen Conventional Commit Guide" href="commitizen-guide.html" />
+    <link rel="prev" title="Using UV for Dependency Management in NEMDataTools" href="uv-integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project-structure.html">NEMDataTools Project Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation-plan.html">NEMDataTools Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Adding pre-commit to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-update-pyproject-toml-to-include-pre-commit">Step 1: Update <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to include pre-commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-install-pre-commit-using-uv">Step 2: Install pre-commit using UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-create-a-pre-commit-configuration">Step 3: Create a pre-commit configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-install-the-pre-commit-hooks">Step 4: Install the pre-commit hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-5-run-pre-commit-manually-optional">Step 5: Run pre-commit manually (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-pre-commit-with-uv">Using pre-commit with UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-with-your-development-workflow">Integration with your development workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-pre-commit-configuration">Customizing pre-commit configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commit-message-convention-with-commitizen">Commit message convention with commitizen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-pre-commit">Troubleshooting pre-commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-tips">Additional Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commitizen-guide.html">Commitizen Conventional Commit Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Adding pre-commit to NEMDataTools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/quickstart-with-pre-commit.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adding-pre-commit-to-nemdatatools">
+<h1>Adding pre-commit to NEMDataTools<a class="headerlink" href="#adding-pre-commit-to-nemdatatools" title="Link to this heading"></a></h1>
+<p>Pre-commit is a fantastic tool that runs checks before each commit, ensuring code quality and consistency. This guide will show you how to integrate pre-commit with your NEMDataTools project, specifically working with UV for dependency management.</p>
+<section id="step-1-update-pyproject-toml-to-include-pre-commit">
+<h2>Step 1: Update <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to include pre-commit<a class="headerlink" href="#step-1-update-pyproject-toml-to-include-pre-commit" title="Link to this heading"></a></h2>
+<p>First, add pre-commit to your development dependencies in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.optional-dependencies]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;pytest&gt;=6.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pytest-cov&gt;=2.12&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;black&gt;=21.5b2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;mypy&gt;=0.812&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;isort&gt;=5.9.1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pre-commit&gt;=3.3.2&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># Add this line</span>
+<span class="w">    </span><span class="s2">&quot;flake8&gt;=6.0.0&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1"># Add this line</span>
+<span class="w">    </span><span class="s2">&quot;commitizen&gt;=3.2.2&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># Add this line</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-install-pre-commit-using-uv">
+<h2>Step 2: Install pre-commit using UV<a class="headerlink" href="#step-2-install-pre-commit-using-uv" title="Link to this heading"></a></h2>
+<p>Install the updated development dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make sure your virtual environment is activated</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-create-a-pre-commit-configuration">
+<h2>Step 3: Create a pre-commit configuration<a class="headerlink" href="#step-3-create-a-pre-commit-configuration" title="Link to this heading"></a></h2>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file in the root of your project with the configuration provided in the artifacts.</p>
+<p>This configuration includes:</p>
+<ul class="simple">
+<li><p>Basic file checks (YAML, TOML, trailing whitespace, etc.)</p></li>
+<li><p>Code formatting with Black</p></li>
+<li><p>Import sorting with isort</p></li>
+<li><p>Style checking with flake8</p></li>
+<li><p>Type checking with mypy</p></li>
+<li><p>Python upgrades with pyupgrade</p></li>
+<li><p>Commit message formatting with commitizen</p></li>
+</ul>
+</section>
+<section id="step-4-install-the-pre-commit-hooks">
+<h2>Step 4: Install the pre-commit hooks<a class="headerlink" href="#step-4-install-the-pre-commit-hooks" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the pre-commit hooks</span>
+pre-commit<span class="w"> </span>install
+
+<span class="c1"># Also install the commit message hook</span>
+pre-commit<span class="w"> </span>install<span class="w"> </span>--hook-type<span class="w"> </span>commit-msg
+</pre></div>
+</div>
+</section>
+<section id="step-5-run-pre-commit-manually-optional">
+<h2>Step 5: Run pre-commit manually (optional)<a class="headerlink" href="#step-5-run-pre-commit-manually-optional" title="Link to this heading"></a></h2>
+<p>You can run pre-commit manually on all files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+</section>
+<section id="using-pre-commit-with-uv">
+<h2>Using pre-commit with UV<a class="headerlink" href="#using-pre-commit-with-uv" title="Link to this heading"></a></h2>
+<p>When you need to update pre-commit or its dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update dependencies</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+
+<span class="c1"># Update pre-commit hooks</span>
+pre-commit<span class="w"> </span>autoupdate
+</pre></div>
+</div>
+</section>
+<section id="integration-with-your-development-workflow">
+<h2>Integration with your development workflow<a class="headerlink" href="#integration-with-your-development-workflow" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Local Development</strong>: Pre-commit will automatically run before each commit</p></li>
+<li><p><strong>CI/CD Pipeline</strong>: Add pre-commit to your GitHub Actions workflow</p></li>
+</ol>
+<p>Example GitHub Actions step:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run pre-commit</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">uv pip install pre-commit</span>
+<span class="w">    </span><span class="no">pre-commit run --all-files</span>
+</pre></div>
+</div>
+</section>
+<section id="customizing-pre-commit-configuration">
+<h2>Customizing pre-commit configuration<a class="headerlink" href="#customizing-pre-commit-configuration" title="Link to this heading"></a></h2>
+<p>You can customize the <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file to suit your needs:</p>
+<ol class="arabic simple">
+<li><p><strong>Add hooks</strong>: There are <a class="reference external" href="https://pre-commit.com/hooks.html">many pre-commit hooks</a> available</p></li>
+<li><p><strong>Adjust parameters</strong>: Modify hook arguments to suit your project</p></li>
+<li><p><strong>Skip hooks</strong>: Use <code class="docutils literal notranslate"><span class="pre">SKIP=hook_id</span> <span class="pre">git</span> <span class="pre">commit</span></code> to skip specific hooks</p></li>
+</ol>
+</section>
+<section id="commit-message-convention-with-commitizen">
+<h2>Commit message convention with commitizen<a class="headerlink" href="#commit-message-convention-with-commitizen" title="Link to this heading"></a></h2>
+<p>The provided configuration includes commitizen, which enforces a standard commit message format. Commits will follow the <a class="reference external" href="https://www.conventionalcommits.org/">Conventional Commits</a> specification:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">scope</span><span class="p">):</span> <span class="n">description</span>
+
+<span class="p">[</span><span class="n">optional</span> <span class="n">body</span><span class="p">]</span>
+
+<span class="p">[</span><span class="n">optional</span> <span class="n">footer</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feat:</span> <span class="pre">add</span> <span class="pre">new</span> <span class="pre">downloader</span> <span class="pre">function</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fix(cache):</span> <span class="pre">resolve</span> <span class="pre">issue</span> <span class="pre">with</span> <span class="pre">file</span> <span class="pre">locking</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs:</span> <span class="pre">update</span> <span class="pre">README</span> <span class="pre">with</span> <span class="pre">UV</span> <span class="pre">instructions</span></code></p></li>
+</ul>
+</section>
+<section id="troubleshooting-pre-commit">
+<h2>Troubleshooting pre-commit<a class="headerlink" href="#troubleshooting-pre-commit" title="Link to this heading"></a></h2>
+<p>If you encounter issues:</p>
+<ol class="arabic simple">
+<li><p><strong>Hooks failing</strong>: Read the error message and fix the issue</p></li>
+<li><p><strong>Skip hooks temporarily</strong>: <code class="docutils literal notranslate"><span class="pre">SKIP=flake8</span> <span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;message&quot;</span></code></p></li>
+<li><p><strong>Update hooks</strong>: <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">autoupdate</span></code></p></li>
+<li><p><strong>Reinstall hooks</strong>: <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">uninstall</span> <span class="pre">&amp;&amp;</span> <span class="pre">pre-commit</span> <span class="pre">install</span></code></p></li>
+</ol>
+</section>
+<section id="additional-tips">
+<h2>Additional Tips<a class="headerlink" href="#additional-tips" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Editor Integration</strong>: Many editors have pre-commit plugins</p></li>
+<li><p><strong>Automated fixes</strong>: Most hooks will automatically fix issues when possible</p></li>
+<li><p><strong>Performance</strong>: Some hooks can be slow (like mypy) - you can exclude them for rapid development</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uv-integration.html" class="btn btn-neutral float-left" title="Using UV for Dependency Management in NEMDataTools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="commitizen-guide.html" class="btn btn-neutral float-right" title="Commitizen Conventional Commit Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
