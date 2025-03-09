@@ -1,0 +1,6 @@
+[pip]
+resolution = "highest"
+upgrade-strategy = "eager"
+
+[venv]
+python = "3.10"

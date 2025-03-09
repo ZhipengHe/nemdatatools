@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Documentation
+docs/_build/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# UV specific
+.uv/
+
+# MacOS specific
+.DS_Store
