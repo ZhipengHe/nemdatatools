@@ -73,7 +73,7 @@ dev = [
     "mypy>=1.14.0",
     "isort>=6.0.0",
     "pre-commit>=3.3.2",
-    "flake8>=7.0.0",
+    "ruff>=0.5.0",
     "commitizen>=4.4.0",
 ]
 docs = [
@@ -119,6 +119,9 @@ repos:
     -   id: check-toml
     -   id: check-merge-conflict
     -   id: debug-statements
+    -   id: detect-private-key
+    -   id: check-ast
+    -   id: check-case-conflict
 
 -   repo: https://github.com/psf/black
     rev: 25.1.0
@@ -132,12 +135,18 @@ repos:
     -   id: isort
         args: ["--profile", "black"]
 
--   repo: https://github.com/pycqa/flake8
-    rev: 7.1.2
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
     hooks:
-    -   id: flake8
-        additional_dependencies: [flake8-docstrings]
-        args: ["--max-line-length=88", "--extend-ignore=E203"]
+    -   id: ruff
+        args: [
+            "--fix",
+            "--line-length=88",
+            "--select=E,F,D,I,N,C4,B,A,W,S,COM,RUF",
+            "--ignore=E203"
+        ]
+    -   id: ruff-format
+        args: ["--check"]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.15.0
@@ -159,6 +168,12 @@ repos:
     -   id: commitizen
         stages: [commit-msg]
         additional_dependencies: ['commitizen']
+
+-   repo: https://github.com/econchick/interrogate
+    rev: 1.7.0
+    hooks:
+    -   id: interrogate
+        args: [-vv, -i, --fail-under=80]
 EOF
 cat > .gitignore << 'EOF'
 # Byte-compiled / optimized / DLL files
