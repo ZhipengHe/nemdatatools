@@ -43,9 +43,43 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#core-features">Core Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#development-roadmap">Development Roadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#supported-data-types">Supported Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="project-structure.html">NEMDataTools Project Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project-structure.html">NEMDataTools Project Board</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#phase-1-project-setup-milestones-1-2">Phase 1: Project Setup (Milestones 1-2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project-structure.html#milestone-1-development-environment-setup">Milestone 1: Development Environment Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project-structure.html#milestone-2-core-module-skeletons">Milestone 2: Core Module Skeletons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#phase-2-core-functionality-implementation-milestones-3-4">Phase 2: Core Functionality Implementation (Milestones 3-4)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project-structure.html#milestone-3-time-utilities-and-cache-management">Milestone 3: Time Utilities and Cache Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project-structure.html#milestone-4-data-downloading">Milestone 4: Data Downloading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#phase-3-data-processing-milestones-5-6">Phase 3: Data Processing (Milestones 5-6)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project-structure.html#milestone-5-basic-data-processing">Milestone 5: Basic Data Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project-structure.html#milestone-6-advanced-processing">Milestone 6: Advanced Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#phase-4-documentation-and-examples-milestone-7">Phase 4: Documentation and Examples (Milestone 7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#phase-5-quality-assurance-and-release-milestone-8">Phase 5: Quality Assurance and Release (Milestone 8)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#phase-6-continuous-improvement-ongoing">Phase 6: Continuous Improvement (Ongoing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html#development-practices">Development Practices</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NEMDataTools Implementation Plan</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#downloader-module">1. Downloader Module</a></li>
@@ -65,10 +99,82 @@
 <li class="toctree-l2"><a class="reference internal" href="#future-extensions">Future Extensions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commitizen-guide.html">Commitizen Conventional Commit Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-1-install-uv">Step 1: Install UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-2-clone-and-setup-the-project">Step 2: Clone and Setup the Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-3-create-and-activate-virtual-environment">Step 3: Create and Activate Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-4-setup-configuration-files">Step 4: Setup Configuration Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart-with-uv.html#uv-toml">1. <code class="docutils literal notranslate"><span class="pre">.uv.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart-with-uv.html#pyproject-toml">2. <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-5-install-dependencies-with-uv">Step 5: Install Dependencies with UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-6-implement-core-modules">Step 6: Implement Core Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-7-run-tests">Step 7: Run Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-8-code-formatting-and-linting">Step 8: Code Formatting and Linting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-9-build-documentation">Step 9: Build Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#automation-script">Automation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#installing-uv">Installing UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#project-setup-with-uv">Project Setup with UV</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#create-project-structure">1. Create Project Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#create-virtual-environment-with-uv">2. Create Virtual Environment with UV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#initialize-dependencies-with-uv">3. Initialize Dependencies with UV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#uv-configuration">4. UV Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#development-workflow-with-uv">Development Workflow with UV</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#installing-new-dependencies">Installing New Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#updating-dependencies">Updating Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#managing-specific-versions">Managing Specific Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#locking-dependencies">Locking Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#integration-with-ci-cd">Integration with CI/CD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#performance-considerations">Performance Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#step-1-update-pyproject-toml-to-include-pre-commit">Step 1: Update <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to include pre-commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#step-2-install-pre-commit-using-uv">Step 2: Install pre-commit using UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#step-3-create-a-pre-commit-configuration">Step 3: Create a pre-commit configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#step-4-install-the-pre-commit-hooks">Step 4: Install the pre-commit hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#step-5-run-pre-commit-manually-optional">Step 5: Run pre-commit manually (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#using-pre-commit-with-uv">Using pre-commit with UV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#integration-with-your-development-workflow">Integration with your development workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#customizing-pre-commit-configuration">Customizing pre-commit configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#commit-message-convention-with-commitizen">Commit message convention with commitizen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#troubleshooting-pre-commit">Troubleshooting pre-commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-pre-commit.html#additional-tips">Additional Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commitizen-guide.html">Commitizen Conventional Commit Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#what-is-commitizen">What is Commitizen?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#commit-message-format">Commit Message Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commitizen-guide.html#types">Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commitizen-guide.html#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commitizen-guide.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commitizen-guide.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#creating-commits-with-commitizen">Creating Commits with Commitizen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commitizen-guide.html#interactive-mode">Interactive Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commitizen-guide.html#conventional-git-commit">Conventional git commit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#breaking-changes">Breaking Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#referencing-issues">Referencing Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#benefits-of-using-commitizen">Benefits of Using Commitizen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#commitizen-cli-commands">Commitizen CLI Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#integration-with-nemdatatools">Integration with NEMDataTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commitizen-guide.html#customizing-commitizen">Customizing Commitizen</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
