@@ -54,7 +54,7 @@ print(processed_data.head())
 
 ## Development Roadmap
 
-The development of NEMDataTools is divided into several phases and milestones. The roadmap is subject to change based on community feedback and project requirements. See the [Project Board](./docs/dev/project-structure.md) for more details.
+The development of NEMDataTools is divided into several phases and milestones. The roadmap is subject to change based on community feedback and project requirements. See the [Project Board](dev/project-structure.md) for more details.
 
 - [ ] **Phase 1: Project Setup**
     - [x] **Milestone 1:** Development environment setup
@@ -107,25 +107,6 @@ The development of NEMDataTools is divided into several phases and milestones. T
         - [ ] Community Building
         - [ ] Improve Documentation
 
-## Documentation
-
-### Development Guide
-
-Here are some documents to help you get started with developing NEMDataTools:
-
-- **Project Planning**:
-    - [Implementation Plan](./docs/dev/implementation-plan.md): Detailed plan for implementing core modules
-    - [Project Board](./docs/dev/project-structure.md): Overview of the project structure and milestones
-- **Development Workflow**:
-    - [Quickstart with UV](./docs/dev/quickstart-with-uv.md): Setting up the development environment with Universal Viewer
-    - [UV Integration Guide](./docs/dev/uv-integration.md): Using UV for dependency management
-    - [Quickstart with Pre-Commit](./docs/dev/quickstart-with-pre-commit.md): Setting up pre-commit hooks for code quality
-    - [Commitizen Guide](./docs/dev/commitizen-guide.md): Using Commitizen for standardized commit messages
-
-### API Reference
-
-Detailed documentation is available at [Documentation (WIP)](https://zhipenghe.me/nemdatatools/).
-
 
 ## Supported Data Types
 
@@ -138,10 +119,7 @@ NEMDataTools currently supports the following AEMO data types:
 | PREDISPATCH | Pre-dispatch forecasts | Planned |
 | P5MIN | 5-minute pre-dispatch | Planned |
 
-## Contributing
-
-Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## License
 
-NEMDataTools is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+NEMDataTools is released under the MIT License.

@@ -8,6 +8,12 @@ Welcome to NEMDataTools documentation
 
 .. toctree::
    :maxdepth: 2
+   :caption: Overview
+
+   README
+
+.. toctree::
+   :maxdepth: 2
    :caption: Developer Guide
 
    dev/project-structure

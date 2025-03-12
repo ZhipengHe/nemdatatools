@@ -11,12 +11,12 @@ First, add pre-commit to your development dependencies in `pyproject.toml`:
 dev = [
     "pytest>=6.0",
     "pytest-cov>=2.12",
-    "black>=21.5b2",
-    "mypy>=0.812",
-    "isort>=5.9.1",
-    "pre-commit>=3.3.2",  # Add this line
-    "flake8>=6.0.0",      # Add this line
-    "commitizen>=3.2.2",  # Add this line
+    "black>=25.0.0",
+    "mypy>=1.14.0",
+    "isort>=6.0.0",
+    "pre-commit>=3.3.2",
+    "ruff>=0.5.0",
+    "commitizen>=4.4.0",
 ]
 ```
 
