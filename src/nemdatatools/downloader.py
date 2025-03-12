@@ -1,5 +1,4 @@
-"""
-Module for downloading data from AEMO.
+"""Module for downloading data from AEMO.
 
 This module provides functions to download various types of data from
 the Australian Energy Market Operator (AEMO).
@@ -22,8 +21,7 @@ def fetch_data(
     regions: list[str] | None = None,
     cache_path: str | None = None,
 ) -> pd.DataFrame:
-    """
-    Download data from AEMO for specified parameters.
+    """Download data from AEMO for specified parameters.
 
     Args:
         data_type: Type of data (e.g., 'DISPATCHPRICE')
@@ -34,6 +32,7 @@ def fetch_data(
 
     Returns:
         DataFrame with requested data
+
     """
     # Skeleton implementation
     logger.info(f"Fetching {data_type} data from {start_date} to {end_date}")
@@ -41,10 +40,10 @@ def fetch_data(
 
 
 def get_available_data_types() -> list[str]:
-    """
-    Get list of available data types supported by this package.
+    """Get list of available data types supported by this package.
 
     Returns:
         List of supported data types
+
     """
     return ["DISPATCHPRICE", "DISPATCHREGIONSUM", "PREDISPATCH", "P5MIN"]

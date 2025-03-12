@@ -1,5 +1,4 @@
-"""
-Data processing utilities for AEMO data.
+"""Data processing utilities for AEMO data.
 
 This module provides functions for processing and standardizing
 data retrieved from AEMO.
@@ -16,8 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def standardize(data: pd.DataFrame, data_type: str) -> pd.DataFrame:
-    """
-    Standardize raw AEMO data.
+    """Standardize raw AEMO data.
 
     Args:
         data: Raw DataFrame
@@ -25,6 +23,7 @@ def standardize(data: pd.DataFrame, data_type: str) -> pd.DataFrame:
 
     Returns:
         Standardized DataFrame
+
     """
     # Skeleton implementation
     if data.empty:
@@ -36,8 +35,7 @@ def standardize(data: pd.DataFrame, data_type: str) -> pd.DataFrame:
 
 
 def filter_by_regions(df: pd.DataFrame, regions: list[str]) -> pd.DataFrame:
-    """
-    Filter DataFrame to include only specified regions.
+    """Filter DataFrame to include only specified regions.
 
     Args:
         df: DataFrame to filter
@@ -45,6 +43,7 @@ def filter_by_regions(df: pd.DataFrame, regions: list[str]) -> pd.DataFrame:
 
     Returns:
         Filtered DataFrame
+
     """
     # Skeleton implementation
     logger.info(f"Filtering data to include only regions: {regions}")

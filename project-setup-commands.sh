@@ -104,6 +104,14 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*.py" = [
+    "S101", # asserts allowed in tests...
+]
+"docs/conf.py" = [
+    "A001", # allow use `copyright` in config file for sphinx
+]
 EOF
 
 # Create .pre-commit-config.yaml
@@ -143,7 +151,7 @@ repos:
             "--fix",
             "--line-length=88",
             "--select=E,F,D,I,N,C4,B,A,W,S,COM,RUF",
-            "--ignore=E203"
+            "--ignore=E203,D213,D203"
         ]
     -   id: ruff-format
         args: ["--check"]

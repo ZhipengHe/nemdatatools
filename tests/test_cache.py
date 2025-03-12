@@ -17,7 +17,7 @@ def sample_data():
             "SETTLEMENTDATE": ["2023/01/01 00:05:00", "2023/01/01 00:10:00"],
             "REGIONID": ["NSW1", "NSW1"],
             "RRP": [25.0, 30.0],
-        }
+        },
     )
 
 

@@ -33,7 +33,7 @@ repos:
             "--fix",
             "--line-length=88",
             "--select=E,F,D,I,N,C4,B,A,W,S,COM,RUF",
-            "--ignore=E203"
+            "--ignore=E203,D213,D203"
         ]
     -   id: ruff-format
         args: ["--check"]

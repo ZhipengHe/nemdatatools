@@ -1,5 +1,4 @@
-"""
-NEMDataTools - Time utilities for handling AEMO data timeframes.
+"""NEMDataTools - Time utilities for handling AEMO data timeframes.
 
 This module provides functions for working with time periods, dates,
 and forecast horizons relevant to AEMO data.
@@ -32,8 +31,7 @@ DATA_TYPE_INTERVALS = {
 
 
 def parse_date(date_str: str) -> datetime.datetime:
-    """
-    Parse date string to datetime object.
+    """Parse date string to datetime object.
 
     Args:
         date_str: Date string in format YYYY/MM/DD or YYYY/MM/DD HH:MM:SS
@@ -43,8 +41,8 @@ def parse_date(date_str: str) -> datetime.datetime:
 
     Raises:
         ValueError: If date format is invalid
+
     """
-    # Skeleton implementation
     try:
         if " " in date_str:
             # Has time component
@@ -53,12 +51,11 @@ def parse_date(date_str: str) -> datetime.datetime:
             # Date only
             return datetime.datetime.strptime(date_str, "%Y/%m/%d")
     except ValueError as e:
-        raise ValueError(f"Invalid date format: {e}")
+        raise ValueError(f"Invalid date format: {e}") from e
 
 
 def format_date(date: datetime.datetime, include_time: bool = True) -> str:
-    """
-    Format datetime object to string.
+    """Format datetime object to string.
 
     Args:
         date: Datetime object
@@ -66,6 +63,7 @@ def format_date(date: datetime.datetime, include_time: bool = True) -> str:
 
     Returns:
         Formatted date string
+
     """
     if include_time:
         return date.strftime(AEMO_DATE_FORMAT)
@@ -74,10 +72,11 @@ def format_date(date: datetime.datetime, include_time: bool = True) -> str:
 
 
 def generate_time_periods(
-    start_date: datetime.datetime, end_date: datetime.datetime, data_type: str
+    start_date: datetime.datetime,
+    end_date: datetime.datetime,
+    data_type: str,
 ) -> list[dict[str, str]]:
-    """
-    Generate list of time periods (days) between start and end dates.
+    """Generate list of time periods (days) between start and end dates.
 
     Args:
         start_date: Start date
@@ -86,6 +85,7 @@ def generate_time_periods(
 
     Returns:
         List of dictionaries with year, month, date for each period
+
     """
     periods = []
     current_date = start_date
@@ -103,10 +103,11 @@ def generate_time_periods(
 
 
 def generate_intervals(
-    start_date: datetime.datetime, end_date: datetime.datetime, interval: str = "5min"
+    start_date: datetime.datetime,
+    end_date: datetime.datetime,
+    interval: str = "5min",
 ) -> pd.DatetimeIndex:
-    """
-    Generate time intervals between start and end dates.
+    """Generate time intervals between start and end dates.
 
     Args:
         start_date: Start date
@@ -115,6 +116,7 @@ def generate_intervals(
 
     Returns:
         DatetimeIndex with intervals
+
     """
     # Ensure correct timezone
     start_with_tz = start_date.replace(tzinfo=AEST_OFFSET)
@@ -125,10 +127,10 @@ def generate_intervals(
 
 
 def get_forecast_horizon(
-    run_time: datetime.datetime, target_time: datetime.datetime
+    run_time: datetime.datetime,
+    target_time: datetime.datetime,
 ) -> datetime.timedelta:
-    """
-    Calculate forecast horizon between run time and target time.
+    """Calculate forecast horizon between run time and target time.
 
     Args:
         run_time: Time when forecast was made
@@ -139,6 +141,7 @@ def get_forecast_horizon(
 
     Raises:
         ValueError: If target_time is before run_time
+
     """
     if target_time < run_time:
         raise ValueError("Target time must be after run time")
@@ -147,8 +150,7 @@ def get_forecast_horizon(
 
 
 def get_data_type_interval(data_type: str) -> str:
-    """
-    Get the appropriate interval for a data type.
+    """Get the appropriate interval for a data type.
 
     Args:
         data_type: Type of data
@@ -158,19 +160,19 @@ def get_data_type_interval(data_type: str) -> str:
 
     Raises:
         ValueError: If data_type is not supported
+
     """
     if data_type not in DATA_TYPE_INTERVALS:
         supported_types = ", ".join(DATA_TYPE_INTERVALS.keys())
         raise ValueError(
-            f"Unsupported data type: {data_type}. Supported types: {supported_types}"
+            f"Unsupported data type: {data_type}. Supported types: {supported_types}",
         )
 
     return DATA_TYPE_INTERVALS[data_type]
 
 
 def is_dispatch_interval(dt: datetime.datetime) -> bool:
-    """
-    Check if datetime is on a dispatch interval boundary.
+    """Check if datetime is on a dispatch interval boundary.
 
     Dispatch intervals are every 5 minutes.
 
@@ -179,15 +181,16 @@ def is_dispatch_interval(dt: datetime.datetime) -> bool:
 
     Returns:
         True if dt is on a dispatch interval, False otherwise
+
     """
     return dt.minute % 5 == 0 and dt.second == 0
 
 
 def get_next_interval(
-    dt: datetime.datetime, interval: str = "5min"
+    dt: datetime.datetime,
+    interval: str = "5min",
 ) -> datetime.datetime:
-    """
-    Get next interval time after given datetime.
+    """Get next interval time after given datetime.
 
     Args:
         dt: Reference datetime
@@ -198,6 +201,7 @@ def get_next_interval(
 
     Raises:
         ValueError: If interval is not "5min" or "30min"
+
     """
     if interval == "5min":
         # Find next 5-minute interval
@@ -207,7 +211,7 @@ def get_next_interval(
         if next_5min == 60:
             # Next hour
             return dt.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(
-                hours=1
+                hours=1,
             )
         else:
             # Next 5-minute interval within current hour
@@ -221,7 +225,7 @@ def get_next_interval(
         else:
             # Next hour
             return dt.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(
-                hours=1
+                hours=1,
             )
 
     else:
@@ -229,10 +233,11 @@ def get_next_interval(
 
 
 def get_interval_boundaries(
-    start_date: datetime.datetime, end_date: datetime.datetime, interval: str = "5min"
+    start_date: datetime.datetime,
+    end_date: datetime.datetime,
+    interval: str = "5min",
 ) -> tuple[datetime.datetime, datetime.datetime]:
-    """
-    Adjust start and end dates to interval boundaries.
+    """Adjust start and end dates to interval boundaries.
 
     Args:
         start_date: Start date
@@ -244,6 +249,7 @@ def get_interval_boundaries(
 
     Raises:
         ValueError: If interval is not "5min" or "30min"
+
     """
     if interval == "5min":
         # Adjust start date to nearest interval boundary
