@@ -56,24 +56,27 @@ print(processed_data.head())
 
 The development of NEMDataTools is divided into several phases and milestones. The roadmap is subject to change based on community feedback and project requirements. See the [Project Board](./docs/dev/project-structure.md) for more details.
 
-- [ ] **Phase 1: Project Setup**
+- [x] **Phase 1: Project Setup**
     - [x] **Milestone 1:** Development environment setup
         - [x] Project structure setup
         - [x] Base configuration handling
-    - [ ] **Milestone 2:** Core Module Skeletons
+    - [x] **Milestone 2:** Core Module Skeletons
         - [x] Basic module structure
         - [x] Testing framework setup
         - [x] Setup Documentation with Sphinx
         - [x] GitHub Actions workflows
 
 - [ ] **Phase 2: Core Functionality Implementation**
-    - [ ] **Milestone 3:** Time Utilities and Cache Management
-        - [ ] Time utilities implementation
-        - [ ] Local cache management
+    - [x] **Milestone 3:** Time Utilities and Cache Management
+        - [x] Time utilities implementation
+        - [x] Local cache management
     - [ ] **Milestone 4:** Data Downloading
         - [ ] AEMO URL and endpoint mapping
         - [ ] Core data fetching module
         - [ ] Test downloading
+    - [ ] **Extra:** Configuration Management
+        - [ ] Configuration file handling
+        - [ ] Environment variable support
 
 - [ ] **Phase 3: Data Processing**
     - [ ] **Milestone 5:** Basic Data Processing
