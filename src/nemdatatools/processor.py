@@ -32,11 +32,6 @@ def standardize(data: pd.DataFrame, data_type: str) -> pd.DataFrame:
     # Create a copy to avoid modifying the input
     df = data.copy()
 
-    # TODO: REMOVE THE LOWERCASE TRANSFORMATION (IT IS NOT NEEDED)
-    # - Alse update all column names in other files
-    # # Normalize column names (lowercase)
-    # df.columns = [col for col in df.columns]
-
     # Apply specific standardization based on data type
     if data_type not in DATA_CONFIG:
         logger.warning(
@@ -138,7 +133,7 @@ def _standardize_general(df: pd.DataFrame) -> pd.DataFrame:
         "TOTALDEMAND",
         "AVAILABLEGENERATION",
         "FORECASTED_DEMAND",
-        "PRICE",
+        # "PRICE", # This is a generic name, not specific to any data type
         "DEMAND",
         "SCADAVALUE",
         "INITIALMW",

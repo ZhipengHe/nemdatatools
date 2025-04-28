@@ -175,16 +175,13 @@ def read_mmsdm_csv(csv_path: str) -> pd.DataFrame:
         # Skip first line (header) and last line (footer)
         df = pd.read_csv(csv_path, skiprows=1, skipfooter=1, engine="python")
 
-        # Standardize column names to lowercase
-        df.columns = [col.lower() for col in df.columns]
-
         # Apply specific processing for datetime columns
         date_columns = [
-            "settlementdate",
-            "datetime",
-            "interval_datetime",
-            "run_datetime",
-            "predispatch_run_datetime",
+            "SETTLEMENTDATE",
+            "DATETIME",
+            "INTERVAL_DATETIME",
+            "RUN_DATETIME",
+            "PREDISPATCH_RUN_DATETIME",
         ]
 
         for col in date_columns:
@@ -234,7 +231,7 @@ def combine_mmsdm_files(file_paths: list[str]) -> pd.DataFrame:
     result = pd.concat(all_data, ignore_index=True)
 
     # Sort by datetime column if it exists
-    for date_col in ["settlementdate", "datetime", "interval_datetime"]:
+    for date_col in ["SETTLEMENTDATE", "DATETIME", "INTERVAL_DATETIME"]:
         if date_col in result.columns:
             result = result.sort_values(date_col)
             break
@@ -264,7 +261,7 @@ def filter_mmsdm_data(
         return df
 
     # Find appropriate date column
-    date_cols = ["settlementdate", "datetime", "interval_datetime", "run_datetime"]
+    date_cols = ["SETTLEMENTDATE", "DATETIME", "INTERVAL_DATETIME", "RUN_DATETIME"]
     date_col = None
 
     for col in date_cols:
@@ -280,7 +277,7 @@ def filter_mmsdm_data(
 
     # Filter by region if needed
     if regions:
-        region_cols = ["regionid", "region"]
+        region_cols = ["REGIONID", "REGION"]
         region_col = None
 
         for col in region_cols:
@@ -312,63 +309,63 @@ def get_table_metadata(table_name: str) -> tuple[list[str], list[str]]:
     """
     table_metadata = {
         "DISPATCHPRICE": {
-            "key_columns": ["settlementdate", "regionid"],
-            "value_columns": ["rrp", "loss_factor", "lastchanged"],
+            "key_columns": ["SETTLEMENTDATE", "REGIONID"],
+            "value_columns": ["RRP", "LOSS_FACTOR", "LASTCHANGED"],
         },
         "DISPATCHREGIONSUM": {
-            "key_columns": ["settlementdate", "regionid"],
-            "value_columns": ["totaldemand", "availablegeneration", "lastchanged"],
+            "key_columns": ["SETTLEMENTDATE", "REGIONID"],
+            "value_columns": ["TOTALDEMAND", "AVAILABLEGENERATION", "LASTCHANGED"],
         },
         "DISPATCH_UNIT_SCADA": {
-            "key_columns": ["settlementdate", "duid"],
-            "value_columns": ["scadavalue", "lastchanged"],
+            "key_columns": ["SETTLEMENTDATE", "DUID"],
+            "value_columns": ["SCADAVALUE", "LASTCHANGED"],
         },
         "DISPATCHLOAD": {
-            "key_columns": ["settlementdate", "duid"],
+            "key_columns": ["SETTLEMENTDATE", "DUID"],
             "value_columns": [
-                "initialmw",
-                "totalcleared",
-                "rampdownrate",
-                "rampuprate",
-                "lastchanged",
+                "INITIALMW",
+                "TOTALCLEARED",
+                "RAMPDOWNRATE",
+                "RAMPUPRATE",
+                "LASTCHANGED",
             ],
         },
         "DISPATCHINTERCONNECTORRES": {
-            "key_columns": ["settlementdate", "interconnectorid"],
-            "value_columns": ["mwflow", "meteredmwflow", "lastchanged"],
+            "key_columns": ["SETTLEMENTDATE", "INTERCONNECTORID"],
+            "value_columns": ["MWFLOW", "METEREDMWFLOW", "LASTCHANGED"],
         },
         "BIDDAYOFFER_D": {
-            "key_columns": ["settlementdate", "duid"],
+            "key_columns": ["SETTLEMENTDATE", "DUID"],
             "value_columns": [
-                "priceband1",
-                "priceband2",
-                "priceband3",
-                "priceband4",
-                "priceband5",
-                "priceband6",
-                "priceband7",
-                "priceband8",
-                "priceband9",
-                "priceband10",
-                "lastchanged",
+                "PRICEBAND1",
+                "PRICEBAND2",
+                "PRICEBAND3",
+                "PRICEBAND4",
+                "PRICEBAND5",
+                "PRICEBAND6",
+                "PRICEBAND7",
+                "PRICEBAND8",
+                "PRICEBAND9",
+                "PRICEBAND10",
+                "LASTCHANGED",
             ],
         },
         "PREDISPATCHPRICE": {
-            "key_columns": ["datetime", "regionid", "predispatch_run_datetime"],
-            "value_columns": ["rrp", "lastchanged"],
+            "key_columns": ["DATETIME", "REGIONID", "PREDISPATCH_RUN_DATETIME"],
+            "value_columns": ["RRP", "LASTCHANGED"],
         },
         "PREDISPATCHREGIONSUM": {
-            "key_columns": ["datetime", "regionid", "predispatch_run_datetime"],
-            "value_columns": ["totaldemand", "availablegeneration", "lastchanged"],
+            "key_columns": ["DATETIME", "REGIONID", "PREDISPATCH_RUN_DATETIME"],
+            "value_columns": ["TOTALDEMAND", "AVAILABLEGENERATION", "LASTCHANGED"],
         },
         "P5MIN_REGIONSOLUTION": {
-            "key_columns": ["interval_datetime", "regionid", "run_datetime"],
-            "value_columns": ["rrp", "totaldemand", "lastchanged"],
+            "key_columns": ["INTERVAL_DATETIME", "REGIONID", "RUN_DATETIME"],
+            "value_columns": ["RRP", "TOTALDEMAND", "LASTCHANGED"],
         },
         # Default for any table not specifically defined
         "DEFAULT": {
-            "key_columns": ["settlementdate"],
-            "value_columns": ["lastchanged"],
+            "key_columns": ["SETTLEMENTDATE"],
+            "value_columns": ["LASTCHANGED"],
         },
     }
 
