@@ -32,8 +32,10 @@ def standardize(data: pd.DataFrame, data_type: str) -> pd.DataFrame:
     # Create a copy to avoid modifying the input
     df = data.copy()
 
-    # Normalize column names (lowercase)
-    df.columns = [col.lower() for col in df.columns]
+    # TODO: REMOVE THE LOWERCASE TRANSFORMATION (IT IS NOT NEEDED)
+    # - Alse update all column names in other files
+    # # Normalize column names (lowercase)
+    # df.columns = [col for col in df.columns]
 
     # Apply specific standardization based on data type
     if data_type not in DATA_CONFIG:
@@ -118,11 +120,12 @@ def _standardize_general(df: pd.DataFrame) -> pd.DataFrame:
     """
     # Handle common date columns
     date_columns = [
-        "settlementdate",
-        "datetime",
-        "interval_datetime",
-        "run_datetime",
-        "predispatch_run_datetime",
+        "SETTLEMENTDATE",
+        "DATETIME",
+        "INTERVAL_DATETIME",
+        "RUN_DATETIME",
+        "PREDISPATCH_RUN_DATETIME",
+        "LASTCHANGED",
     ]
 
     for col in date_columns:
@@ -131,18 +134,18 @@ def _standardize_general(df: pd.DataFrame) -> pd.DataFrame:
 
     # Handle numeric columns
     numeric_columns = [
-        "rrp",
-        "totaldemand",
-        "availablegeneration",
-        "forecasted_demand",
-        "price",
-        "demand",
-        "scadavalue",
-        "initialmw",
-        "totalcleared",
-        "mwflow",
-        "meteredmwflow",
-        "capacity",
+        "RRP",
+        "TOTALDEMAND",
+        "AVAILABLEGENERATION",
+        "FORECASTED_DEMAND",
+        "PRICE",
+        "DEMAND",
+        "SCADAVALUE",
+        "INITIALMW",
+        "TOTALCLEARED",
+        "MWFLOW",
+        "METEREDMWFLOW",
+        "CAPACITY",
     ]
 
     for col in numeric_columns:
@@ -169,12 +172,12 @@ def _standardize_mmsdm_general(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_general(df)
 
     # Handle MMSDM-specific fields
-    if "lastchanged" in df.columns:
-        df["lastchanged"] = pd.to_datetime(df["lastchanged"], errors="coerce")
+    if "LASTCHANGED" in df.columns:
+        df["LASTCHANGED"] = pd.to_datetime(df["LASTCHANGED"], errors="coerce")
 
     # Set index to settlementdate if present
-    if "settlementdate" in df.columns:
-        df = df.set_index("settlementdate").sort_index()
+    if "SETTLEMENTDATE" in df.columns:
+        df = df.set_index("SETTLEMENTDATE").sort_index()
 
     return df
 
@@ -193,16 +196,16 @@ def _standardize_dispatch_price(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_mmsdm_general(df)
 
     # Handle specific columns for this data type
-    if "rrp" in df.columns:
+    if "RRP" in df.columns:
         # Clean RRP values
-        df["rrp"] = pd.to_numeric(df["rrp"], errors="coerce")
+        df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
         # Cap values at market price cap if necessary
         # Note: 15,100 is the 2023 market price cap
         price_cap = 15100
         price_floor = -1000
-        df.loc[df["rrp"] > price_cap, "rrp"] = price_cap
-        df.loc[df["rrp"] < price_floor, "rrp"] = price_floor
+        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
+        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
 
     return df
 
@@ -221,7 +224,7 @@ def _standardize_dispatch_region_sum(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_mmsdm_general(df)
 
     # Handle specific columns for this data type
-    demand_columns = ["totaldemand", "demand"]
+    demand_columns = ["TOTALDEMAND", "DEMAND"]
     for col in demand_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -246,10 +249,12 @@ def _standardize_dispatch_unit_scada(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_mmsdm_general(df)
 
     # Set multi-index if scadavalue present
-    if "scadavalue" in df.columns and "duid" in df.columns:
-        df["scadavalue"] = pd.to_numeric(df["scadavalue"], errors="coerce")
-        if not df.index.name:  # Only set if not already indexed
-            df = df.set_index(["settlementdate", "duid"]).sort_index()
+    if "SCADAVALUE" in df.columns and "DUID" in df.columns:
+        df["SCADAVALUE"] = pd.to_numeric(df["SCADAVALUE"], errors="coerce")
+        if df.index.name == "SETTLEMENTDATE":
+            df = df.reset_index()
+        # Now set the multi-index
+        df = df.set_index(["SETTLEMENTDATE", "DUID"]).sort_index()
 
     return df
 
@@ -268,19 +273,22 @@ def _standardize_dispatch_load(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_mmsdm_general(df)
 
     # Handle specific columns for this data type
-    mw_columns = ["initialmw", "totalcleared"]
+    mw_columns = ["INITIALMW", "TOTALCLEARED"]
     for col in mw_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    rate_columns = ["rampuprate", "rampdownrate"]
+    rate_columns = ["RAMPUPRATE", "RAMPDOWNRATE"]
     for col in rate_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
     # Set multi-index if duid present
-    if "duid" in df.columns and not df.index.name:
-        df = df.set_index(["settlementdate", "duid"]).sort_index()
+    if "DUID" in df.columns:
+        # Reset index if it's already set
+        if df.index.name:
+            df = df.reset_index()
+        df = df.set_index(["SETTLEMENTDATE", "DUID"]).sort_index()
 
     return df
 
@@ -299,14 +307,17 @@ def _standardize_dispatch_interconnector_res(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_mmsdm_general(df)
 
     # Handle specific columns for this data type
-    flow_columns = ["mwflow", "meteredmwflow"]
+    flow_columns = ["MWFLOW", "METEREDMWFLOW"]
     for col in flow_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
     # Set multi-index if interconnectorid present
-    if "interconnectorid" in df.columns and not df.index.name:
-        df = df.set_index(["settlementdate", "interconnectorid"]).sort_index()
+    if "INTERCONNECTORID" in df.columns:
+        # Reset index if it's already set
+        if df.index.name:
+            df = df.reset_index()
+        df = df.set_index(["SETTLEMENTDATE", "INTERCONNECTORID"]).sort_index()
 
     return df
 
@@ -327,13 +338,16 @@ def _standardize_bid_day_offer(df: pd.DataFrame) -> pd.DataFrame:
     # Handle specific columns for this data type
     # Convert all priceband columns to numeric
     for i in range(1, 11):
-        col = f"priceband{i}"
+        col = f"PRICEBAND{i}"
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
     # Set multi-index if appropriate columns present
-    if "duid" in df.columns and "bidtype" in df.columns and not df.index.name:
-        df = df.set_index(["settlementdate", "duid", "bidtype"]).sort_index()
+    if "DUID" in df.columns and "BIDTYPE" in df.columns:
+        # Reset index if it's already set
+        if df.index.name:
+            df = df.reset_index()
+        df = df.set_index(["SETTLEMENTDATE", "DUID", "BIDTYPE"]).sort_index()
 
     return df
 
@@ -352,16 +366,16 @@ def _standardize_du_detail_summary(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_mmsdm_general(df)
 
     # Handle specific columns for this data type
-    if "maxcapacity" in df.columns:
-        df["maxcapacity"] = pd.to_numeric(df["maxcapacity"], errors="coerce")
+    if "MAXCAPACITY" in df.columns:
+        df["MAXCAPACITY"] = pd.to_numeric(df["MAXCAPACITY"], errors="coerce")
 
-    if "starttype" in df.columns:
+    if "STARTTYPE" in df.columns:
         # Convert starttype to uppercase for consistency
-        df["starttype"] = df["starttype"].str.upper()
+        df["STARTTYPE"] = df["STARTTYPE"].str.upper()
 
     # Set duid as index if not already indexed
-    if "duid" in df.columns and not df.index.name:
-        df = df.set_index("duid")
+    if "DUID" in df.columns and not df.index.name:
+        df = df.set_index("DUID")
 
     return df
 
@@ -380,18 +394,18 @@ def _standardize_predispatch_general(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_general(df)
 
     # Handle PREDISPATCH-specific fields
-    if "lastchanged" in df.columns:
-        df["lastchanged"] = pd.to_datetime(df["lastchanged"], errors="coerce")
+    if "LASTCHANGED" in df.columns:
+        df["LASTCHANGED"] = pd.to_datetime(df["LASTCHANGED"], errors="coerce")
 
     # Set multi-index for forecasted time and run time if present
-    if "datetime" in df.columns and "predispatch_run_datetime" in df.columns:
+    if "DATETIME" in df.columns and "PREDISPATCH_RUN_DATETIME" in df.columns:
         if not df.index.name:  # Only set if not already indexed
-            df = df.set_index(["predispatch_run_datetime", "datetime"]).sort_index()
+            df = df.set_index(["PREDISPATCH_RUN_DATETIME", "DATETIME"]).sort_index()
 
         # Calculate forecast horizon if both datetime columns are present
-        df["forecast_horizon_hours"] = (
-            df.index.get_level_values("datetime")
-            - df.index.get_level_values("predispatch_run_datetime")
+        df["FORECAST_HORIZON_HOURS"] = (
+            df.index.get_level_values("DATETIME")
+            - df.index.get_level_values("PREDISPATCH_RUN_DATETIME")
         ).total_seconds() / 3600
 
     return df
@@ -411,20 +425,20 @@ def _standardize_predispatch_price(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_predispatch_general(df)
 
     # Handle specific columns for this data type
-    if "rrp" in df.columns:
-        df["rrp"] = pd.to_numeric(df["rrp"], errors="coerce")
+    if "RRP" in df.columns:
+        df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
         # Cap values at market price cap if necessary
         price_cap = 15100
         price_floor = -1000
-        df.loc[df["rrp"] > price_cap, "rrp"] = price_cap
-        df.loc[df["rrp"] < price_floor, "rrp"] = price_floor
+        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
+        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
 
-    # Add regionid to index if present
-    if "regionid" in df.columns and df.index.names and "regionid" not in df.index.names:
+    # Add REGIONID to index if present
+    if "REGIONID" in df.columns and df.index.names and "REGIONID" not in df.index.names:
         df = (
             df.reset_index()
-            .set_index(["predispatch_run_datetime", "datetime", "regionid"])
+            .set_index(["PREDISPATCH_RUN_DATETIME", "DATETIME", "REGIONID"])
             .sort_index()
         )
 
@@ -445,7 +459,7 @@ def _standardize_predispatch_region_sum(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_predispatch_general(df)
 
     # Handle specific columns for this data type
-    demand_columns = ["totaldemand", "demand"]
+    demand_columns = ["TOTALDEMAND", "DEMAND"]
     for col in demand_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -453,11 +467,11 @@ def _standardize_predispatch_region_sum(df: pd.DataFrame) -> pd.DataFrame:
             # Remove negative demand values (likely errors)
             df.loc[df[col] < 0, col] = np.nan
 
-    # Add regionid to index if present
-    if "regionid" in df.columns and df.index.names and "regionid" not in df.index.names:
+    # Add REGIONID to index if present
+    if "REGIONID" in df.columns and df.index.names and "REGIONID" not in df.index.names:
         df = (
             df.reset_index()
-            .set_index(["predispatch_run_datetime", "datetime", "regionid"])
+            .set_index(["PREDISPATCH_RUN_DATETIME", "DATETIME", "REGIONID"])
             .sort_index()
         )
 
@@ -478,16 +492,16 @@ def _standardize_predispatch_load(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_predispatch_general(df)
 
     # Handle specific columns for this data type
-    mw_columns = ["initialmw", "totalcleared"]
+    mw_columns = ["INITIALMW", "TOTALCLEARED"]
     for col in mw_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
     # Add duid to index if present
-    if "duid" in df.columns and df.index.names and "duid" not in df.index.names:
+    if "DUID" in df.columns and df.index.names and "DUID" not in df.index.names:
         df = (
             df.reset_index()
-            .set_index(["predispatch_run_datetime", "datetime", "duid"])
+            .set_index(["PREDISPATCH_RUN_DATETIME", "DATETIME", "DUID"])
             .sort_index()
         )
 
@@ -508,18 +522,18 @@ def _standardize_p5min_general(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_general(df)
 
     # Handle P5MIN-specific fields
-    if "lastchanged" in df.columns:
-        df["lastchanged"] = pd.to_datetime(df["lastchanged"], errors="coerce")
+    if "LASTCHANGED" in df.columns:
+        df["LASTCHANGED"] = pd.to_datetime(df["LASTCHANGED"], errors="coerce")
 
     # Set multi-index for forecasted time and run time if present
-    if "interval_datetime" in df.columns and "run_datetime" in df.columns:
+    if "INTERVAL_DATETIME" in df.columns and "RUN_DATETIME" in df.columns:
         if not df.index.name:  # Only set if not already indexed
-            df = df.set_index(["run_datetime", "interval_datetime"]).sort_index()
+            df = df.set_index(["RUN_DATETIME", "INTERVAL_DATETIME"]).sort_index()
 
         # Calculate forecast horizon if both datetime columns are present
-        df["forecast_horizon_minutes"] = (
-            df.index.get_level_values("interval_datetime")
-            - df.index.get_level_values("run_datetime")
+        df["FORECAST_HORIZON_MINUTES"] = (
+            df.index.get_level_values("INTERVAL_DATETIME")
+            - df.index.get_level_values("RUN_DATETIME")
         ).total_seconds() / 60
 
     return df
@@ -539,26 +553,26 @@ def _standardize_p5min_region_solution(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_p5min_general(df)
 
     # Handle specific columns for this data type
-    if "rrp" in df.columns:
-        df["rrp"] = pd.to_numeric(df["rrp"], errors="coerce")
+    if "RRP" in df.columns:
+        df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
         # Cap values at market price cap if necessary
         price_cap = 15100
         price_floor = -1000
-        df.loc[df["rrp"] > price_cap, "rrp"] = price_cap
-        df.loc[df["rrp"] < price_floor, "rrp"] = price_floor
+        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
+        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
 
-    if "totaldemand" in df.columns:
-        df["totaldemand"] = pd.to_numeric(df["totaldemand"], errors="coerce")
+    if "TOTALDEMAND" in df.columns:
+        df["TOTALDEMAND"] = pd.to_numeric(df["TOTALDEMAND"], errors="coerce")
 
         # Remove negative demand values (likely errors)
-        df.loc[df["totaldemand"] < 0, "totaldemand"] = np.nan
+        df.loc[df["TOTALDEMAND"] < 0, "TOTALDEMAND"] = np.nan
 
-    # Add regionid to index if present
-    if "regionid" in df.columns and df.index.names and "regionid" not in df.index.names:
+    # Add REGIONID to index if present
+    if "REGIONID" in df.columns and df.index.names and "REGIONID" not in df.index.names:
         df = (
             df.reset_index()
-            .set_index(["run_datetime", "interval_datetime", "regionid"])
+            .set_index(["RUN_DATETIME", "INTERVAL_DATETIME", "REGIONID"])
             .sort_index()
         )
 
@@ -580,9 +594,9 @@ def _standardize_p5min_interconnector_soln(df: pd.DataFrame) -> pd.DataFrame:
 
     # Handle specific columns for this data type
     flow_columns = [
-        "flow",
-        "meteredflow",
-        "limitresult",
+        "FLOW",
+        "METEREDFLOW",
+        "LIMITRESULT",
     ]  # Note: may differ from dispatch field names
     for col in flow_columns:
         if col in df.columns:
@@ -590,13 +604,13 @@ def _standardize_p5min_interconnector_soln(df: pd.DataFrame) -> pd.DataFrame:
 
     # Add interconnectorid to index if present
     if (
-        "interconnectorid" in df.columns
+        "INTERCONNECTORID" in df.columns
         and df.index.names
-        and "interconnectorid" not in df.index.names
+        and "INTERCONNECTORID" not in df.index.names
     ):
         df = (
             df.reset_index()
-            .set_index(["run_datetime", "interval_datetime", "interconnectorid"])
+            .set_index(["RUN_DATETIME", "INTERVAL_DATETIME", "INTERCONNECTORID"])
             .sort_index()
         )
 
@@ -617,34 +631,34 @@ def _standardize_price_and_demand(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_general(df)
 
     # Handle PRICE_AND_DEMAND-specific fields
-    if "settlementdate" in df.columns:
+    if "SETTLEMENTDATE" in df.columns:
         # Ensure settlementdate is datetime
-        df["settlementdate"] = pd.to_datetime(df["settlementdate"], errors="coerce")
+        df["SETTLEMENTDATE"] = pd.to_datetime(df["SETTLEMENTDATE"], errors="coerce")
 
         # Set index to settlementdate
         if not df.index.name:
-            df = df.set_index("settlementdate").sort_index()
+            df = df.set_index("SETTLEMENTDATE").sort_index()
 
     # Process price and demand columns
-    if "rrp" in df.columns:
-        df["rrp"] = pd.to_numeric(df["rrp"], errors="coerce")
+    if "RRP" in df.columns:
+        df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
         # Cap values at market price cap if necessary
         price_cap = 15100
         price_floor = -1000
-        df.loc[df["rrp"] > price_cap, "rrp"] = price_cap
-        df.loc[df["rrp"] < price_floor, "rrp"] = price_floor
+        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
+        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
 
-    if "totaldemand" in df.columns:
-        df["totaldemand"] = pd.to_numeric(df["totaldemand"], errors="coerce")
+    if "TOTALDEMAND" in df.columns:
+        df["TOTALDEMAND"] = pd.to_numeric(df["TOTALDEMAND"], errors="coerce")
 
         # Remove negative demand values (likely errors)
-        df.loc[df["totaldemand"] < 0, "totaldemand"] = np.nan
+        df.loc[df["TOTALDEMAND"] < 0, "TOTALDEMAND"] = np.nan
 
     # Parse PERIODTYPE if present
-    if "periodtype" in df.columns:
+    if "PERIODTYPE" in df.columns:
         # Ensure consistent case
-        df["periodtype"] = df["periodtype"].str.upper()
+        df["PERIODTYPE"] = df["PERIODTYPE"].str.upper()
 
     return df
 
@@ -663,9 +677,7 @@ def _standardize_static_general(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_general(df)
 
     # Clean up column names - remove spaces, special chars
-    df.columns = [
-        col.strip().lower().replace(" ", "_").replace("-", "_") for col in df.columns
-    ]
+    df.columns = [col.strip().replace(" ", "_").replace("-", "_") for col in df.columns]
 
     # Remove duplicates
     df = df.drop_duplicates()
@@ -688,19 +700,19 @@ def _standardize_nem_reg_and_exemption(df: pd.DataFrame) -> pd.DataFrame:
 
     # Handle specific columns that might be present
     # Convert capacity to numeric if present
-    if "capacity" in df.columns:
-        df["capacity"] = pd.to_numeric(df["capacity"], errors="coerce")
+    if "CAPACITY" in df.columns:
+        df["CAPACITY"] = pd.to_numeric(df["CAPACITY"], errors="coerce")
 
     # Standardize station names and participant names if present
-    for col in ["station_name", "participant_name", "dispatch_type"]:
+    for col in ["STATION_NAME", "PARTICIPANT_NAME", "DISPATCH_TYPE"]:
         if col in df.columns:
             # Convert to title case for consistency
             df[col] = df[col].str.title()
 
     # Handle classification if present
-    if "classification" in df.columns:
+    if "CLASSIFICATION" in df.columns:
         # Ensure uppercase for consistency
-        df["classification"] = df["classification"].str.upper()
+        df["CLASSIFICATION"] = df["CLASSIFICATION"].str.upper()
 
     return df
 
@@ -719,7 +731,7 @@ def _standardize_region_boundaries(df: pd.DataFrame) -> pd.DataFrame:
     df = _standardize_static_general(df)
 
     # Process any date columns
-    date_columns = [col for col in df.columns if "date" in col.lower()]
+    date_columns = [col for col in df.columns if "DATE" in col]
     for col in date_columns:
         df[col] = pd.to_datetime(df[col], errors="coerce")
 
@@ -737,7 +749,7 @@ def filter_by_regions(df: pd.DataFrame, regions: list[str]) -> pd.DataFrame:
         Filtered DataFrame
 
     """
-    region_cols = ["regionid", "region"]
+    region_cols = ["REGIONID", "REGION"]
 
     for col in region_cols:
         if col in df.columns:
@@ -754,20 +766,20 @@ def calculate_price_statistics(
     """Calculate price statistics over specified interval.
 
     Args:
-        price_data: Price DataFrame with columns including 'rrp'
+        price_data: Price DataFrame with columns including 'RRP'
         interval: Resampling interval (default: daily)
 
     Returns:
         DataFrame with price statistics
 
     """
-    if "rrp" not in price_data.columns:
-        logger.error("No 'rrp' column found in price data")
+    if "RRP" not in price_data.columns:
+        logger.error("No 'RRP' column found in price data")
         return pd.DataFrame()
 
     # Ensure price_data has a datetime index
     if not isinstance(price_data.index, pd.DatetimeIndex):
-        date_cols = ["settlementdate", "datetime", "interval_datetime"]
+        date_cols = ["SETTLEMENTDATE", "DATETIME", "INTERVAL_DATETIME"]
         date_col = None
         for col in date_cols:
             if col in price_data.columns:
@@ -780,37 +792,23 @@ def calculate_price_statistics(
             logger.error("Cannot calculate statistics: No datetime index or column")
             return pd.DataFrame()
 
+    agg_funcs = [
+        ("min", "min"),
+        ("max", "max"),
+        ("mean", "mean"),
+        ("median", "median"),
+        ("std", "std"),
+        ("count", "count"),
+    ]
+
     # Calculate statistics
-    if "regionid" in price_data.columns:
-        stats = (
-            price_data.groupby("regionid")["rrp"]
-            .resample(interval)
-            .agg(
-                [
-                    ("min", np.min),
-                    ("max", np.max),
-                    ("mean", np.mean),
-                    ("median", np.median),
-                    ("std", np.std),
-                    ("count", "count"),
-                ],
-            )
-        )
+    if "REGIONID" in price_data.columns:
+        stats = price_data.groupby("REGIONID")["RRP"].resample(interval).agg(agg_funcs)
+        # Flatten MultiIndex columns and rename
+        stats.columns = [f"RRP_{col[1].upper()}" for col in stats.columns]
     else:
-        stats = (
-            price_data["rrp"]
-            .resample(interval)
-            .agg(
-                [
-                    ("min", np.min),
-                    ("max", np.max),
-                    ("mean", np.mean),
-                    ("median", np.median),
-                    ("std", np.std),
-                    ("count", "count"),
-                ],
-            )
-        )
+        stats = price_data["RRP"].resample(interval).agg(agg_funcs)
+        stats.columns = [f"RRP_{col.upper()}" for col in stats.columns]
 
     return stats.reset_index()
 
@@ -830,7 +828,7 @@ def calculate_demand_statistics(
 
     """
     demand_col = None
-    for col in ["totaldemand", "demand"]:
+    for col in ["TOTALDEMAND", "DEMAND"]:
         if col in demand_data.columns:
             demand_col = col
             break
@@ -841,7 +839,7 @@ def calculate_demand_statistics(
 
     # Ensure demand_data has a datetime index
     if not isinstance(demand_data.index, pd.DatetimeIndex):
-        date_cols = ["settlementdate", "datetime", "interval_datetime"]
+        date_cols = ["SETTLEMENTDATE", "DATETIME", "INTERVAL_DATETIME"]
         date_col = None
         for col in date_cols:
             if col in demand_data.columns:
@@ -854,37 +852,28 @@ def calculate_demand_statistics(
             logger.error("Cannot calculate statistics: No datetime index or column")
             return pd.DataFrame()
 
+    agg_funcs = [
+        ("min", "min"),
+        ("max", "max"),
+        ("mean", "mean"),
+        ("median", "median"),
+        ("std", "std"),
+        ("count", "count"),
+    ]
+
     # Calculate statistics
-    if "regionid" in demand_data.columns:
+    if "REGIONID" in demand_data.columns:
         stats = (
-            demand_data.groupby("regionid")[demand_col]
+            demand_data.groupby("REGIONID")[demand_col]
             .resample(interval)
-            .agg(
-                [
-                    ("min", np.min),
-                    ("max", np.max),
-                    ("mean", np.mean),
-                    ("median", np.median),
-                    ("std", np.std),
-                    ("count", "count"),
-                ],
-            )
+            .agg(agg_funcs)
         )
+        # Flatten MultiIndex columns and rename
+        stats.columns = [f"{demand_col}_{col[1].upper()}" for col in stats.columns]
     else:
-        stats = (
-            demand_data[demand_col]
-            .resample(interval)
-            .agg(
-                [
-                    ("min", np.min),
-                    ("max", np.max),
-                    ("mean", np.mean),
-                    ("median", np.median),
-                    ("std", np.std),
-                    ("count", "count"),
-                ],
-            )
-        )
+        stats = demand_data[demand_col].resample(interval).agg(agg_funcs)
+        # Rename columns
+        stats.columns = [f"{demand_col}_{col.upper()}" for col in stats.columns]
 
     return stats.reset_index()
 
