@@ -379,7 +379,7 @@ class CacheManager:
         cache_path = self._get_cache_path(cache_key)
 
         # Save data to parquet file
-        data.to_parquet(cache_path, index=False)
+        data.to_parquet(cache_path, index=True)
 
         # Save metadata
         self._save_metadata(cache_key, data_type, start_date, end_date, regions)

@@ -604,10 +604,16 @@ def check_connection() -> bool:
 
     """
     try:
-        response = requests.get(BASE_URLS["NEMWEB"], timeout=5)
+        response = requests.get(BASE_URLS["MMSDM"], timeout=5)
         return response.status_code == 200
-    except requests.exceptions.RequestException:
-        return False
+    except requests.exceptions.Timeout:
+        logging.error("Connection timed out while accessing AEMO data sources.")
+    except requests.exceptions.ConnectionError:
+        logging.error("Failed to connect to AEMO data sources.")
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Request error: {e}")
+
+    return False
 
 
 def download_all_regions(
