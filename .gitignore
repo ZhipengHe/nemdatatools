@@ -38,3 +38,7 @@ docs/_build/
 
 # MacOS specific
 .DS_Store
+
+# local development
+cache/
+data/
