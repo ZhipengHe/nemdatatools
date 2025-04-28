@@ -141,6 +141,89 @@ class PredispatchHandler:
         """Process PREDISPATCH data."""
 ```
 
+### 1. Batch Commands
+
+The batch commands module provides efficient parallel downloading capabilities for bulk data operations.
+
+#### Key Functionalities:
+- Parallel downloads using ThreadPoolExecutor
+- Progress tracking with tqdm
+- Configurable delays between requests (respecting AEMO rate limits)
+- Comprehensive error handling and logging
+- Flexible caching options
+- Backward compatibility
+
+#### Implementation Details:
+
+```python
+def download_yearly_data(years, tables, max_workers=3, delay=2):
+    """
+    Download multiple years/tables in parallel.
+
+    Implementation:
+    1. Validate input parameters
+    2. Initialize ThreadPoolExecutor with max_workers
+    3. Create futures for each year/table combination
+    4. Track progress with tqdm progress bar
+    5. Handle results and errors as they complete
+    6. Return nested dictionary of results
+    """
+```
+
+```python
+def download_multiple_tables(tables, start_date, end_date):
+    """
+    Download multiple tables sequentially.
+
+    Implementation:
+    1. Validate input parameters
+    2. Iterate through requested tables
+    3. Call fetch_data for each table
+    4. Collect results in dictionary
+    5. Return dictionary of DataFrames
+    """
+```
+
+#### Example Usage:
+
+```python
+# Parallel yearly downloads
+from nemdatatools.batch_commands import download_yearly_data
+
+results = download_yearly_data(
+    years=[2022, 2023, 2024],
+    tables=["DISPATCHPRICE", "PREDISPATCHPRICE"],
+    max_workers=4,  # Number of parallel downloads
+    delay=1,       # Minimum delay between requests (seconds)
+    overwrite=False # Skip existing files
+)
+
+# Multiple table downloads
+from nemdatatools.batch_commands import download_multiple_tables
+
+results = download_multiple_tables(
+    table_names=["DISPATCHPRICE", "DISPATCHREGIONSUM"],
+    start_date="2024/01/01",
+    end_date="2024/01/31",
+    regions=["NSW1", "QLD1"]  # Optional region filter
+)
+```
+
+#### Key Parameters:
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| max_workers | int | Maximum parallel downloads | 3 |
+| delay | int | Minimum delay between requests (seconds) | 2 |
+| overwrite | bool | Force re-download existing files | False |
+| cache_path | str | Custom download directory | "data/aemo_data" |
+
+#### Error Handling Strategy:
+- Failed downloads are logged with full error details
+- None is returned for failed downloads
+- Other downloads continue unaffected
+- Progress bar continues tracking completed tasks
+
 ## Development Timeline
 
 See the [Project Board](./project-structure.md) for a detailed breakdown of tasks and milestones.
