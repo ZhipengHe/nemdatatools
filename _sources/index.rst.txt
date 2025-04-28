@@ -11,6 +11,7 @@ Welcome to NEMDataTools documentation
    :caption: Overview
 
    README
+   data-profile
 
 .. toctree::
    :maxdepth: 2
