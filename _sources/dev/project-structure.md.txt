@@ -81,6 +81,7 @@ This guide outlines the project structure and implementation plan for the NEMDat
    - Authentication (if needed)
    - Input validation
    - Integration with cache
+   - Batch downloading for multiple regions
 
 3. **Test Downloading**
    - Create mock responses for testing

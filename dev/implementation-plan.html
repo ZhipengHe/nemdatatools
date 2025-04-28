@@ -107,10 +107,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#time-utilities">3. Time Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-processor">4. Data Processor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-type-handlers">5. Data Type Handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#batch-commands">1. Batch Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-functionalities">Key Functionalities:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">Implementation Details:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-usage">Example Usage:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-parameters">Key Parameters:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling-strategy">Error Handling Strategy:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#development-timeline">Development Timeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#implementation-details">Implementation Details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Implementation Details</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#aemo-data-access">AEMO Data Access</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#caching-strategy">Caching Strategy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#error-handling">Error Handling</a></li>
@@ -363,13 +371,126 @@
 </pre></div>
 </div>
 </section>
+<section id="batch-commands">
+<h3>1. Batch Commands<a class="headerlink" href="#batch-commands" title="Link to this heading"></a></h3>
+<p>The batch commands module provides efficient parallel downloading capabilities for bulk data operations.</p>
+<section id="key-functionalities">
+<h4>Key Functionalities:<a class="headerlink" href="#key-functionalities" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Parallel downloads using ThreadPoolExecutor</p></li>
+<li><p>Progress tracking with tqdm</p></li>
+<li><p>Configurable delays between requests (respecting AEMO rate limits)</p></li>
+<li><p>Comprehensive error handling and logging</p></li>
+<li><p>Flexible caching options</p></li>
+<li><p>Backward compatibility</p></li>
+</ul>
+</section>
+<section id="implementation-details">
+<h4>Implementation Details:<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_yearly_data</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">tables</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download multiple years/tables in parallel.</span>
+
+<span class="sd">    Implementation:</span>
+<span class="sd">    1. Validate input parameters</span>
+<span class="sd">    2. Initialize ThreadPoolExecutor with max_workers</span>
+<span class="sd">    3. Create futures for each year/table combination</span>
+<span class="sd">    4. Track progress with tqdm progress bar</span>
+<span class="sd">    5. Handle results and errors as they complete</span>
+<span class="sd">    6. Return nested dictionary of results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_multiple_tables</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download multiple tables sequentially.</span>
+
+<span class="sd">    Implementation:</span>
+<span class="sd">    1. Validate input parameters</span>
+<span class="sd">    2. Iterate through requested tables</span>
+<span class="sd">    3. Call fetch_data for each table</span>
+<span class="sd">    4. Collect results in dictionary</span>
+<span class="sd">    5. Return dictionary of DataFrames</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="example-usage">
+<h4>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parallel yearly downloads</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.batch_commands</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_yearly_data</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">download_yearly_data</span><span class="p">(</span>
+    <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">2023</span><span class="p">,</span> <span class="mi">2024</span><span class="p">],</span>
+    <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span> <span class="s2">&quot;PREDISPATCHPRICE&quot;</span><span class="p">],</span>
+    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># Number of parallel downloads</span>
+    <span class="n">delay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>       <span class="c1"># Minimum delay between requests (seconds)</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># Skip existing files</span>
+<span class="p">)</span>
+
+<span class="c1"># Multiple table downloads</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.batch_commands</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_multiple_tables</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">download_multiple_tables</span><span class="p">(</span>
+    <span class="n">table_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span> <span class="s2">&quot;DISPATCHREGIONSUM&quot;</span><span class="p">],</span>
+    <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2024/01/01&quot;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2024/01/31&quot;</span><span class="p">,</span>
+    <span class="n">regions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NSW1&quot;</span><span class="p">,</span> <span class="s2">&quot;QLD1&quot;</span><span class="p">]</span>  <span class="c1"># Optional region filter</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="key-parameters">
+<h4>Key Parameters:<a class="headerlink" href="#key-parameters" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>max_workers</p></td>
+<td><p>int</p></td>
+<td><p>Maximum parallel downloads</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>delay</p></td>
+<td><p>int</p></td>
+<td><p>Minimum delay between requests (seconds)</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>overwrite</p></td>
+<td><p>bool</p></td>
+<td><p>Force re-download existing files</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>cache_path</p></td>
+<td><p>str</p></td>
+<td><p>Custom download directory</p></td>
+<td><p>“data/aemo_data”</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="error-handling-strategy">
+<h4>Error Handling Strategy:<a class="headerlink" href="#error-handling-strategy" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Failed downloads are logged with full error details</p></li>
+<li><p>None is returned for failed downloads</p></li>
+<li><p>Other downloads continue unaffected</p></li>
+<li><p>Progress bar continues tracking completed tasks</p></li>
+</ul>
+</section>
+</section>
 </section>
 <section id="development-timeline">
 <h2>Development Timeline<a class="headerlink" href="#development-timeline" title="Link to this heading"></a></h2>
 <p>See the <a class="reference internal" href="project-structure.html"><span class="std std-doc">Project Board</span></a> for a detailed breakdown of tasks and milestones.</p>
 </section>
-<section id="implementation-details">
-<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<section id="id1">
+<h2>Implementation Details<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <section id="aemo-data-access">
 <h3>AEMO Data Access<a class="headerlink" href="#aemo-data-access" title="Link to this heading"></a></h3>
 <p>AEMO provides data through several mechanisms:</p>

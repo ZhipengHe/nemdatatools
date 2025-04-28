@@ -73,8 +73,9 @@ The development of NEMDataTools is divided into several phases and milestones. T
     - [ ] **Milestone 4:** Data Downloading
         - [x] AEMO URL and endpoint mapping
         - [x] Core data fetching module
+        - [x] Batch downloading functions
         - [ ] Test downloading
-    - [ ] **Extra:** Configuration Management
+    - [x] **Extra:** Configuration Management
         - [x] Configuration file handling
         - [x] Environment variable support
 
