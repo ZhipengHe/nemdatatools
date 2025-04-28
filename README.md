@@ -71,12 +71,12 @@ The development of NEMDataTools is divided into several phases and milestones. T
         - [x] Time utilities implementation
         - [x] Local cache management
     - [ ] **Milestone 4:** Data Downloading
-        - [ ] AEMO URL and endpoint mapping
-        - [ ] Core data fetching module
+        - [x] AEMO URL and endpoint mapping
+        - [x] Core data fetching module
         - [ ] Test downloading
     - [ ] **Extra:** Configuration Management
-        - [ ] Configuration file handling
-        - [ ] Environment variable support
+        - [x] Configuration file handling
+        - [x] Environment variable support
 
 - [ ] **Phase 3: Data Processing**
     - [ ] **Milestone 5:** Basic Data Processing
