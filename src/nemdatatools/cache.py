@@ -333,7 +333,8 @@ class CacheManager:
             return None
 
         # Combine dataframes and filter for requested date range and regions
-        combined_df = pd.concat(dfs, ignore_index=True)
+        # Notice that you cannot remove indexes after standardizing
+        combined_df = pd.concat(dfs, ignore_index=False)
 
         # Filter for date range - column name depends on data type
         date_column = self._get_date_column_for_data_type(data_type)
