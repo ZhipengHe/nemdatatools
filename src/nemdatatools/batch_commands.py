@@ -5,7 +5,6 @@ This module provides functions for parallel and batch downloading operations.
 
 import concurrent.futures
 import logging
-import os
 
 import pandas as pd
 from tqdm import tqdm
@@ -22,7 +21,7 @@ def download_yearly_data(
     years: list[int],
     tables: list[str],
     cache_path: str = "data/aemo_data",
-    max_workers: int = 3,
+    max_workers: int = 1,
     delay: int = DEFAULT_DELAY,
     overwrite: bool = False,
 ) -> dict[int, dict[str, pd.DataFrame]]:
@@ -41,44 +40,108 @@ def download_yearly_data(
 
     """
     results: dict[int, dict[str, pd.DataFrame]] = {}
+    months = [f"{m:02d}" for m in range(1, 13)]  # ['01', '02', ..., '12']
 
-    # Calculate total tasks for progress bar
-    total_tasks = len(years) * len(tables)
+    # Create mapping of days in each month (accounting for leap years)
+    def get_days_in_month(year: int, month: str) -> int:
+        """Return the number of days in a month, accounting for leap years."""
+        if month not in months:
+            raise ValueError(f"Invalid month: {month}. Must be '01' to '12'.")
+        if month == "02":
+            if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+                return 29
+            else:
+                return 28
+        elif month in ["04", "06", "09", "11"]:
+            return 30
+        else:
+            return 31
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # Create futures for each year and table combination
+        # Create futures for each year, month and table combination
         future_to_key = {}
+        # Store monthly DataFrames before concatenation
+        monthly_results: dict[int, dict[str, list[pd.DataFrame]]] = {}
+
         for year in years:
             results[year] = {}
-            for table in tables:
-                # Create year-specific output directory
-                year_dir = os.path.join(cache_path, str(year))
-                os.makedirs(year_dir, exist_ok=True)
+            monthly_results[year] = {table: [] for table in tables}
 
-                # Submit download task
-                future = executor.submit(
-                    fetch_data,
-                    data_type=table,
-                    start_date=f"{year}/01/01",
-                    end_date=f"{year}/12/31",
-                    cache_path=year_dir,
-                    delay=delay,
-                    overwrite=overwrite,
-                )
-                future_to_key[future] = (year, table)
+            # Create progress bar for each year's downloads
+            total_tasks = len(tables) * len(months)
+            with tqdm(total=total_tasks, desc=f"Year {year}") as year_pbar:
+                for table in tables:
+                    for month in months:
+                        # Calculate proper end date based on actual days in month
+                        last_day = get_days_in_month(year, month)
+                        start_date = f"{year}/{month}/01"
+                        end_date = f"{year}/{month}/{last_day}"
 
-        # Process results as they complete with progress bar
-        with tqdm(total=total_tasks, desc="Overall progress") as pbar:
-            for future in concurrent.futures.as_completed(future_to_key):
-                year, table = future_to_key[future]
-                try:
-                    df = future.result()
-                    results[year][table] = df
-                    logger.info(f"Completed download for {year} - {table}")
-                except Exception as e:
-                    logger.error(f"Failed to download {year} - {table}: {e}")
-                    results[year][table] = None
-                pbar.update(1)
+                        future = executor.submit(
+                            fetch_data,
+                            data_type=table,
+                            start_date=start_date,
+                            end_date=end_date,
+                            cache_path=cache_path,
+                            delay=delay,
+                            overwrite=overwrite,
+                        )
+                        future_to_key[future] = (year, month, table)
+
+                # Process monthly results as they complete
+                for future in concurrent.futures.as_completed(future_to_key):
+                    year, month, table = future_to_key.pop(future)
+                    try:
+                        df = future.result()
+                        if df is not None and not df.empty:
+                            monthly_results[year][table].append(df)
+                            logger.info(
+                                f"Completed download for {year}-{month} - {table}",
+                            )
+                        else:
+                            logger.warning(f"Empty data for {year}-{month} - {table}")
+                    except Exception as e:
+                        error_details = str(e)
+                        # Try to get more detailed error info if available
+                        if hasattr(e, "response"):
+                            try:
+                                error_details += (
+                                    f"\nStatus Code: {e.response.status_code}"
+                                )
+                                error_details += f"\nResponse: {e.response.text[:200]}"
+                            except Exception as inner_e:
+                                error_details += (
+                                    f"\nFailed to retrieve error details: {inner_e}"
+                                )
+                        logger.error(
+                            f"Failed to download {year}-{month} - {table}: "
+                            f"{error_details}",
+                        )
+
+                    year_pbar.update(1)
+
+                # Concatenate monthly results for each table
+                for table in tables:
+                    if monthly_results[year][table]:
+                        try:
+                            results[year][table] = pd.concat(
+                                monthly_results[year][table],
+                                ignore_index=True,
+                            )
+                            logger.info(
+                                f"Successfully concatenated "
+                                f"{len(monthly_results[year][table])} months for "
+                                f"{year} - {table}",
+                            )
+                        except Exception as e:
+                            logger.error(
+                                f"Failed to concatenate data for {year} - {table}: "
+                                f"{e!s}",
+                            )
+                    else:
+                        logger.warning(
+                            f"No data available to concatenate for {year} - {table}",
+                        )
 
     return results
 
@@ -109,21 +172,26 @@ def download_multiple_tables(
     """
     results = {}
 
-    for table in table_names:
-        try:
-            df = fetch_data(
-                data_type=table,
-                start_date=start_date,
-                end_date=end_date,
-                regions=regions,
-                cache_path=cache_path,
-                delay=delay,
-                overwrite=overwrite,
-            )
-            results[table] = df
-        except Exception as e:
-            logger.error(f"Failed to download {table}: {e}")
-            results[table] = None
+    # progress bar for download completion
+    total_tasks = len(table_names)
+    with tqdm(total=total_tasks, desc="Downloading tables") as pbar:
+        for table in table_names:
+            try:
+                df = fetch_data(
+                    data_type=table,
+                    start_date=start_date,
+                    end_date=end_date,
+                    regions=regions,
+                    cache_path=cache_path,
+                    delay=delay,
+                    overwrite=overwrite,
+                )
+                results[table] = df
+
+            except Exception as e:
+                logger.error(f"Failed to download {table}: {e}")
+                results[table] = None
+            pbar.update(1)
 
     return results
 
