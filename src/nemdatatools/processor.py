@@ -797,8 +797,14 @@ def calculate_price_statistics(
     ]
 
     # Calculate statistics
-    if "REGIONID" in price_data.columns:
-        stats = price_data.groupby("REGIONID")["RRP"].resample(interval).agg(agg_funcs)
+    region_col = None
+    for col in ["REGIONID", "REGION"]:
+        if col in price_data.columns:
+            region_col = col
+            break
+
+    if region_col:
+        stats = price_data.groupby(region_col)["RRP"].resample(interval).agg(agg_funcs)
         # Flatten MultiIndex columns and rename
         stats.columns = [f"RRP_{col[1].upper()}" for col in stats.columns]
     else:
@@ -857,9 +863,15 @@ def calculate_demand_statistics(
     ]
 
     # Calculate statistics
-    if "REGIONID" in demand_data.columns:
+    region_col = None
+    for col in ["REGIONID", "REGION"]:
+        if col in demand_data.columns:
+            region_col = col
+            break
+
+    if region_col:
         stats = (
-            demand_data.groupby("REGIONID")[demand_col]
+            demand_data.groupby(region_col)[demand_col]
             .resample(interval)
             .agg(agg_funcs)
         )
