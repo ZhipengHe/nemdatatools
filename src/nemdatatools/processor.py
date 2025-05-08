@@ -195,13 +195,6 @@ def _standardize_dispatch_price(df: pd.DataFrame) -> pd.DataFrame:
         # Clean RRP values
         df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
-        # Cap values at market price cap if necessary
-        # Note: 15,100 is the 2023 market price cap
-        price_cap = 15100
-        price_floor = -1000
-        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
-        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
-
     return df
 
 
@@ -423,12 +416,6 @@ def _standardize_predispatch_price(df: pd.DataFrame) -> pd.DataFrame:
     if "RRP" in df.columns:
         df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
-        # Cap values at market price cap if necessary
-        price_cap = 15100
-        price_floor = -1000
-        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
-        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
-
     # Add REGIONID to index if present
     if "REGIONID" in df.columns and df.index.names and "REGIONID" not in df.index.names:
         df = (
@@ -551,12 +538,6 @@ def _standardize_p5min_region_solution(df: pd.DataFrame) -> pd.DataFrame:
     if "RRP" in df.columns:
         df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
-        # Cap values at market price cap if necessary
-        price_cap = 15100
-        price_floor = -1000
-        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
-        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
-
     if "TOTALDEMAND" in df.columns:
         df["TOTALDEMAND"] = pd.to_numeric(df["TOTALDEMAND"], errors="coerce")
 
@@ -637,12 +618,6 @@ def _standardize_price_and_demand(df: pd.DataFrame) -> pd.DataFrame:
     # Process price and demand columns
     if "RRP" in df.columns:
         df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
-
-        # Cap values at market price cap if necessary
-        price_cap = 15100
-        price_floor = -1000
-        df.loc[df["RRP"] > price_cap, "RRP"] = price_cap
-        df.loc[df["RRP"] < price_floor, "RRP"] = price_floor
 
     if "TOTALDEMAND" in df.columns:
         df["TOTALDEMAND"] = pd.to_numeric(df["TOTALDEMAND"], errors="coerce")
