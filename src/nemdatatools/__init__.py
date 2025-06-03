@@ -15,6 +15,8 @@ from nemdatatools.downloader import (
 from nemdatatools.processor import (
     calculate_demand_statistics,
     calculate_price_statistics,
+    create_time_windows,
+    resample_data,
 )
 
 # Define what's accessible via import *
@@ -24,8 +26,10 @@ __all__ = [
     "calculate_demand_statistics",
     "calculate_price_statistics",
     "check_connection",
+    "create_time_windows",
     "download_multiple_tables",
     "download_yearly_data",
     "fetch_data",
     "get_available_data_types",
+    "resample_data",
 ]

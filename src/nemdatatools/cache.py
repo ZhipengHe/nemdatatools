@@ -238,6 +238,7 @@ class CacheManager:
 
         return matching_keys
 
+    # TODO: Currently not used, but keep it here for future reference
     def _get_date_column_for_data_type(self, data_type: str) -> str:
         """Get the appropriate date column name for a data type.
 
@@ -257,7 +258,7 @@ class CacheManager:
             "P5MIN": "INTERVAL_DATETIME",
         }
 
-        return column_map.get(data_type, "settlementdate")
+        return column_map.get(data_type, "SETTLEMENTDATE")
 
     def _get_region_column_for_data_type(self, data_type: str) -> str:
         """Get the appropriate region column name for a data type.
@@ -336,12 +337,19 @@ class CacheManager:
         # Notice that you cannot remove indexes after standardizing
         combined_df = pd.concat(dfs, ignore_index=False)
 
-        # Filter for date range - column name depends on data type
-        date_column = self._get_date_column_for_data_type(data_type)
-        if date_column in combined_df.columns:
+        # Filter for date range - handle both single and multi-index cases
+        # TODO: This is a hack to handle the fact that the index is a multi-index
+        #       for PREDISPATCH data (need to handle this properly in the future)
+        if isinstance(combined_df.index, pd.MultiIndex):
+            # For multi-index, get the first level which should be the date
+            date_level = combined_df.index.get_level_values(0)
             combined_df = combined_df[
-                (combined_df[date_column] >= start_date)
-                & (combined_df[date_column] <= end_date)
+                (date_level >= start_date) & (date_level <= end_date)
+            ]
+        else:
+            # For single index
+            combined_df = combined_df[
+                (combined_df.index >= start_date) & (combined_df.index <= end_date)
             ]
 
         # Filter for regions

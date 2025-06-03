@@ -890,3 +890,119 @@ def merge_datasets(
         result = pd.merge(result, df, on=on, how=how)
 
     return result
+
+
+def resample_data(
+    data: pd.DataFrame,
+    interval: str = "1h",
+    numeric_agg: str = "mean",
+    non_numeric_agg: str = "first",
+) -> pd.DataFrame:
+    """Resample time series data to a different interval.
+
+    Args:
+        data: DataFrame with datetime index
+        interval: Resampling interval (e.g., '5min', '30min', '1h', '1D')
+        numeric_agg: Aggregation method for numeric columns (default: 'mean')
+        non_numeric_agg: Aggregation method for non-numeric columns (default: 'first')
+
+    Returns:
+        Resampled DataFrame
+
+    Raises:
+        ValueError: If data doesn't have a datetime index and is not empty
+
+    """
+    # Handle empty DataFrame
+    if data.empty:
+        return pd.DataFrame()
+
+    if not isinstance(data.index, pd.DatetimeIndex):
+        raise ValueError("Data must have a datetime index for resampling")
+
+    # Separate numeric and non-numeric columns
+    numeric_columns = data.select_dtypes(include=["float64", "int64"]).columns
+    non_numeric_columns = data.select_dtypes(exclude=["float64", "int64"]).columns
+
+    # Create empty result DataFrame
+    result = pd.DataFrame(index=data.resample(interval).first().index)
+
+    # Resample numeric columns
+    if len(numeric_columns) > 0:
+        numeric_data = data[numeric_columns].resample(interval).agg(numeric_agg)
+        result = pd.concat([result, numeric_data], axis=1)
+
+    # Resample non-numeric columns
+    if len(non_numeric_columns) > 0:
+        non_numeric_data = (
+            data[non_numeric_columns].resample(interval).agg(non_numeric_agg)
+        )
+        result = pd.concat([result, non_numeric_data], axis=1)
+
+    return result
+
+
+def create_time_windows(
+    data: pd.DataFrame,
+    window_size_days: int = 14,
+    step_size_hours: int = 1,
+    min_points: int | None = None,
+    check_column: str | None = None,
+) -> list[pd.DataFrame]:
+    """Create sliding time windows from time series data.
+
+    Args:
+        data: DataFrame with datetime index
+        window_size_days: Size of each window in days
+        step_size_hours: Step size between windows in hours
+        min_points: Minimum number of points required in a window
+            (default: window_size_days * 24)
+        check_column: Column to check for missing values
+            (if None, no missing value check is performed)
+
+    Returns:
+        List of DataFrames, each containing a complete window of data
+
+    Raises:
+        ValueError: If data doesn't have a datetime index and is not empty
+
+    """
+    # Handle empty DataFrame
+    if data.empty:
+        return []
+
+    if not isinstance(data.index, pd.DatetimeIndex):
+        raise ValueError("Data must have a datetime index for window creation")
+
+    # Get unique timestamps
+    unique_times = data.index.unique()
+
+    # Calculate window parameters
+    window_size = pd.Timedelta(days=window_size_days)
+    step_size = pd.Timedelta(hours=step_size_hours)
+
+    # Set default min_points if not provided
+    if min_points is None:
+        min_points = window_size_days * 24
+
+    # Calculate number of possible windows
+    total_duration = unique_times[-1] - unique_times[0]
+    num_windows = int((total_duration - window_size) / step_size) + 1
+
+    # Create windows and store them in a list
+    windows = []
+
+    for i in range(num_windows):
+        start_time = unique_times[0] + (i * step_size)
+        end_time = (
+            start_time + window_size - pd.Timedelta(hours=1)
+        )  # Make end time exclusive
+        window_data = data[start_time:end_time]
+
+        # Check if window meets criteria
+        if len(window_data) == min_points:
+            # Check for missing values if column specified
+            if check_column is None or not window_data[check_column].isnull().any():
+                windows.append(window_data)
+
+    return windows
