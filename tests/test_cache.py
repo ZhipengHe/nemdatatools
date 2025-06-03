@@ -181,6 +181,9 @@ def test_partial_cache_match(cache_manager, sample_data):
 
 def test_date_filtering(cache_manager, sample_data):
     """Test retrieving data for a specific date range."""
+    # Set the index to SETTLEMENTDATE
+    sample_data = sample_data.set_index("SETTLEMENTDATE")
+
     # Cache full data
     cache_manager.cache_data(
         data_type="DISPATCHPRICE",
@@ -190,7 +193,7 @@ def test_date_filtering(cache_manager, sample_data):
         data=sample_data,
     )
 
-    # Retrieve data for a narrower date range
+    # Test single index case
     result = cache_manager.get_cached_data(
         data_type="DISPATCHPRICE",
         start_date=datetime.datetime(2023, 1, 1, 6, 0),  # Jan 1st, 6:00 AM
@@ -201,7 +204,11 @@ def test_date_filtering(cache_manager, sample_data):
     # Should get only the data for Jan 1st, 12:00
     assert result is not None
     assert len(result) == 1
-    assert result.iloc[0]["SETTLEMENTDATE"] == pd.Timestamp("2023-01-01 12:00:00")
+    assert result.index[0] == pd.Timestamp("2023-01-01 12:00:00")
+
+    # TODO: Add test for multi-index case
+    # This should test data with multi-index like PREDISPATCH data
+    # where the index is [PREDISPATCH_RUN_DATETIME, DATETIME, REGIONID]
 
 
 def test_clear_cache(cache_manager, sample_data):

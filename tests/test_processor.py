@@ -395,3 +395,68 @@ def test_merge_datasets_empty_list():
     result = processor.merge_datasets([])
 
     assert result.empty
+
+
+def test_resample_data():
+    """Test resampling data to different intervals."""
+    # Create test data with 5-minute intervals
+    test_data = pd.DataFrame(
+        {
+            "SETTLEMENTDATE": pd.date_range(
+                start="2023-01-01",
+                periods=12,  # 1 hour of 5-minute data
+                freq="5min",
+            ),
+            "REGIONID": ["NSW1"] * 12,
+            "RRP": [
+                50.0,
+                55.0,
+                60.0,
+                65.0,
+                70.0,
+                75.0,
+                80.0,
+                85.0,
+                90.0,
+                95.0,
+                100.0,
+                105.0,
+            ],
+            "TOTALDEMAND": [8000.0] * 12,
+            "INTERVENTION": [0] * 12,
+        },
+    ).set_index("SETTLEMENTDATE")
+
+    # Test resampling to 30-minute intervals
+    result_30min = processor.resample_data(test_data, interval="30min")
+    assert len(result_30min) == 2  # Should have 2 30-minute intervals
+    assert result_30min["RRP"].tolist() == [62.5, 92.5]  # Mean of each 30-min period
+    assert result_30min["REGIONID"].tolist() == [
+        "NSW1",
+        "NSW1",
+    ]  # First value preserved
+
+    # Test resampling to 1-hour intervals
+    result_1h = processor.resample_data(test_data, interval="1h")
+    assert len(result_1h) == 1  # Should have 1 hour interval
+    assert result_1h["RRP"].iloc[0] == 77.5  # Mean of all values
+    assert result_1h["REGIONID"].iloc[0] == "NSW1"  # First value preserved
+    assert result_1h["TOTALDEMAND"].iloc[0] == 8000.0  # Mean of all values
+    assert result_1h["INTERVENTION"].iloc[0] == 0  # First value preserved
+
+    # Test with different aggregation methods
+    result_max = processor.resample_data(
+        test_data,
+        interval="30min",
+        numeric_agg="max",
+        non_numeric_agg="last",
+    )
+    assert result_max["RRP"].tolist() == [75.0, 105.0]  # Max of each 30-min period
+
+    # Test with invalid index
+    with pytest.raises(ValueError):
+        processor.resample_data(test_data.reset_index(), interval="30min")
+
+    # Test with empty DataFrame
+    empty_result = processor.resample_data(pd.DataFrame(), interval="30min")
+    assert empty_result.empty
