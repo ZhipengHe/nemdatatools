@@ -301,6 +301,7 @@ def download_mmsdm_data(
                     table_name=table_name,
                     year=year,
                     month=month,
+                    data_source=data_source,
                 )
                 if extracted:
                     downloaded_files.append(extracted)

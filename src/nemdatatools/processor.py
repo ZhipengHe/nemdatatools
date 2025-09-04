@@ -385,6 +385,29 @@ def _standardize_predispatch_general(df: pd.DataFrame) -> pd.DataFrame:
     if "LASTCHANGED" in df.columns:
         df["LASTCHANGED"] = pd.to_datetime(df["LASTCHANGED"], errors="coerce")
 
+    # Convert PREDISPATCHSEQNO to datetime if present
+    if "PREDISPATCHSEQNO" in df.columns:
+
+        def convert_seqno(seqno: int | str | pd.NaType) -> pd.Timestamp | pd.NaTType:
+            if pd.isna(seqno) or len(str(seqno)) < 10:
+                return pd.NaT
+            seq_str = str(seqno)
+            date_part = seq_str[:8]  # YYYYMMDD
+            run_part = seq_str[8:10]  # PP
+
+            # Each run number represents 30-minute intervals from 04:00
+            # (forecast generation time)
+            try:
+                run_number = int(run_part)
+                base_time = pd.Timestamp(
+                    f"{date_part[:4]}-{date_part[4:6]}-{date_part[6:8]} 04:00:00",
+                )
+                return base_time + pd.Timedelta(minutes=30 * (run_number - 1))
+            except (ValueError, TypeError):
+                return pd.NaT
+
+        df["PREDISPATCH_RUN_DATETIME"] = df["PREDISPATCHSEQNO"].apply(convert_seqno)
+
     # Set multi-index for forecasted time and run time if present
     if "DATETIME" in df.columns and "PREDISPATCH_RUN_DATETIME" in df.columns:
         if not df.index.name:  # Only set if not already indexed
@@ -417,12 +440,14 @@ def _standardize_predispatch_price(df: pd.DataFrame) -> pd.DataFrame:
         df["RRP"] = pd.to_numeric(df["RRP"], errors="coerce")
 
     # Add REGIONID to index if present
-    if "REGIONID" in df.columns and df.index.names and "REGIONID" not in df.index.names:
-        df = (
-            df.reset_index()
-            .set_index(["PREDISPATCH_RUN_DATETIME", "DATETIME", "REGIONID"])
-            .sort_index()
-        )
+    if "REGIONID" in df.columns and "REGIONID" not in df.index.names:
+        # Check if already indexed and reset safely
+        if df.index.names and df.index.names != [None]:
+            df = df.reset_index()
+        # Set multi-index
+        df = df.set_index(
+            ["PREDISPATCH_RUN_DATETIME", "DATETIME", "REGIONID"],
+        ).sort_index()
 
     return df
 

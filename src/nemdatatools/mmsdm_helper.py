@@ -38,6 +38,27 @@ def build_mmsdm_filename(table_name: str, year: int, month: int) -> str:
         return f"PUBLIC_DVD_{table_name}_{month_str}010000"
 
 
+def build_mmsdm_predisp_filename(table_name: str, year: int, month: int) -> str:
+    """Build the correct filename format for MMSDM pre-dispatch data.
+
+    Args:
+        table_name: Name of the table
+        year: Year
+        month: Month
+
+    Returns:
+        str: Properly formatted filename
+
+    """
+    month_str = f"{year}{month:02d}"
+
+    # Format changed in August 2024
+    if (year == 2024 and month >= 8) or year >= 2025:
+        return f"PUBLIC_ARCHIVE%23{table_name}%23ALL%23FILE01%23{month_str}010000"
+    else:
+        return f"PUBLIC_DVD_{table_name}_{month_str}010000"
+
+
 def build_mmsdm_url(
     table_name: str,
     year: int,
@@ -64,7 +85,10 @@ def build_mmsdm_url(
     ]:
         raise ValueError(f"Invalid data source for MMSDM: {data_source}")
 
-    filename = build_mmsdm_filename(table_name, year, month)
+    if data_source == DataSource.MMSDM_PREDISP:
+        filename = build_mmsdm_predisp_filename(table_name, year, month)
+    else:
+        filename = build_mmsdm_filename(table_name, year, month)
     template = URL_TEMPLATES[data_source]
 
     return template.format(year=year, month=f"{month:02d}", filename=filename)
@@ -100,6 +124,7 @@ def extract_mmsdm_file(
     table_name: str,
     year: int,
     month: int,
+    data_source: DataSource = DataSource.MMSDM,
 ) -> str | None:
     """Extract CSV file from MMSDM ZIP file and rename to standardized format.
 
@@ -109,6 +134,7 @@ def extract_mmsdm_file(
         table_name: Name of the table
         year: Year
         month: Month
+        data_source: Data source type for determining filename format
 
     Returns:
         str: Path to the extracted CSV file or None if extraction failed
@@ -116,7 +142,10 @@ def extract_mmsdm_file(
     """
     try:
         # Get the filename in the zip (it depends on the format)
-        filename = build_mmsdm_filename(table_name, year, month)
+        if data_source == DataSource.MMSDM_PREDISP:
+            filename = build_mmsdm_predisp_filename(table_name, year, month)
+        else:
+            filename = build_mmsdm_filename(table_name, year, month)
         filename = filename.replace("%23", "#")  # Replace URL encoding with actual #
         csv_in_zip = f"{filename}.CSV"
 
