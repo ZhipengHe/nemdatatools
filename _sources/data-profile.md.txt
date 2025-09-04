@@ -1,6 +1,8 @@
 # NEM Data Profile
 
-This document provides an overview of key data tables available in the Australian National Electricity Market (NEM). These data sets are essential for analyzing electricity prices, demand, generation, and forecasts within the Australian electricity market.
+This document provides an overview of key data tables available in the Australian National Electricity Market (NEM) and their implementation status in NEMDataTools. These data sets are essential for analyzing electricity prices, demand, generation, and forecasts within the Australian electricity market.
+
+> **Implementation Status**: NEMDataTools now provides production-ready access to core MMSDM data types with comprehensive processing and validation.
 
 ## NEM Data Types
 
@@ -10,7 +12,7 @@ Two primary data types are available in the NEM:
 2. Archived Data Tables in MMSDM
     - `MMSDM_URL_TEMPLATE = f"{MMSDM_BASE_URL}{{year}}/MMSDM_{{year}}_{{month}}/MMSDM_Historical_Data_SQLLoader/DATA/{{file_name}}.zip"`
 
-Let us focus on the data tables from the MMSDM archive for now.
+NEMDataTools provides comprehensive support for MMSDM archive data with additional support for pre-dispatch and static data sources.
 
 ### MMSDM URL Structure
 
@@ -118,12 +120,42 @@ Please refer to the [MMS Data Model](https://nemweb.com.au/Reports/Current/MMSDa
 - **Wholesale Demand Response**: Introduced in October 2021 to allow demand-side participation
 - **Global Settlement**: Replaced "settlement by difference" for retailers as of May 2022
 
+## NEMDataTools Implementation Status
+
+### ✅ Fully Supported Data Types
+
+| Data Type | Description | Processing Features |
+|-----------|-------------|-------------------|
+| `DISPATCHPRICE` | 5-minute dispatch prices by region | Price validation, intervention handling, regional indexing |
+| `DISPATCHREGIONSUM` | 5-minute regional dispatch summary | Demand aggregation, multi-index support |
+| `DISPATCH_UNIT_SCADA` | Generator SCADA readings | Unit-level output processing, time series indexing |
+| `PREDISPATCHPRICE` | Pre-dispatch price forecasts | Forecast horizon calculations, run-time indexing |
+| `PRICE_AND_DEMAND` | Direct CSV price/demand data | Regional filtering, time series processing |
+
+### ⚠️ Framework Ready (Implementation Complete, Testing Pending)
+
+| Data Type | Description | Status |
+|-----------|-------------|--------|
+| `P5MIN_REGIONSOLUTION` | 5-minute pre-dispatch region solution | Parser implemented, comprehensive testing needed |
+| Static Data Types | Registration lists, boundaries | Framework established, validation pending |
+
+### 📋 Configured But Not Yet Tested
+
+The following data types have URL mappings and parser configurations but require validation:
+- `DISPATCHLOAD`, `DISPATCHINTERCONNECTORRES`
+- `BIDDAYOFFER_D`, `BIDPEROFFER_D`
+- `DUDETAILSUMMARY`, `GENCONDATA`
+- `MARKETNOTICEDATA`, `NETWORK_OUTAGEDETAIL`
+- `ROOFTOPPV_ACTUAL`, `TRADINGREGIONSUM`
+- `PREDISPATCHREGIONSUM`, `PREDISPATCHLOAD`
+- `P5MIN_INTERCONNECTORSOLN`
+
 ## Data Quality Considerations
 
-When working with NEM data, consider the following:
+NEMDataTools handles many common data quality issues automatically:
 
-1. **Intervention Periods**: AEMO may intervene in the market, resulting in two sets of prices (intervention and non-intervention)
-2. **Data Revisions**: Initial data may be revised in subsequent releases
-3. **Missing Data**: Occasional gaps can occur due to system issues
-4. **SCADA Quality**: Raw SCADA data may contain errors or anomalies
-5. **Region Definitions**: Region boundaries have changed over time
+1. **Intervention Periods**: ✅ Automatically flagged and handled in processing
+2. **Data Standardization**: ✅ Consistent column naming and data type conversion
+3. **Missing Data**: ✅ Proper NaN handling and validation
+4. **Time Zone Handling**: ✅ Correct AEST/AEDT conversion and indexing
+5. **Regional Consistency**: ✅ Standardized region codes and filtering

@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NEMDataTools Project Board" href="dev/project-structure.html" />
-    <link rel="prev" title="NEMDataTools" href="README.html" /> 
+    <link rel="prev" title="NEMDataTools Documentation" href="README.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,13 +45,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="README.html">NEMDataTools</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NEMDataTools Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="README.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#from-source-recommended">From Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#requirements">Requirements</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#quick-start">Quick Start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#core-features">Core Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#development-roadmap">Development Roadmap</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#supported-data-types">Supported Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#development-status">Development Status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#completed-features">✅ <strong>Completed Features</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#in-progress">🚧 <strong>In Progress</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#tested-data-types">📋 <strong>Tested Data Types</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#documentation-structure">Documentation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#api-reference">API Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#core-functions">Core Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#license">License</a></li>
 </ul>
 </li>
@@ -72,6 +85,12 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#data-model-relationships">Data Model Relationships</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#recent-changes">Recent Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nemdatatools-implementation-status">NEMDataTools Implementation Status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fully-supported-data-types">✅ Fully Supported Data Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#framework-ready-implementation-complete-testing-pending">⚠️ Framework Ready (Implementation Complete, Testing Pending)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configured-but-not-yet-tested">📋 Configured But Not Yet Tested</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#data-quality-considerations">Data Quality Considerations</a></li>
 </ul>
 </li>
@@ -79,9 +98,9 @@
 <p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="dev/project-structure.html">NEMDataTools Project Board</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-1-project-setup-milestones-1-2">Phase 1: Project Setup (Milestones 1-2)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-1-development-environment-setup">Milestone 1: Development Environment Setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-2-core-module-skeletons">Milestone 2: Core Module Skeletons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-1-project-setup-milestones-1-2-completed">Phase 1: Project Setup (Milestones 1-2) ✅ <strong>COMPLETED</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-1-development-environment-setup-completed">Milestone 1: Development Environment Setup ✅ <strong>COMPLETED</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-2-core-module-skeletons-completed">Milestone 2: Core Module Skeletons ✅ <strong>COMPLETED</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-2-core-functionality-implementation-milestones-3-4">Phase 2: Core Functionality Implementation (Milestones 3-4)</a><ul>
@@ -100,15 +119,15 @@
 <li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#development-practices">Development Practices</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev/implementation-plan.html">NEMDataTools Implementation Plan</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="dev/implementation-plan.html">NEMDataTools Implementation Status</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#core-components">Core Components</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#downloader-module">1. Downloader Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#cache-manager">2. Cache Manager</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#time-utilities">3. Time Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#cache-manager-implemented">2. Cache Manager ✅ <strong>IMPLEMENTED</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#time-utilities-implemented">3. Time Utilities ✅ <strong>IMPLEMENTED</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#data-processor">4. Data Processor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#data-type-handlers">5. Data Type Handlers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#batch-commands">1. Batch Commands</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#key-functionalities">Key Functionalities:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#data-type-handlers-implemented">5. Data Type Handlers ✅ <strong>IMPLEMENTED</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#batch-commands-implemented">6. Batch Commands ✅ <strong>IMPLEMENTED</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#implemented-functionalities">Implemented Functionalities:</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#implementation-details">Implementation Details:</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#example-usage">Example Usage:</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#key-parameters">Key Parameters:</a></li>
@@ -231,7 +250,10 @@
              
   <section id="nem-data-profile">
 <h1>NEM Data Profile<a class="headerlink" href="#nem-data-profile" title="Link to this heading"></a></h1>
-<p>This document provides an overview of key data tables available in the Australian National Electricity Market (NEM). These data sets are essential for analyzing electricity prices, demand, generation, and forecasts within the Australian electricity market.</p>
+<p>This document provides an overview of key data tables available in the Australian National Electricity Market (NEM) and their implementation status in NEMDataTools. These data sets are essential for analyzing electricity prices, demand, generation, and forecasts within the Australian electricity market.</p>
+<blockquote>
+<div><p><strong>Implementation Status</strong>: NEMDataTools now provides production-ready access to core MMSDM data types with comprehensive processing and validation.</p>
+</div></blockquote>
 <section id="nem-data-types">
 <h2>NEM Data Types<a class="headerlink" href="#nem-data-types" title="Link to this heading"></a></h2>
 <p>Two primary data types are available in the NEM:</p>
@@ -247,7 +269,7 @@
 </ul>
 </li>
 </ol>
-<p>Let us focus on the data tables from the MMSDM archive for now.</p>
+<p>NEMDataTools provides comprehensive support for MMSDM archive data with additional support for pre-dispatch and static data sources.</p>
 <section id="mmsdm-url-structure">
 <h3>MMSDM URL Structure<a class="headerlink" href="#mmsdm-url-structure" title="Link to this heading"></a></h3>
 <p>The base URL for the MMSDM archive is:</p>
@@ -429,15 +451,85 @@
 <li><p><strong>Global Settlement</strong>: Replaced “settlement by difference” for retailers as of May 2022</p></li>
 </ul>
 </section>
+<section id="nemdatatools-implementation-status">
+<h2>NEMDataTools Implementation Status<a class="headerlink" href="#nemdatatools-implementation-status" title="Link to this heading"></a></h2>
+<section id="fully-supported-data-types">
+<h3>✅ Fully Supported Data Types<a class="headerlink" href="#fully-supported-data-types" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Processing Features</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DISPATCHPRICE</span></code></p></td>
+<td><p>5-minute dispatch prices by region</p></td>
+<td><p>Price validation, intervention handling, regional indexing</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DISPATCHREGIONSUM</span></code></p></td>
+<td><p>5-minute regional dispatch summary</p></td>
+<td><p>Demand aggregation, multi-index support</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DISPATCH_UNIT_SCADA</span></code></p></td>
+<td><p>Generator SCADA readings</p></td>
+<td><p>Unit-level output processing, time series indexing</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PREDISPATCHPRICE</span></code></p></td>
+<td><p>Pre-dispatch price forecasts</p></td>
+<td><p>Forecast horizon calculations, run-time indexing</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PRICE_AND_DEMAND</span></code></p></td>
+<td><p>Direct CSV price/demand data</p></td>
+<td><p>Regional filtering, time series processing</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="framework-ready-implementation-complete-testing-pending">
+<h3>⚠️ Framework Ready (Implementation Complete, Testing Pending)<a class="headerlink" href="#framework-ready-implementation-complete-testing-pending" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">P5MIN_REGIONSOLUTION</span></code></p></td>
+<td><p>5-minute pre-dispatch region solution</p></td>
+<td><p>Parser implemented, comprehensive testing needed</p></td>
+</tr>
+<tr class="row-odd"><td><p>Static Data Types</p></td>
+<td><p>Registration lists, boundaries</p></td>
+<td><p>Framework established, validation pending</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="configured-but-not-yet-tested">
+<h3>📋 Configured But Not Yet Tested<a class="headerlink" href="#configured-but-not-yet-tested" title="Link to this heading"></a></h3>
+<p>The following data types have URL mappings and parser configurations but require validation:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DISPATCHLOAD</span></code>, <code class="docutils literal notranslate"><span class="pre">DISPATCHINTERCONNECTORRES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BIDDAYOFFER_D</span></code>, <code class="docutils literal notranslate"><span class="pre">BIDPEROFFER_D</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DUDETAILSUMMARY</span></code>, <code class="docutils literal notranslate"><span class="pre">GENCONDATA</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MARKETNOTICEDATA</span></code>, <code class="docutils literal notranslate"><span class="pre">NETWORK_OUTAGEDETAIL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROOFTOPPV_ACTUAL</span></code>, <code class="docutils literal notranslate"><span class="pre">TRADINGREGIONSUM</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PREDISPATCHREGIONSUM</span></code>, <code class="docutils literal notranslate"><span class="pre">PREDISPATCHLOAD</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P5MIN_INTERCONNECTORSOLN</span></code></p></li>
+</ul>
+</section>
+</section>
 <section id="data-quality-considerations">
 <h2>Data Quality Considerations<a class="headerlink" href="#data-quality-considerations" title="Link to this heading"></a></h2>
-<p>When working with NEM data, consider the following:</p>
+<p>NEMDataTools handles many common data quality issues automatically:</p>
 <ol class="arabic simple">
-<li><p><strong>Intervention Periods</strong>: AEMO may intervene in the market, resulting in two sets of prices (intervention and non-intervention)</p></li>
-<li><p><strong>Data Revisions</strong>: Initial data may be revised in subsequent releases</p></li>
-<li><p><strong>Missing Data</strong>: Occasional gaps can occur due to system issues</p></li>
-<li><p><strong>SCADA Quality</strong>: Raw SCADA data may contain errors or anomalies</p></li>
-<li><p><strong>Region Definitions</strong>: Region boundaries have changed over time</p></li>
+<li><p><strong>Intervention Periods</strong>: ✅ Automatically flagged and handled in processing</p></li>
+<li><p><strong>Data Standardization</strong>: ✅ Consistent column naming and data type conversion</p></li>
+<li><p><strong>Missing Data</strong>: ✅ Proper NaN handling and validation</p></li>
+<li><p><strong>Time Zone Handling</strong>: ✅ Correct AEST/AEDT conversion and indexing</p></li>
+<li><p><strong>Regional Consistency</strong>: ✅ Standardized region codes and filtering</p></li>
 </ol>
 </section>
 </section>
@@ -446,7 +538,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="README.html" class="btn btn-neutral float-left" title="NEMDataTools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="README.html" class="btn btn-neutral float-left" title="NEMDataTools Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="dev/project-structure.html" class="btn btn-neutral float-right" title="NEMDataTools Project Board" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
