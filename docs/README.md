@@ -15,7 +15,19 @@ This package is designed for researchers, analysts, and developers who need reli
 
 ## Installation
 
-### From Source (Recommended)
+### From PyPI (Recommended)
+
+```bash
+pip install nemdatatools
+```
+
+### From TestPyPI (Pre-releases)
+
+```bash
+pip install --index-url https://test.pypi.org/simple/ nemdatatools
+```
+
+### From Source (Development)
 
 ```bash
 # Clone the repository
@@ -97,7 +109,6 @@ NEMDataTools has reached **production readiness** with core functionality comple
 
 - [ ] **Data Type Expansion**: Adding support for remaining MMSDM tables
 - [ ] **Documentation**: API reference and advanced usage guides
-- [ ] **Package Distribution**: PyPI release preparation
 
 ### 📋 **Tested Data Types**
 
