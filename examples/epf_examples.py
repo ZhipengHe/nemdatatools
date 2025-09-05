@@ -632,6 +632,221 @@ def combine_price_and_demand(
         print("\nNo summary created - no data was successfully processed")
 
 
+def process_predispatch_price_data(
+    start_date: str = "2024/01/01",
+    end_date: str = "2024/12/31",
+    regions: list[str] | None = None,
+    output_dir: str = "./examples/NEM_data/predispatch_data",
+) -> None:
+    """Process predispatch price data by region and save to csv files.
+
+    This example demonstrates:
+    - Fetching PREDISPATCHPRICE data for specified regions for 2024
+    - Processing predispatch data with PREDISPATCH_RUN_DATETIME conversion
+    - Resampling to 1-hour intervals
+    - Saving the processed data to csv files by region
+
+    Args:
+        start_date: Start date in YYYY/MM/DD format (default: "2024/01/01")
+        end_date: End date in YYYY/MM/DD format (default: "2024/12/31")
+        regions: List of regions to process (default: all NEM regions)
+        output_dir: Directory to save all output files
+            (default: "./examples/NEM_data/predispatch_data")
+
+    """
+    if regions is None:
+        regions = ["NSW1", "QLD1", "SA1", "TAS1", "VIC1"]
+
+    print("\nExample 11: Processing predispatch price data by region")
+    print(f"Processing data from {start_date} to {end_date}")
+    print(f"Regions: {', '.join(regions)}")
+
+    # Create output directory
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+    except Exception as e:
+        print(f"Error creating output directory: {e}")
+        return
+
+    # Process each region
+    for region in regions:
+        print(f"\nProcessing {region}...")
+
+        try:
+            # Fetch predispatch price data
+            data = ndt.fetch_data(
+                data_type="PREDISPATCHPRICE",
+                start_date=start_date,
+                end_date=end_date,
+                regions=[region],
+                cache_path="./cache",
+            )
+
+            if data is None or data.empty:
+                print(f"Error: No predispatch data fetched for {region}")
+                continue
+
+            print(f"Original data shape: {data.shape}")
+            print(f"Original data columns: {data.columns.tolist()}")
+
+            # Check if PREDISPATCH_RUN_DATETIME was created (it might be in index)
+            if (
+                "PREDISPATCH_RUN_DATETIME" in data.columns
+                or "PREDISPATCH_RUN_DATETIME" in data.index.names
+            ):
+                print("PREDISPATCH_RUN_DATETIME found - conversion successful")
+            else:
+                print("Warning: PREDISPATCH_RUN_DATETIME not found")
+
+            # Check if data has multi-index structure
+            if data.index.names and data.index.names != [None]:
+                print(f"Data has multi-index: {data.index.names}")
+                # Reset index to work with data as columns
+                data = data.reset_index()
+
+            # Select required columns
+            required_columns = ["RRP"]
+            if "REGIONID" in data.columns:
+                required_columns.append("REGIONID")
+            if "PREDISPATCH_RUN_DATETIME" in data.columns:
+                required_columns.append("PREDISPATCH_RUN_DATETIME")
+            if "DATETIME" in data.columns:
+                required_columns.append("DATETIME")
+            if "FORECAST_HORIZON_HOURS" in data.columns:
+                required_columns.append("FORECAST_HORIZON_HOURS")
+
+            data = data[required_columns]
+
+            # Show sample of the data
+            print("\nSample data:")
+            print(data.head())
+
+            # Show the two timestamps explanation
+            print("\nTimestamp explanation:")
+            print("- Index (DATETIME): The timestamp being forecasted for")
+            print("- PREDISPATCH_RUN_DATETIME: When the forecast was made")
+            if "FORECAST_HORIZON_HOURS" in data.columns:
+                print("- FORECAST_HORIZON_HOURS: Hours ahead being forecasted")
+
+            # Ensure data is sorted chronologically by forecast datetime (index)
+            data = data.sort_index()
+
+            print(
+                f"Forecasted time range (DATETIME): {data.index[0]} to "
+                f"{data.index[-1]}",
+            )
+            if "PREDISPATCH_RUN_DATETIME" in data.columns:
+                print(
+                    f"Forecast run time range: "
+                    f"{data['PREDISPATCH_RUN_DATETIME'].min()} to "
+                    f"{data['PREDISPATCH_RUN_DATETIME'].max()}",
+                )
+
+            # Strategy: Filter to forecasts generated at o'clock,
+            # keep all forecast horizons
+            print(f"Processing {region} predispatch data...")
+
+            if "PREDISPATCH_RUN_DATETIME" in data.columns:
+                # Extract DATETIME from index before filtering (to preserve it)
+                if "DATETIME" in data.index.names:
+                    data["DATETIME"] = data.index.get_level_values("DATETIME")
+
+                # Filter to forecasts generated at o'clock times (00:00, 01:00, etc.)
+                forecasts_on_hour = data[
+                    data["PREDISPATCH_RUN_DATETIME"].dt.minute == 0
+                ]
+                print(
+                    f"Forecasts generated on the hour: "
+                    f"{len(forecasts_on_hour)} records",
+                )
+
+                if "FORECAST_HORIZON_HOURS" in forecasts_on_hour.columns:
+                    # Show the different forecast horizons available
+                    horizon_counts = (
+                        forecasts_on_hour["FORECAST_HORIZON_HOURS"]
+                        .value_counts()
+                        .sort_index()
+                    )
+                    print(
+                        f"Available forecast horizons (hours): "
+                        f"{horizon_counts.to_dict()}",
+                    )
+
+                hourly_forecasts = forecasts_on_hour
+            else:
+                # Fallback: resample by forecasted timestamp
+                print("Using fallback resampling by forecasted timestamp...")
+                hourly_forecasts = ndt.resample_data(
+                    data,
+                    interval="1h",
+                    numeric_agg="first",
+                    non_numeric_agg="first",
+                )
+
+            print(f"Hourly forecasts data shape: {hourly_forecasts.shape}")
+
+            # DATETIME column should now be preserved from before filtering
+
+            # Check for missing values
+            missing_values = hourly_forecasts["RRP"].isnull().sum()
+            print(f"Number of missing RRP values: {missing_values}")
+
+            # Save hourly forecasts data
+            output_file = os.path.join(
+                output_dir,
+                f"{region}_predispatch_price_hourly.csv",
+            )
+            hourly_forecasts.to_csv(output_file)
+            print(f"Saved hourly forecasts data to {output_file}")
+
+        except Exception as e:
+            print(f"Error processing {region}: {e}")
+            continue
+
+    print("\nProcessing complete!")
+    print(f"All predispatch data and plots saved to {output_dir}")
+
+    # Create a summary of the processed data
+    summary = []
+    for region in regions:
+        try:
+            file_path = os.path.join(
+                output_dir,
+                f"{region}_predispatch_price_hourly.csv",
+            )
+            if os.path.exists(file_path):
+                data = pd.read_csv(file_path, index_col=0, parse_dates=True)
+                summary.append(
+                    {
+                        "Region": region,
+                        "Data Points": len(data),
+                        "Start Date": data.index[0],
+                        "End Date": data.index[-1],
+                        "Missing Values": data["RRP"].isnull().sum(),
+                        "Mean Price": data["RRP"].mean(),
+                        "Max Price": data["RRP"].max(),
+                        "Min Price": data["RRP"].min(),
+                        "Std Dev": data["RRP"].std(),
+                    },
+                )
+        except Exception as e:
+            print(f"Error creating summary for {region}: {e}")
+
+    if summary:
+        try:
+            # Create and save summary DataFrame
+            summary_df = pd.DataFrame(summary)
+            summary_file = os.path.join(output_dir, "summary.csv")
+            summary_df.to_csv(summary_file)
+            print(f"\nSummary saved to {summary_file}")
+            print("\nSummary of processed data:")
+            print(summary_df.to_string(index=False))
+        except Exception as e:
+            print(f"Error saving summary: {e}")
+    else:
+        print("\nNo summary created - no data was successfully processed")
+
+
 if __name__ == "__main__":
     # Create cache directory
     os.makedirs("./cache", exist_ok=True)
@@ -644,23 +859,29 @@ if __name__ == "__main__":
         exit(1)
 
     # Run examples
-    resample_price_data_by_region(
-        start_date="2021/01/01",
+    # resample_price_data_by_region(
+    #     start_date="2021/01/01",
+    #     end_date="2024/12/31",
+    #     regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
+    #     output_dir="./examples/NEM_data/price_data",
+    # )
+    # resample_demand_data_by_region(
+    #     start_date="2021/01/01",
+    #     end_date="2024/12/31",
+    #     regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
+    #     output_dir="./examples/NEM_data/demand_data",
+    # )
+    # combine_price_and_demand(
+    #     start_date="2021/01/01",
+    #     end_date="2024/12/31",
+    #     regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
+    #     output_dir="./examples/NEM_data/price_demand",
+    # )
+    process_predispatch_price_data(
+        start_date="2024/01/01",
         end_date="2024/12/31",
         regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
-        output_dir="./examples/NEM_data/price_data",
-    )
-    resample_demand_data_by_region(
-        start_date="2021/01/01",
-        end_date="2024/12/31",
-        regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
-        output_dir="./examples/NEM_data/demand_data",
-    )
-    combine_price_and_demand(
-        start_date="2021/01/01",
-        end_date="2024/12/31",
-        regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
-        output_dir="./examples/NEM_data/price_demand",
+        output_dir="./examples/NEM_data/predispatch_data",
     )
 
     print("\nAll examples completed!")

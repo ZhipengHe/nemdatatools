@@ -469,6 +469,35 @@ def example_7_resample_and_window() -> None:
     print(f"\nAll {len(windows)} windows saved to ./examples/windows/")
 
 
+def example_8_predispatch_data() -> None:
+    """Download predispatch data for 2024.
+
+    This example demonstrates downloading predispatch price data.
+    """
+    print("\nExample 8: Download predispatch data for 2024")
+
+    # Download predispatch price data for 2024
+    data = ndt.fetch_data(
+        data_type="PREDISPATCHPRICE",
+        start_date="2024/01/01",
+        end_date="2024/03/31",
+        regions=["NSW1", "VIC1"],
+        cache_path="./cache",
+    )
+
+    if data is None:
+        print("Error: Could not fetch predispatch data")
+        return
+
+    print(f"Downloaded {len(data)} records")
+    print(f"Columns: {data.columns.tolist()}")
+    print(data.head())
+
+    # Save to CSV
+    data.to_csv("./examples/predispatch_price_2024.csv")
+    print("Data saved to predispatch_price_2024.csv")
+
+
 if __name__ == "__main__":
     # Create cache directory
     os.makedirs("./cache", exist_ok=True)
@@ -486,36 +515,37 @@ if __name__ == "__main__":
     # example_3_batch_download()
     # example_4_parallel_yearly_download()
     # example_5_process_downloaded_data()
-    example_6_time_windows(
-        window_size_in_day=14,
-        step_size_in_min=5,
-        resample_interval="5min",
-    )
-    example_6_time_windows(
-        window_size_in_day=14,
-        step_size_in_min=30,
-        resample_interval="5min",
-    )
-    example_6_time_windows(
-        window_size_in_day=14,
-        step_size_in_min=60,
-        resample_interval="5min",
-    )
-    example_6_time_windows(
-        window_size_in_day=14,
-        step_size_in_min=30,
-        resample_interval="30min",
-    )
-    example_6_time_windows(
-        window_size_in_day=14,
-        step_size_in_min=60,
-        resample_interval="30min",
-    )
-    example_6_time_windows(
-        window_size_in_day=14,
-        step_size_in_min=60,
-        resample_interval="1h",
-    )
-    example_7_resample_and_window()
+    # example_6_time_windows(
+    #     window_size_in_day=14,
+    #     step_size_in_min=5,
+    #     resample_interval="5min",
+    # )
+    # example_6_time_windows(
+    #     window_size_in_day=14,
+    #     step_size_in_min=30,
+    #     resample_interval="5min",
+    # )
+    # example_6_time_windows(
+    #     window_size_in_day=14,
+    #     step_size_in_min=60,
+    #     resample_interval="5min",
+    # )
+    # example_6_time_windows(
+    #     window_size_in_day=14,
+    #     step_size_in_min=30,
+    #     resample_interval="30min",
+    # )
+    # example_6_time_windows(
+    #     window_size_in_day=14,
+    #     step_size_in_min=60,
+    #     resample_interval="30min",
+    # )
+    # example_6_time_windows(
+    #     window_size_in_day=14,
+    #     step_size_in_min=60,
+    #     resample_interval="1h",
+    # )
+    # example_7_resample_and_window()
+    example_8_predispatch_data()
 
     print("\nAll examples completed!")
