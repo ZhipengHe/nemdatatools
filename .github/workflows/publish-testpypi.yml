@@ -91,6 +91,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Upload release assets
+        run: |
+          gh release upload ${{ github.ref_name }} dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Test install the exact version from TestPyPI
         run: |
           python -m venv .venv
