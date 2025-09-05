@@ -1,6 +1,9 @@
 """NEMDataTools: Tools for accessing and preprocessing AEMO data."""
 
-__version__ = "0.1.0"
+try:
+    from ._version import __version__
+except ImportError:
+    __version__ = "unknown"
 
 from nemdatatools.batch_commands import (
     download_multiple_tables,

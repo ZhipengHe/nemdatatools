@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=8.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nemdatatools"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Tools for accessing and preprocessing AEMO data for the National Electricity Market"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -79,3 +79,6 @@ disallow_incomplete_defs = true
 "docs/conf.py" = [
     "A001", # allow use `copyright` in config file for sphinx
 ]
+
+[tool.setuptools_scm]
+write_to = "src/nemdatatools/_version.py"
