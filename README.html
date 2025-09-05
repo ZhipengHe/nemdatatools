@@ -48,7 +48,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NEMDataTools Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#from-source-recommended">From Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-pypi-recommended">From PyPI (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-testpypi-pre-releases">From TestPyPI (Pre-releases)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-source-development">From Source (Development)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
 </ul>
 </li>
@@ -265,8 +267,20 @@
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<section id="from-source-recommended">
-<h3>From Source (Recommended)<a class="headerlink" href="#from-source-recommended" title="Link to this heading"></a></h3>
+<section id="from-pypi-recommended">
+<h3>From PyPI (Recommended)<a class="headerlink" href="#from-pypi-recommended" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemdatatools
+</pre></div>
+</div>
+</section>
+<section id="from-testpypi-pre-releases">
+<h3>From TestPyPI (Pre-releases)<a class="headerlink" href="#from-testpypi-pre-releases" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--index-url<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>nemdatatools
+</pre></div>
+</div>
+</section>
+<section id="from-source-development">
+<h3>From Source (Development)<a class="headerlink" href="#from-source-development" title="Link to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ZhipengHe/nemdatatools.git
 <span class="nb">cd</span><span class="w"> </span>nemdatatools
@@ -361,7 +375,6 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <ul class="simple">
 <li><p>[ ] <strong>Data Type Expansion</strong>: Adding support for remaining MMSDM tables</p></li>
 <li><p>[ ] <strong>Documentation</strong>: API reference and advanced usage guides</p></li>
-<li><p>[ ] <strong>Package Distribution</strong>: PyPI release preparation</p></li>
 </ul>
 </section>
 <section id="tested-data-types">
