@@ -1,6 +1,6 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
@@ -26,7 +26,7 @@ repos:
         args: ["--profile", "black"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.10
+    rev: v0.12.12
     hooks:
     -   id: ruff
         args: [
@@ -39,21 +39,21 @@ repos:
         args: ["--check"]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
+    rev: v1.17.1
     hooks:
     -   id: mypy
-        additional_dependencies: [types-requests]
+        additional_dependencies: [types-requests>=2.32.0]
         exclude: "tests/"
         args: ["--ignore-missing-imports"]
 
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.1
+    rev: v3.20.0
     hooks:
     -   id: pyupgrade
         args: [--py310-plus]
 
 -   repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.4.1
+    rev: v4.8.3
     hooks:
     -   id: commitizen
         stages: [commit-msg]

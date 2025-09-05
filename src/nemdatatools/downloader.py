@@ -606,7 +606,7 @@ def check_connection() -> bool:
     """
     try:
         response = requests.get(BASE_URLS["MMSDM"], timeout=5)
-        return response.status_code == 200
+        return bool(response.status_code == 200)
     except requests.exceptions.Timeout:
         logging.error("Connection timed out while accessing AEMO data sources.")
     except requests.exceptions.ConnectionError:

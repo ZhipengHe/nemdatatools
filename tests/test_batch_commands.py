@@ -238,7 +238,7 @@ def test_download_yearly_data(years, tables, mock_dispatch_price_data):
     ):
         # Setup mock responses for different years
         mock_download.side_effect = [
-            {table: mock_dispatch_price_data for table in tables} for _ in years
+            dict.fromkeys(tables, mock_dispatch_price_data) for _ in years
         ]
 
         result = batch_commands.download_yearly_data(
