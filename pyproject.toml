@@ -9,17 +9,19 @@ description = "Tools for accessing and preprocessing AEMO data for the National 
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    {name = "Your Name", email = "your.email@example.com"},
+    {name = "Zhipeng He", email = "zhipeng.he@hdr.qut.edu.au"},
 ]
 license = {text = "MIT"}
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
     "requests>=2.25.0",
@@ -48,7 +50,7 @@ docs = [
 
 [project.urls]
 Homepage = "https://github.com/ZhipengHe/nemdatatools"
-Documentation = "https://nemdatatools.readthedocs.io/"
+Documentation = "https://zhipenghe.me/nemdatatools/"
 "Bug Tracker" = "https://github.com/ZhipengHe/nemdatatools/issues"
 
 [tool.setuptools]

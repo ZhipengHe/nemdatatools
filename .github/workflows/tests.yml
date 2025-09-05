@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ['3.10', '3.11', '3.12', '3.13']
 
     steps:
     - uses: actions/checkout@v4
@@ -34,18 +34,11 @@ jobs:
           pyproject.toml
           requirements*.txt
 
-    - name: Cache UV installation
-      uses: actions/cache@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
       with:
-        path: ~/.cargo/bin/uv
-        key: ${{ runner.os }}-uv-${{ hashFiles('~/.cargo/bin/uv') }}
-
-    - name: Install UV
-      run: |
-        if [ ! -f ~/.cargo/bin/uv ]; then
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-        fi
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
 
     - name: Cache Python virtual environment
       uses: actions/cache@v4
