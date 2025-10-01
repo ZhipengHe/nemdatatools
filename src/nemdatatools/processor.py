@@ -94,6 +94,13 @@ def standardize(data: pd.DataFrame, data_type: str) -> pd.DataFrame:
             # Apply general static data standardization
             df = _standardize_static_general(df)
 
+    elif source == DataSource.REPORTS_CURRENT:
+        if data_type == "PUBLIC_TRADINGIS":
+            df = _standardize_public_tradingis(df)
+        else:
+            # Apply general standardization for other reports
+            df = _standardize_general(df)
+
     else:
         logger.warning(
             f"Unknown data source: {source}, applying general standardization",
@@ -388,7 +395,7 @@ def _standardize_predispatch_general(df: pd.DataFrame) -> pd.DataFrame:
     # Convert PREDISPATCHSEQNO to datetime if present
     if "PREDISPATCHSEQNO" in df.columns:
 
-        def convert_seqno(seqno: int | str | pd.NaType) -> pd.Timestamp | pd.NaTType:
+        def convert_seqno(seqno: int | str | None) -> pd.Timestamp:
             if pd.isna(seqno) or len(str(seqno)) < 10:
                 return pd.NaT
             seq_str = str(seqno)
@@ -729,6 +736,32 @@ def _standardize_region_boundaries(df: pd.DataFrame) -> pd.DataFrame:
     date_columns = [col for col in df.columns if "DATE" in col]
     for col in date_columns:
         df[col] = pd.to_datetime(df[col], errors="coerce")
+
+    return df
+
+
+def _standardize_public_tradingis(df: pd.DataFrame) -> pd.DataFrame:
+    """Standardize PUBLIC_TRADINGIS data.
+
+    Args:
+        df: Raw DataFrame
+
+    Returns:
+        Standardized DataFrame
+
+    """
+    # Apply general standardization
+    df = _standardize_general(df)
+
+    # Set index to settlementdate if present
+    if "SETTLEMENTDATE" in df.columns:
+        df = df.set_index("SETTLEMENTDATE").sort_index()
+
+    # Handle specific numeric columns
+    numeric_cols = ["RRP", "TOTALDEMAND", "CLEAREDDEMAND", "INITIALSUPPLY"]
+    for col in numeric_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
 
     return df
 

@@ -6,11 +6,22 @@ from AEMO's MMSDM database.
 
 import os
 
-import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
 import pandas as pd
 
 import nemdatatools as ndt
+
+
+def format_date_for_filename(date_str: str) -> str:
+    """Format date string for use in filenames.
+
+    Args:
+        date_str: Date string in YYYY/MM/DD format
+
+    Returns:
+        Formatted date string in YYYY-MM-DD format
+
+    """
+    return date_str.replace("/", "-")
 
 
 def resample_price_data_by_region(
@@ -104,52 +115,40 @@ def resample_price_data_by_region(
             print(yearly_stats)
 
             # Save yearly statistics
+            start_date_formatted = format_date_for_filename(start_date)
+            end_date_formatted = format_date_for_filename(end_date)
             yearly_stats_file = os.path.join(
                 output_dir,
-                f"{region}_price_yearly_stats.csv",
+                f"{region}_price_yearly_stats_{start_date_formatted}_to_{end_date_formatted}.csv",
             )
             yearly_stats.to_csv(yearly_stats_file)
             print(f"Saved yearly statistics to {yearly_stats_file}")
 
             # Save resampled data
-            output_file = os.path.join(output_dir, f"{region}_price_hourly.csv")
+            output_file = os.path.join(
+                output_dir,
+                f"{region}_price_hourly_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             resampled_data.to_csv(output_file)
             print(f"Saved resampled data to {output_file}")
-
-            # Create a plot of the resampled data
-            plt.figure(figsize=(15, 8))
-            plt.plot(resampled_data.index, resampled_data["RRP"], linewidth=0.5)
-
-            plt.title(f"Hourly Prices - {region} (2021-2024)")
-            plt.xlabel("Time")
-            plt.ylabel("RRP ($/MWh)")
-            plt.grid(True)
-            plt.xticks(rotation=45)
-
-            # Add yearly x-axis labels
-            plt.gca().xaxis.set_major_locator(mdates.YearLocator())
-            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-
-            plt.tight_layout()
-
-            # Save the plot
-            plot_file = os.path.join(output_dir, f"{region}_price_hourly.png")
-            plt.savefig(plot_file, dpi=300)
-            plt.close()
-            print(f"Saved plot to {plot_file}")
 
         except Exception as e:
             print(f"Error processing {region}: {e}")
             continue
 
     print("\nProcessing complete!")
-    print(f"All resampled data and plots saved to {output_dir}")
+    print(f"All resampled data saved to {output_dir}")
 
     # Create a summary of the processed data
     summary = []
+    start_date_formatted = format_date_for_filename(start_date)
+    end_date_formatted = format_date_for_filename(end_date)
     for region in regions:
         try:
-            file_path = os.path.join(output_dir, f"{region}_price_hourly.csv")
+            file_path = os.path.join(
+                output_dir,
+                f"{region}_price_hourly_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             if os.path.exists(file_path):
                 data = pd.read_csv(file_path, index_col=0, parse_dates=True)
                 summary.append(
@@ -283,9 +282,11 @@ def resample_demand_data_by_region(
                 print(missing_data.index.month.value_counts().sort_index())
 
                 # Save missing values to a separate file
+                start_date_formatted = format_date_for_filename(start_date)
+                end_date_formatted = format_date_for_filename(end_date)
                 missing_file = os.path.join(
                     output_dir,
-                    f"{region}_demand_missing_values.csv",
+                    f"{region}_demand_missing_values_{start_date_formatted}_to_{end_date_formatted}.csv",
                 )
                 missing_data.to_csv(missing_file)
                 print(f"\nSaved missing values details to {missing_file}")
@@ -300,63 +301,40 @@ def resample_demand_data_by_region(
             print(yearly_stats)
 
             # Save yearly statistics
+            start_date_formatted = format_date_for_filename(start_date)
+            end_date_formatted = format_date_for_filename(end_date)
             yearly_stats_file = os.path.join(
                 output_dir,
-                f"{region}_demand_yearly_stats.csv",
+                f"{region}_demand_yearly_stats_{start_date_formatted}_to_{end_date_formatted}.csv",
             )
             yearly_stats.to_csv(yearly_stats_file)
             print(f"Saved yearly statistics to {yearly_stats_file}")
 
             # Save resampled data
-            output_file = os.path.join(output_dir, f"{region}_demand_hourly.csv")
+            output_file = os.path.join(
+                output_dir,
+                f"{region}_demand_hourly_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             resampled_data.to_csv(output_file)
             print(f"Saved resampled data to {output_file}")
-
-            # Create a plot of the resampled data
-            plt.figure(figsize=(15, 8))
-            plt.plot(resampled_data.index, resampled_data["TOTALDEMAND"], linewidth=0.5)
-
-            # Add markers for missing values if any
-            if missing_values > 0:
-                plt.scatter(
-                    missing_data.index,
-                    [resampled_data["TOTALDEMAND"].max()] * len(missing_data),
-                    color="red",
-                    marker="x",
-                    label="Missing Values",
-                )
-                plt.legend()
-
-            plt.title(f"Hourly Demand - {region} (2021-2024)")
-            plt.xlabel("Time")
-            plt.ylabel("Total Demand (MW)")
-            plt.grid(True)
-            plt.xticks(rotation=45)
-
-            # Add yearly x-axis labels
-            plt.gca().xaxis.set_major_locator(mdates.YearLocator())
-            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-
-            plt.tight_layout()
-
-            # Save the plot
-            plot_file = os.path.join(output_dir, f"{region}_demand_hourly.png")
-            plt.savefig(plot_file, dpi=300)
-            plt.close()
-            print(f"Saved plot to {plot_file}")
 
         except Exception as e:
             print(f"Error processing {region}: {e}")
             continue
 
     print("\nProcessing complete!")
-    print(f"All resampled data and plots saved to {output_dir}")
+    print(f"All resampled data saved to {output_dir}")
 
     # Create a summary of the processed data
     summary = []
+    start_date_formatted = format_date_for_filename(start_date)
+    end_date_formatted = format_date_for_filename(end_date)
     for region in regions:
         try:
-            file_path = os.path.join(output_dir, f"{region}_demand_hourly.csv")
+            file_path = os.path.join(
+                output_dir,
+                f"{region}_demand_hourly_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             if os.path.exists(file_path):
                 data = pd.read_csv(file_path, index_col=0, parse_dates=True)
                 summary.append(
@@ -503,7 +481,12 @@ def combine_price_and_demand(
                 print(missing_data.index.year.value_counts().sort_index())
 
                 # Save missing values to a separate file
-                missing_file = os.path.join(output_dir, f"{region}_missing_values.csv")
+                start_date_formatted = format_date_for_filename(start_date)
+                end_date_formatted = format_date_for_filename(end_date)
+                missing_file = os.path.join(
+                    output_dir,
+                    f"{region}_missing_values_{start_date_formatted}_to_{end_date_formatted}.csv",
+                )
                 missing_data.to_csv(missing_file)
                 print(f"\nSaved missing values details to {missing_file}")
 
@@ -522,80 +505,40 @@ def combine_price_and_demand(
             print(yearly_stats)
 
             # Save yearly statistics
-            yearly_stats_file = os.path.join(output_dir, f"{region}_yearly_stats.csv")
+            start_date_formatted = format_date_for_filename(start_date)
+            end_date_formatted = format_date_for_filename(end_date)
+            yearly_stats_file = os.path.join(
+                output_dir,
+                f"{region}_yearly_stats_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             yearly_stats.to_csv(yearly_stats_file)
             print(f"Saved yearly statistics to {yearly_stats_file}")
 
             # Save combined data
-            output_file = os.path.join(output_dir, f"{region}_price_demand.csv")
+            output_file = os.path.join(
+                output_dir,
+                f"{region}_price_demand_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             combined_data.to_csv(output_file)
             print(f"Saved price and demand data to {output_file}")
-
-            # Create plots
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 12))
-
-            # Price plot
-            ax1.plot(combined_data.index, combined_data["RRP"], linewidth=0.5)
-            if missing_price > 0:
-                missing_price_data = combined_data[combined_data["RRP"].isnull()]
-                ax1.scatter(
-                    missing_price_data.index,
-                    [combined_data["RRP"].max()] * len(missing_price_data),
-                    color="red",
-                    marker="x",
-                    label="Missing Values",
-                )
-                ax1.legend()
-            ax1.set_title(f"Hourly Prices - {region} (2021-2024)")
-            ax1.set_ylabel("RRP ($/MWh)")
-            ax1.grid(True)
-            ax1.tick_params(axis="x", rotation=45)
-
-            # Demand plot
-            ax2.plot(combined_data.index, combined_data["TOTALDEMAND"], linewidth=0.5)
-            if missing_demand > 0:
-                missing_demand_data = combined_data[
-                    combined_data["TOTALDEMAND"].isnull()
-                ]
-                ax2.scatter(
-                    missing_demand_data.index,
-                    [combined_data["TOTALDEMAND"].max()] * len(missing_demand_data),
-                    color="red",
-                    marker="x",
-                    label="Missing Values",
-                )
-                ax2.legend()
-            ax2.set_title(f"Hourly Demand - {region} (2021-2024)")
-            ax2.set_xlabel("Time")
-            ax2.set_ylabel("Total Demand (MW)")
-            ax2.grid(True)
-            ax2.tick_params(axis="x", rotation=45)
-
-            # Add yearly x-axis labels
-            for ax in [ax1, ax2]:
-                ax.xaxis.set_major_locator(mdates.YearLocator())
-                ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-
-            plt.tight_layout()
-
-            # Save the plot
-            plot_file = os.path.join(output_dir, f"{region}_price_demand.png")
-            plt.savefig(plot_file, dpi=300)
-            plt.close()
-            print(f"Saved plot to {plot_file}")
 
         except Exception as e:
             print(f"Error processing {region}: {e}")
             continue
 
     print("\nProcessing complete!")
-    print(f"All price and demand data and plots saved to {output_dir}")
+    print(f"All price and demand data saved to {output_dir}")
 
     # Create a summary of the processed data
     summary = []
+    start_date_formatted = format_date_for_filename(start_date)
+    end_date_formatted = format_date_for_filename(end_date)
     for region in regions:
         try:
-            file_path = os.path.join(output_dir, f"{region}_price_demand.csv")
+            file_path = os.path.join(
+                output_dir,
+                f"{region}_price_demand_{start_date_formatted}_to_{end_date_formatted}.csv",
+            )
             if os.path.exists(file_path):
                 data = pd.read_csv(file_path, index_col=0, parse_dates=True)
                 summary.append(
@@ -792,9 +735,11 @@ def process_predispatch_price_data(
             print(f"Number of missing RRP values: {missing_values}")
 
             # Save hourly forecasts data
+            start_date_formatted = format_date_for_filename(start_date)
+            end_date_formatted = format_date_for_filename(end_date)
             output_file = os.path.join(
                 output_dir,
-                f"{region}_predispatch_price_hourly.csv",
+                f"{region}_predispatch_price_hourly_{start_date_formatted}_to_{end_date_formatted}.csv",
             )
             hourly_forecasts.to_csv(output_file)
             print(f"Saved hourly forecasts data to {output_file}")
@@ -804,15 +749,17 @@ def process_predispatch_price_data(
             continue
 
     print("\nProcessing complete!")
-    print(f"All predispatch data and plots saved to {output_dir}")
+    print(f"All predispatch data saved to {output_dir}")
 
     # Create a summary of the processed data
     summary = []
+    start_date_formatted = format_date_for_filename(start_date)
+    end_date_formatted = format_date_for_filename(end_date)
     for region in regions:
         try:
             file_path = os.path.join(
                 output_dir,
-                f"{region}_predispatch_price_hourly.csv",
+                f"{region}_predispatch_price_hourly_{start_date_formatted}_to_{end_date_formatted}.csv",
             )
             if os.path.exists(file_path):
                 data = pd.read_csv(file_path, index_col=0, parse_dates=True)
@@ -847,7 +794,154 @@ def process_predispatch_price_data(
         print("\nNo summary created - no data was successfully processed")
 
 
+def fetch_tradingis_reports(
+    days: int = 14,
+    output_dir: str = "./examples/NEM_data/tradingis_reports",
+) -> None:
+    """Fetch recent TradingIS reports from rolling 14-day window.
+
+    This example demonstrates:
+    - Fetching PUBLIC_TRADINGIS data from the rolling 14-day window
+    - Parsing multi-table CSV format (PRICE + INTERCONNECTORRES)
+    - Exploring the structure of TradingIS data
+    - Saving the processed data
+
+    Args:
+        days: Number of days to fetch (default: 14, max available on server)
+        output_dir: Directory to save output files
+            (default: "./examples/NEM_data/tradingis_reports")
+
+    """
+    print(f"\nExample: Fetching TradingIS reports (last {days} days)")
+
+    # Create output directory
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+    except Exception as e:
+        print(f"Error creating output directory: {e}")
+        return
+
+    try:
+        # Fetch TradingIS data from rolling window
+        # Note: start_date/end_date are not used for REPORTS_CURRENT
+        data = ndt.fetch_data(
+            data_type="PUBLIC_TRADINGIS",
+            start_date="2025/01/01",  # Not used for rolling window
+            end_date="2025/12/31",  # Not used for rolling window
+            days=days,  # Fetch last N days
+            cache_path="./cache",
+            delay=0.5,  # 0.5 second delay between requests
+        )
+
+        if data is None or data.empty:
+            print("Error: No TradingIS data fetched")
+            return
+
+        print(f"\nFetched TradingIS data shape: {data.shape}")
+        print(f"Columns: {data.columns.tolist()}")
+
+        # Show which tables are included
+        if "TABLE_NAME" in data.columns:
+            table_counts = data["TABLE_NAME"].value_counts()
+            print("\nTables included:")
+            for table_name, count in table_counts.items():
+                print(f"  - {table_name}: {count} rows")
+
+        # Show date range
+        if "SETTLEMENTDATE" in data.columns:
+            date_col = "SETTLEMENTDATE"
+        elif data.index.name == "SETTLEMENTDATE":
+            data = data.reset_index()
+            date_col = "SETTLEMENTDATE"
+        else:
+            date_col = None
+
+        if date_col:
+            data[date_col] = pd.to_datetime(data[date_col])
+            print(f"\nDate range: {data[date_col].min()} to {data[date_col].max()}")
+
+        # Show sample data
+        print("\nSample data (first 5 rows):")
+        print(data.head())
+
+        # Separate tables if TABLE_NAME column exists
+        if "TABLE_NAME" in data.columns:
+            tables = {}
+            for table_name in data["TABLE_NAME"].unique():
+                tables[table_name] = data[data["TABLE_NAME"] == table_name].copy()
+
+            # Process PRICE table
+            if "PRICE" in tables:
+                price_data = tables["PRICE"]
+                print("\n--- PRICE Table ---")
+                print(f"Shape: {price_data.shape}")
+                print(f"Columns: {price_data.columns.tolist()}")
+
+                # Show regional price summary
+                if "REGIONID" in price_data.columns and "RRP" in price_data.columns:
+                    print("\nPrice summary by region:")
+                    price_summary = (
+                        price_data.groupby("REGIONID")["RRP"]
+                        .agg(
+                            ["count", "mean", "min", "max"],
+                        )
+                        .round(2)
+                    )
+                    print(price_summary)
+
+                # Save PRICE data
+                price_file = os.path.join(output_dir, "tradingis_price.csv")
+                price_data.to_csv(price_file, index=False)
+                print(f"\nSaved PRICE table to {price_file}")
+
+            # Process INTERCONNECTORRES table
+            if "INTERCONNECTORRES" in tables:
+                interconnector_data = tables["INTERCONNECTORRES"]
+                print("\n--- INTERCONNECTORRES Table ---")
+                print(f"Shape: {interconnector_data.shape}")
+                print(f"Columns: {interconnector_data.columns.tolist()}")
+
+                # Show interconnector flow summary
+                if (
+                    "INTERCONNECTORID" in interconnector_data.columns
+                    and "MWFLOW" in interconnector_data.columns
+                ):
+                    print("\nFlow summary by interconnector:")
+                    flow_summary = (
+                        interconnector_data.groupby("INTERCONNECTORID")["MWFLOW"]
+                        .agg(
+                            ["count", "mean", "min", "max"],
+                        )
+                        .round(2)
+                    )
+                    print(flow_summary)
+
+                # Save INTERCONNECTORRES data
+                interconnector_file = os.path.join(
+                    output_dir,
+                    "tradingis_interconnector.csv",
+                )
+                interconnector_data.to_csv(interconnector_file, index=False)
+                print(f"\nSaved INTERCONNECTORRES table to {interconnector_file}")
+
+        # Save combined data
+        combined_file = os.path.join(output_dir, "tradingis_combined.csv")
+        data.to_csv(combined_file, index=False)
+        print(f"\nSaved combined data to {combined_file}")
+
+    except Exception as e:
+        print(f"Error fetching TradingIS data: {e}")
+        import traceback
+
+        traceback.print_exc()
+
+
 if __name__ == "__main__":
+    # Enable logging with WARNING level (less verbose with progress bar)
+    import logging
+
+    logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
+
     # Create cache directory
     os.makedirs("./cache", exist_ok=True)
 
@@ -861,27 +955,33 @@ if __name__ == "__main__":
     # Run examples
     # resample_price_data_by_region(
     #     start_date="2021/01/01",
-    #     end_date="2024/12/31",
+    #     end_date="2025/08/01",
     #     regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
     #     output_dir="./examples/NEM_data/price_data",
     # )
     # resample_demand_data_by_region(
     #     start_date="2021/01/01",
-    #     end_date="2024/12/31",
+    #     end_date="2025/08/01",
     #     regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
     #     output_dir="./examples/NEM_data/demand_data",
     # )
     # combine_price_and_demand(
     #     start_date="2021/01/01",
-    #     end_date="2024/12/31",
+    #     end_date="2025/08/01",
     #     regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
     #     output_dir="./examples/NEM_data/price_demand",
     # )
-    process_predispatch_price_data(
-        start_date="2024/01/01",
-        end_date="2024/12/31",
-        regions=["NSW1", "QLD1", "SA1", "TAS1", "VIC1"],
-        output_dir="./examples/NEM_data/predispatch_data",
+    # process_predispatch_price_data(
+    #     start_date="2024/01/01",
+    #     end_date="2025/08/01",
+    #     regions=["QLD1"],
+    #     output_dir="./examples/NEM_data/predispatch_data",
+    # )
+
+    # Example: Fetch TradingIS reports from rolling 14-day window
+    fetch_tradingis_reports(
+        days=14,
+        output_dir="./examples/NEM_data/tradingis_reports",
     )
 
     print("\nAll examples completed!")

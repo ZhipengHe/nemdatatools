@@ -22,8 +22,8 @@ def example_1_basic_download() -> None:
     # Download price data for a specific period
     data = ndt.fetch_data(
         data_type="DISPATCHPRICE",
-        start_date="2023/01/01",
-        end_date="2023/01/07",
+        start_date="2021/01/01",
+        end_date="2025/08/01",
         regions=["NSW1", "VIC1"],
         cache_path="./cache",
     )
@@ -510,7 +510,7 @@ if __name__ == "__main__":
         exit(1)
 
     # Run examples
-    # example_1_basic_download()
+    example_1_basic_download()
     # example_2_price_and_demand()
     # example_3_batch_download()
     # example_4_parallel_yearly_download()

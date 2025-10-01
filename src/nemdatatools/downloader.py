@@ -6,12 +6,16 @@ the Australian Energy Market Operator (AEMO).
 
 import logging
 import os
+import re
 import secrets
 import time
 import zipfile
+from datetime import timedelta
 
 import pandas as pd
 import requests
+from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 from nemdatatools import cache, processor, timeutils
 from nemdatatools.data_source import (
@@ -88,7 +92,7 @@ def download_file(
     timeout: int = REQUEST_TIMEOUT,
     chunk_size: int = 8192,
     max_retries: int = MAX_RETRIES,
-    delay: int = DEFAULT_DELAY,
+    delay: float = DEFAULT_DELAY,
 ) -> bool:
     """Download a file from a URL with retries and error handling.
 
@@ -217,7 +221,7 @@ def download_mmsdm_data(
     end_date: str,
     output_dir: str = "data/aemo_data",
     extract: bool = True,
-    delay: int = DEFAULT_DELAY,
+    delay: float = DEFAULT_DELAY,
     overwrite: bool = False,
 ) -> list[str]:
     """Download MMSDM data for a specific table and date range.
@@ -320,7 +324,7 @@ def download_price_and_demand(
     end_date: str,
     regions: list[str] | None = None,
     output_dir: str = "data/aemo_data",
-    delay: int = DEFAULT_DELAY,
+    delay: float = DEFAULT_DELAY,
     overwrite: bool = False,
 ) -> list[str]:
     """Download Price and Demand data for specified regions and date range.
@@ -445,20 +449,22 @@ def fetch_data(
     regions: list[str] | None = None,
     cache_path: str | None = None,
     download_dir: str = "data/aemo_data",
-    delay: int = DEFAULT_DELAY,
+    delay: float = DEFAULT_DELAY,
     overwrite: bool = False,
+    days: int = 14,
 ) -> pd.DataFrame:
     """Download and process data from AEMO.
 
     Args:
         data_type: Type of data to download
-        start_date: Start date in format YYYY/MM/DD
-        end_date: End date in format YYYY/MM/DD
+        start_date: Start date in format YYYY/MM/DD (not used for REPORTS_CURRENT)
+        end_date: End date in format YYYY/MM/DD (not used for REPORTS_CURRENT)
         regions: List of regions to include (optional)
         cache_path: Path to cache downloaded data (optional)
         download_dir: Directory to save downloaded files
         delay: Delay between requests in seconds
         overwrite: Whether to overwrite existing files
+        days: Number of days to look back for REPORTS_CURRENT (default 14)
 
     Returns:
         DataFrame with requested data
@@ -499,6 +505,8 @@ def fetch_data(
 
     if source in [DataSource.MMSDM, DataSource.MMSDM_PREDISP, DataSource.MMSDM_P5MIN]:
         # Download MMSDM data
+        # TODO: Refactor to use _parse_aemo_csv() instead of
+        # mmsdm_helper.read_mmsdm_csv() for consistent C/I/D format parsing
         downloaded_files = download_mmsdm_data(
             data_type,
             start_date,
@@ -520,6 +528,8 @@ def fetch_data(
 
     elif source == DataSource.PRICE_AND_DEMAND:
         # Download Price and Demand data
+        # TODO: Evaluate if PRICE_AND_DEMAND uses C/I/D format and needs
+        # _parse_aemo_csv()
         downloaded_files = download_price_and_demand(
             start_date,
             end_date,
@@ -540,6 +550,60 @@ def fetch_data(
                     logger.error(f"Error processing {file_path}: {e}")
 
         if all_data:
+            data = pd.concat(all_data, ignore_index=True)
+
+            # Filter by date range if appropriate column exists
+            if "SETTLEMENTDATE" in data.columns:
+                data["SETTLEMENTDATE"] = pd.to_datetime(data["SETTLEMENTDATE"])
+                data = data[
+                    (data["SETTLEMENTDATE"] >= start_dt)
+                    & (data["SETTLEMENTDATE"] <= end_dt)
+                ]
+
+    elif source == DataSource.REPORTS_CURRENT:
+        # Download REPORTS/CURRENT data (rolling window)
+        # Note: start_date/end_date not applicable, uses 'days' parameter
+        downloaded_files = download_reports_current(
+            data_type,
+            output_dir=type_dir,
+            days=days,
+            delay=delay,
+            overwrite=overwrite,
+        )
+
+        # Process downloaded files using new C/I/D format parser
+        all_data = []
+        for file_path in downloaded_files:
+            if file_path.endswith(".zip"):
+                # Extract and read CSV from zip
+                extract_dir = os.path.join(type_dir, "extracted")
+                os.makedirs(extract_dir, exist_ok=True)
+
+                try:
+                    with zipfile.ZipFile(file_path, "r") as zip_ref:
+                        # Get CSV file from zip (usually first CSV file)
+                        csv_files = [
+                            f for f in zip_ref.namelist() if f.lower().endswith(".csv")
+                        ]
+                        if csv_files:
+                            csv_file = csv_files[0]
+                            csv_path = zip_ref.extract(csv_file, extract_dir)
+
+                            # Use new parser to handle multi-table C/I/D format
+                            tables = _parse_aemo_csv(csv_path)
+
+                            # Combine all tables into single DataFrame
+                            # (e.g., TradingIS has PRICE + INTERCONNECTORRES)
+                            if tables:
+                                for table_name, table_df in tables.items():
+                                    # Add table identifier for reference
+                                    table_df["TABLE_NAME"] = table_name
+                                    all_data.append(table_df)
+                except Exception as e:
+                    logger.error(f"Error processing {file_path}: {e}")
+
+        if all_data:
+            # Concatenate all tables from all files
             data = pd.concat(all_data, ignore_index=True)
 
             # Filter by date range if appropriate column exists
@@ -622,7 +686,7 @@ def download_all_regions(
     start_date: str,
     end_date: str,
     download_dir: str = "data/aemo_data",
-    delay: int = DEFAULT_DELAY,
+    delay: float = DEFAULT_DELAY,
     overwrite: bool = False,
 ) -> dict[str, list[str]]:
     """Download data for all regions and return dictionary of file paths.
@@ -677,3 +741,307 @@ def download_all_regions(
         result[region] = files
 
     return result
+
+
+def _parse_aemo_csv(csv_path: str) -> dict[str, pd.DataFrame]:
+    """Parse AEMO CSV file containing one or more tables in C/I/D format.
+
+    AEMO CSV files use a standard format:
+    C,<comment/header line>
+    I,<record_type>,<table_name>,<version>,<col1>,<col2>,...
+    D,<record_type>,<table_name>,<version>,<val1>,<val2>,...
+
+    This handles two situations:
+    - Single table: Returns dict with one table (e.g., most MMSDM files)
+    - Multiple tables: Returns dict with multiple tables (e.g., TradingIS reports)
+
+    Args:
+        csv_path: Path to the CSV file
+
+    Returns:
+        Dictionary mapping table names to DataFrames
+        For single table files, dict will have one entry
+        For multi-table files (like TradingIS), dict will have multiple entries
+
+    """
+    tables = {}
+    current_table = None
+    current_columns = None
+    current_rows: list[list[str]] = []
+
+    try:
+        with open(csv_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+
+                parts = line.split(",")
+                record_type = parts[0]
+
+                if record_type == "C":
+                    # Comment/header line - skip
+                    continue
+
+                elif record_type == "I":
+                    # Column definition line
+                    # Save previous table if exists
+                    if current_table and current_rows:
+                        tables[current_table] = pd.DataFrame(
+                            current_rows,
+                            columns=current_columns,
+                        )
+
+                    # Start new table
+                    # Format: I,<record_type>,<table_name>,<version>,<columns...>
+                    current_table = parts[2]  # Table name
+                    current_columns = parts[4:]  # Column names start at index 4
+                    current_rows = []
+
+                elif record_type == "D":
+                    # Data line
+                    if current_columns:
+                        # Format: D,<record_type>,<table_name>,<version>,<values...>
+                        # Extract data values (skip first 4 fields)
+                        values = parts[4 : 4 + len(current_columns)]
+                        # Remove quotes from values
+                        values = [v.strip('"') for v in values]
+                        current_rows.append(values)
+
+        # Save last table
+        if current_table and current_rows:
+            tables[current_table] = pd.DataFrame(current_rows, columns=current_columns)
+
+        logger.info(
+            f"Parsed {len(tables)} table(s) from {csv_path}: {list(tables.keys())}",
+        )
+        return tables
+
+    except Exception as e:
+        logger.error(f"Error parsing AEMO CSV {csv_path}: {e}")
+        return {}
+
+
+def scrape_reports_current_directory(
+    url: str,
+    days: int = 14,
+    file_pattern: str | None = None,
+) -> list[dict]:
+    """Scrape a REPORTS/CURRENT directory listing to get file URLs.
+
+    Args:
+        url: URL of the directory listing page
+        days: Number of days to look back (default 14)
+        file_pattern: Optional regex pattern to filter files
+
+    Returns:
+        List of dicts with 'filename', 'url', and 'datetime' keys
+
+    """
+    try:
+        headers = get_random_headers()
+        response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        logger.info(f"Scraping {url} for files from last {days} days")
+
+        all_links = soup.find_all("a")
+        logger.info(f"Found {len(all_links)} total links on page")
+
+        # First pass: extract all file timestamps to find the most recent
+        from datetime import datetime as dt
+
+        file_timestamps = []
+
+        # Debug: show sample hrefs
+        sample_shown = 0
+        for link in all_links:
+            href = link.get("href")
+            if href and "TRADINGIS" in href and sample_shown < 5:
+                logger.info(f"Sample href: {href!r}")
+                sample_shown += 1
+
+        matched_count = 0
+        for link in all_links:
+            href = link.get("href")
+            if not href or href.startswith("?") or href == "/REPORTS/CURRENT/":
+                continue
+
+            # Extract datetime from filename
+            # Format is YYYYMMDDHHMM (12 digits), not YYYYMMDDHHMMSS (14 digits)
+            datetime_match = re.search(r"PUBLIC_TRADINGIS_(\d{12})_", href)
+            if datetime_match:
+                matched_count += 1
+                if matched_count <= 3:
+                    logger.info(
+                        f"Regex matched! href={href!r}, "
+                        f"extracted={datetime_match.group(1)}",
+                    )
+                datetime_str = datetime_match.group(1)
+                try:
+                    file_datetime = dt.strptime(datetime_str, "%Y%m%d%H%M")
+                    file_timestamps.append((href, file_datetime))
+                except (ValueError, AttributeError) as e:
+                    logger.warning(f"Failed to parse datetime {datetime_str}: {e}")
+                    continue
+
+        logger.info(f"Total files with matching timestamps: {matched_count}")
+
+        if not file_timestamps:
+            logger.warning("No TradingIS files found in directory listing")
+            return []
+
+        # Find the most recent file timestamp
+        newest_file_datetime = max(ts[1] for ts in file_timestamps)
+        logger.info(f"Most recent file timestamp: {newest_file_datetime}")
+
+        # Calculate cutoff based on newest file
+        cutoff_date = newest_file_datetime - timedelta(days=days)
+        logger.info(f"Cutoff date (newest - {days} days): {cutoff_date}")
+
+        # Second pass: filter files within the rolling window
+        files = []
+        for href, file_datetime in file_timestamps:
+            # Check if file is within the rolling window
+            if file_datetime >= cutoff_date:
+                # Apply file pattern filter if specified
+                if file_pattern is None or re.search(file_pattern, href):
+                    # href is already an absolute path starting with /
+                    # Extract base URL from the directory URL
+                    from urllib.parse import urlparse
+
+                    parsed = urlparse(url)
+                    file_url = f"{parsed.scheme}://{parsed.netloc}{href}"
+
+                    files.append(
+                        {
+                            "filename": href,
+                            "url": file_url,
+                            "datetime": file_datetime,
+                        },
+                    )
+                else:
+                    logger.debug(f"Skipped (pattern mismatch): {href}")
+
+        # Sort by datetime (newest first)
+        files.sort(key=lambda x: x["datetime"], reverse=True)
+
+        logger.info(f"Found {len(files)} files in the last {days} days")
+        return files
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Failed to scrape directory {url}: {e}")
+        return []
+    except Exception as e:
+        logger.error(f"Error parsing directory listing: {e}")
+        import traceback
+
+        logger.error(traceback.format_exc())
+        return []
+
+
+def download_reports_current(
+    report_type: str,
+    output_dir: str = "data/aemo_data",
+    days: int = 14,
+    delay: float = DEFAULT_DELAY,
+    overwrite: bool = False,
+) -> list[str]:
+    """Download REPORTS/CURRENT data for a specific report type.
+
+    Args:
+        report_type: Type of report (e.g., 'PUBLIC_TRADINGIS')
+        output_dir: Directory to save files
+        days: Number of days to look back (default 14)
+        delay: Delay between requests in seconds
+        overwrite: Whether to overwrite existing files
+
+    Returns:
+        List of downloaded file paths
+
+    """
+    # Define report-specific configurations
+    report_configs = {
+        "PUBLIC_TRADINGIS": {
+            "url": "https://www.nemweb.com.au/REPORTS/CURRENT/TradingIS_Reports/",
+            "pattern": r"PUBLIC_TRADINGIS_\d{12}_\d+\.zip",  # 12 digits: YYYYMMDDHHMM
+        },
+    }
+
+    if report_type not in report_configs:
+        logger.error(f"Unsupported report type: {report_type}")
+        return []
+
+    config = report_configs[report_type]
+
+    # Create output directory (output_dir already includes report_type from caller)
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Scrape directory listing
+    files = scrape_reports_current_directory(
+        config["url"],
+        days=days,
+        file_pattern=config.get("pattern"),
+    )
+
+    downloaded_files = []
+
+    # Count existing files first
+    existing_count = sum(
+        1
+        for f in files
+        if os.path.exists(os.path.join(output_dir, os.path.basename(f["filename"])))
+    )
+    files_to_download = len(files) - existing_count
+
+    logger.info(
+        f"Found {existing_count} existing files, "
+        f"downloading {files_to_download} new files...",
+    )
+
+    # Download files sequentially with progress bar
+    skipped = 0
+    downloaded = 0
+    failed = 0
+
+    with tqdm(total=len(files), desc="Processing files", unit="file") as pbar:
+        for file_info in files:
+            filename = file_info["filename"]
+            file_url = file_info["url"]
+
+            # Extract just the base filename (remove path)
+            base_filename = os.path.basename(filename)
+            output_path = os.path.join(output_dir, base_filename)
+
+            # Skip if already exists and not overwriting
+            if not overwrite and os.path.exists(output_path):
+                downloaded_files.append(output_path)
+                skipped += 1
+                pbar.set_postfix(
+                    {"downloaded": downloaded, "skipped": skipped, "failed": failed},
+                )
+                pbar.update(1)
+                continue
+
+            # Download file
+            if download_file(file_url, output_path, delay=0):
+                downloaded_files.append(output_path)
+                downloaded += 1
+            else:
+                failed += 1
+
+            pbar.set_postfix(
+                {"downloaded": downloaded, "skipped": skipped, "failed": failed},
+            )
+            pbar.update(1)
+
+            # Be polite to the server
+            if delay > 0:
+                time.sleep(delay)
+
+    logger.info(
+        f"Successfully downloaded/found {len(downloaded_files)}/{len(files)} files",
+    )
+    return downloaded_files

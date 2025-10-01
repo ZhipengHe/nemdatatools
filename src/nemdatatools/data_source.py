@@ -227,4 +227,11 @@ DATA_CONFIG: Final[dict[str, DataConfigEntry]] = {
         "parser_function": "_parse_region_boundaries",
         "description": "NEM region boundaries information",
     },
+    # Current Reports - TradingIS
+    "PUBLIC_TRADINGIS": {
+        "source": DataSource.REPORTS_CURRENT,
+        "format": "zip",
+        "parser_function": "_parse_public_tradingis",
+        "description": "Public Trading Interval Summary reports (rolling 14 days)",
+    },
 }
