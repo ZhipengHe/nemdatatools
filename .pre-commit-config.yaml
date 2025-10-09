@@ -45,6 +45,10 @@ repos:
         additional_dependencies: [types-requests>=2.32.0]
         exclude: "tests/"
         args: ["--ignore-missing-imports"]
+        pass_filenames: false
+        # Run on entire src directory like CI does
+        files: ^src/
+        entry: bash -c 'mypy src/nemdatatools --ignore-missing-imports'
 
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.20.0

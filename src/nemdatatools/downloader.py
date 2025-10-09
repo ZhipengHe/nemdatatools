@@ -853,7 +853,7 @@ def scrape_reports_current_directory(
         # First pass: extract all file timestamps to find the most recent
         from datetime import datetime as dt
 
-        file_timestamps = []
+        file_timestamps: list[tuple[str, dt]] = []
 
         # Debug: show sample hrefs
         sample_shown = 0
@@ -866,6 +866,9 @@ def scrape_reports_current_directory(
         matched_count = 0
         for link in all_links:
             href = link.get("href")
+            # Type guard: ensure href is a string
+            if not isinstance(href, str):
+                continue
             if not href or href.startswith("?") or href == "/REPORTS/CURRENT/":
                 continue
 
@@ -902,7 +905,7 @@ def scrape_reports_current_directory(
         logger.info(f"Cutoff date (newest - {days} days): {cutoff_date}")
 
         # Second pass: filter files within the rolling window
-        files = []
+        files: list[dict[str, str | dt]] = []
         for href, file_datetime in file_timestamps:
             # Check if file is within the rolling window
             if file_datetime >= cutoff_date:
@@ -926,7 +929,9 @@ def scrape_reports_current_directory(
                     logger.debug(f"Skipped (pattern mismatch): {href}")
 
         # Sort by datetime (newest first)
-        files.sort(key=lambda x: x["datetime"], reverse=True)
+        from typing import cast
+
+        files.sort(key=lambda x: cast(dt, x["datetime"]), reverse=True)
 
         logger.info(f"Found {len(files)} files in the last {days} days")
         return files
