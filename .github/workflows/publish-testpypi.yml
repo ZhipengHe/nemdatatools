@@ -66,6 +66,8 @@ jobs:
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
+      # Required for uploading release assets
+      contents: write
 
     # Dedicated environments with protections for publishing are strongly recommended.
     environment:
