@@ -7,6 +7,7 @@ on:
       - 'docs/**'
       - 'src/**'
       - 'pyproject.toml'
+      - 'uv.lock'
       - 'README.md'
   pull_request:
     branches: [ master ]
@@ -14,6 +15,7 @@ on:
       - 'docs/**'
       - 'src/**'
       - 'pyproject.toml'
+      - 'uv.lock'
       - 'README.md'
   workflow_dispatch:
 
@@ -36,7 +38,11 @@ jobs:
       contents: write
 
     steps:
+    # The Pages deploy action pushes with its own token input (defaults to
+    # github.token), so the checkout credential does not need to persist.
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      with:
+        persist-credentials: false
 
     - name: Install uv and Python
       uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
