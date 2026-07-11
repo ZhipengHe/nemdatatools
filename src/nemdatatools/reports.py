@@ -26,15 +26,11 @@ logger = logging.getLogger(__name__)
 # intervals they carry (daily reports publish the following day).
 _STAMP_SLACK = datetime.timedelta(days=1)
 
-_TIMESTAMP = re.compile(r"_(\d{8,14})[_.]")
+_TIMESTAMP = re.compile(r"_(\d{8,14})(?=[_.])")
 
 
-def _stamp_of(name: str) -> datetime.datetime | None:
-    """Extract the publish timestamp embedded in a payload filename."""
-    match = _TIMESTAMP.search(name)
-    if not match:
-        return None
-    digits = match.group(1)
+def _parse_stamp(digits: str) -> datetime.datetime | None:
+    """Parse one embedded date/datetime stamp."""
     formats = {8: "%Y%m%d", 12: "%Y%m%d%H%M", 14: "%Y%m%d%H%M%S"}
     fmt = formats.get(len(digits))
     if fmt is None:
@@ -43,6 +39,25 @@ def _stamp_of(name: str) -> datetime.datetime | None:
         return datetime.datetime.strptime(digits, fmt)
     except ValueError:
         return None
+
+
+def _stamp_range(
+    name: str,
+) -> tuple[datetime.datetime, datetime.datetime] | None:
+    """Extract the coverage range stamped in a payload filename.
+
+    CURRENT payloads carry one stamp; some ARCHIVE packages bundle weekly
+    with two (``PUBLIC_TRADINGIS_20260621_20260627.zip``), where the pair
+    bounds the days the bundle covers.
+    """
+    stamps = [
+        parsed
+        for digits in _TIMESTAMP.findall(name)
+        if (parsed := _parse_stamp(digits)) is not None
+    ]
+    if not stamps:
+        return None
+    return (min(stamps), max(stamps))
 
 
 def _fetch_window(
@@ -64,11 +79,12 @@ def _fetch_window(
             continue
         if not entry.name.lower().endswith(".zip"):
             continue
-        stamp = _stamp_of(entry.name)
-        if stamp is None:
+        stamps = _stamp_range(entry.name)
+        if stamps is None:
             logger.debug("skipping unstamped file %s", entry.name)
             continue
-        if not (start - _STAMP_SLACK <= stamp <= end + _STAMP_SLACK):
+        covers_from, covers_to = stamps
+        if covers_to + _STAMP_SLACK < start or covers_from - _STAMP_SLACK > end:
             continue
         try:
             frame = cache.load_table(entry.url, spec.cid_key)
@@ -137,13 +153,13 @@ def latest_archive_stamp(
     if spec.report is None or spec.report.archive_package is None:
         return None
     url = f"{BASE_URL}/Reports/Archive/{spec.report.archive_package}/"
-    stamps = [
-        stamp
+    coverage_ends = [
+        stamps[1]
         for entry in list_directory(url, session=cache.session)
         if entry.name.startswith(spec.report.file_prefix)
-        and (stamp := _stamp_of(entry.name)) is not None
+        and (stamps := _stamp_range(entry.name)) is not None
     ]
-    return max(stamps, default=None)
+    return max(coverage_ends, default=None)
 
 
 def fetch_archive(
