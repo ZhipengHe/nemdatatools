@@ -57,7 +57,7 @@ resolution = "highest"
 upgrade-strategy = "eager"
 
 [venv]
-python = "3.10"  # Specify your preferred Python version
+python = "3.11"  # Specify your preferred Python version
 ```
 
 ### 2. `pyproject.toml`

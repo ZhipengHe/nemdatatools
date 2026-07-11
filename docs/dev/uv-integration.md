@@ -61,7 +61,7 @@ resolution = "highest"
 upgrade-strategy = "eager"
 
 [venv]
-python = "3.10"  # Specify your preferred Python version
+python = "3.11"  # Specify your preferred Python version
 ```
 
 ## Development Workflow with UV
@@ -117,7 +117,7 @@ For GitHub Actions, include these steps in your workflow file:
 - name: Set up Python
   uses: actions/setup-python@v4
   with:
-    python-version: '3.10'
+    python-version: '3.11'
 
 - name: Install UV
   run: pip install uv

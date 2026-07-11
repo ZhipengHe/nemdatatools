@@ -29,7 +29,7 @@ the substitute table instead of returning silently partial data.
 pip install nemdatatools
 ```
 
-Requires Python 3.10+. Dependencies: pandas, pyarrow, requests,
+Requires Python 3.11+. Dependencies: pandas, pyarrow, requests,
 beautifulsoup4.
 
 ## Quick start
