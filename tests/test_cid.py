@@ -3,6 +3,8 @@
 import io
 from pathlib import Path
 
+import pandas as pd
+
 from nemdatatools.cid import TableKey, parse_cid
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -28,8 +30,10 @@ class TestRealTradingIsFile:
         tables = {t.key.table: t for t in parse_cid(FIXTURES / "tradingis_sample.csv")}
         price = tables["PRICE"].frame
         assert price["RRP"].dtype.kind == "f"
-        # Timestamps stay as strings for the caller to parse.
-        assert price["SETTLEMENTDATE"].dtype == object
+        # Timestamps stay string-like for the caller to parse (object on
+        # pandas 2, str dtype on pandas 3 — never numeric).
+        assert pd.api.types.is_string_dtype(price["SETTLEMENTDATE"])
+        assert not pd.api.types.is_numeric_dtype(price["SETTLEMENTDATE"])
 
     def test_version_captured(self) -> None:
         """Schema version from the I row is preserved."""

@@ -67,18 +67,45 @@ def resample(
         numeric = frame.select_dtypes("number").columns
         targets = {c: agg for c in numeric if c not in group_cols}
 
+    # Trading-day alignment is done by shifting the index rather than via
+    # Grouper's offset parameter, whose semantics changed in pandas 3.0;
+    # the shift is equivalent and behaves the same on pandas 2 and 3.
+    shift = pd.Timedelta(TRADING_DAY_OFFSET) if trading_day else None
+    work = frame if shift is None else frame.set_axis(frame.index - shift)
     grouper = pd.Grouper(
         level=frame.index.name or 0,
         freq=rule,
         closed="right",
         label="right",
-        offset=TRADING_DAY_OFFSET if trading_day else None,
     )
     # dropna=False keeps rows whose entity id is missing as their own
     # group instead of silently discarding them.
-    grouped = frame.groupby([*group_cols, grouper], dropna=False)
+    grouped = work.groupby([*group_cols, grouper], dropna=False)
     result = grouped.agg(targets).reset_index(group_cols)
-    return result
+    if shift is not None:
+        result.index = result.index + shift
+    return _trim_empty_edge_buckets(result, list(targets))
+
+
+def _trim_empty_edge_buckets(
+    result: pd.DataFrame,
+    value_columns: list[str],
+) -> pd.DataFrame:
+    """Drop leading/trailing buckets that contain no observations.
+
+    pandas 3 emits an empty right-closed bin before the first observation
+    where pandas 2 trims it; normalising here keeps output identical
+    across versions. Interior empty buckets are kept — they are real
+    holes in the data, not binning artifacts.
+    """
+    if result.empty or not value_columns:
+        return result
+    populated = result[value_columns].notna().any(axis=1)
+    labels_with_data = populated.groupby(level=0).any()
+    valid = labels_with_data[labels_with_data].index
+    if valid.empty or len(valid) == len(labels_with_data):
+        return result
+    return result.loc[(result.index >= valid.min()) & (result.index <= valid.max())]
 
 
 def _is_daily_or_coarser(rule: str) -> bool:
