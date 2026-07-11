@@ -14,6 +14,7 @@ import logging
 import re
 
 import pandas as pd
+import requests
 
 from nemdatatools.cache import Cache
 from nemdatatools.catalog import TableSpec
@@ -69,7 +70,14 @@ def _fetch_window(
             continue
         if not (start - _STAMP_SLACK <= stamp <= end + _STAMP_SLACK):
             continue
-        frame = cache.load_table(entry.url, spec.cid_key)
+        try:
+            frame = cache.load_table(entry.url, spec.cid_key)
+        except requests.HTTPError as exc:
+            # Files at the edge of the rolling retention window can vanish
+            # between listing and download; their rows are served by the
+            # ARCHIVE tier, so skip rather than fail the whole request.
+            logger.warning("skipping %s: %s", entry.name, exc)
+            continue
         if not frame.empty:
             frames.append(frame)
     if not frames:
@@ -106,6 +114,36 @@ def fetch_current(
         end,
         cache,
     )
+
+
+def latest_archive_stamp(
+    spec: TableSpec,
+    cache: Cache,
+) -> datetime.datetime | None:
+    """Return the newest daily-bundle date stamp in the ARCHIVE package.
+
+    Used by the router to avoid re-downloading days from CURRENT that the
+    ARCHIVE tier already covers.
+
+    Args:
+        spec: Table whose archive package to inspect.
+        cache: Provides the HTTP session.
+
+    Returns:
+        The newest bundle stamp, or None when the package is empty or the
+        table has no archive location.
+
+    """
+    if spec.report is None or spec.report.archive_package is None:
+        return None
+    url = f"{BASE_URL}/Reports/Archive/{spec.report.archive_package}/"
+    stamps = [
+        stamp
+        for entry in list_directory(url, session=cache.session)
+        if entry.name.startswith(spec.report.file_prefix)
+        and (stamp := _stamp_of(entry.name)) is not None
+    ]
+    return max(stamps, default=None)
 
 
 def fetch_archive(

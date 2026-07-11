@@ -80,9 +80,18 @@ def fetch(
                 "the table has no Reports package; retry once AEMO "
                 "publishes the next monthly snapshot.",
             )
+        current_start = rem_start
         if spec.report.archive_package is not None:
             frames.append(reports.fetch_archive(spec, rem_start, end_dt, cache))
-        frames.append(reports.fetch_current(spec, rem_start, end_dt, cache))
+            # A bundle stamped with a date covers that whole day, so CURRENT
+            # only needs to serve days newer than the newest bundle.
+            newest_bundle = reports.latest_archive_stamp(spec, cache)
+            if newest_bundle is not None:
+                current_start = max(rem_start, newest_bundle)
+        if current_start <= end_dt:
+            frames.append(
+                reports.fetch_current(spec, current_start, end_dt, cache),
+            )
 
     frames = [f for f in frames if not f.empty]
     if not frames:

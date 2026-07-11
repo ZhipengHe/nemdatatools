@@ -1,181 +1,105 @@
 # NEMDataTools
 
-An MIT-licensed Python package for accessing and preprocessing data from the Australian Energy Market Operator (AEMO) for the National Electricity Market (NEM).
+An MIT-licensed Python package for accessing and preprocessing Australian
+Energy Market Operator (AEMO) data for the National Electricity Market (NEM).
 
-## Overview
+## How it works
 
-NEMDataTools provides a clean, efficient interface for:
-- Downloading raw data from AEMO's public data sources
-- Processing various AEMO data formats
-- Managing time series data with appropriate timestamps
-- Supporting multiple data tables and report types
-- Delivering preprocessed data ready for analysis
+AEMO publishes the same market data at three ages, and NEMDataTools models
+that system directly instead of hard-coding one source per table:
 
-This package is designed for researchers, analysts, and developers who need to work with AEMO data under a permissive MIT license.
+| Tier | Location | Granularity | Retention |
+|------|----------|-------------|-----------|
+| Reports CURRENT | `nemweb.com.au/Reports/Current/` | one file per event | rolling days (varies per package) |
+| Reports ARCHIVE | `nemweb.com.au/Reports/Archive/` | daily bundles | ~13 months |
+| MMSDM Data Archive | `nemweb.com.au/Data_Archive/` | monthly snapshots | 2009 → ~6 weeks ago |
+
+One `fetch()` call stitches whichever tiers a date range needs. Remote files
+are discovered by reading directory listings and pattern-matching — never by
+constructing filenames — so AEMO's filename-format changes (such as the
+August 2024 `PUBLIC_DVD_*` → `PUBLIC_ARCHIVE#*` switch) and multi-part
+archives are handled transparently, including all `FILEnn` parts of large
+tables. Known holes in a table's history (for example the bid tables removed
+at the 2021 five-minute-settlement transition) raise a clear error naming
+the substitute table instead of returning silently partial data.
 
 ## Installation
-
-### From PyPI (Recommended)
 
 ```bash
 pip install nemdatatools
 ```
 
-### From TestPyPI (Pre-releases)
+Requires Python 3.10+. Dependencies: pandas, pyarrow, requests,
+beautifulsoup4.
 
-```bash
-pip install --index-url https://test.pypi.org/simple/ nemdatatools
-```
-
-### From Source (Development)
-
-```bash
-# Clone the repository
-git clone https://github.com/ZhipengHe/nemdatatools.git
-cd nemdatatools
-
-# Install in development mode with all dependencies
-pip install -e ".[dev,docs]"
-
-# Or install just the core package
-pip install -e .
-```
-
-### Requirements
-
-- Python 3.10 or higher
-- pandas, numpy, requests, pyarrow, tqdm
-
-## Quick Start
+## Quick start
 
 ```python
 import nemdatatools as ndt
 
-# Download and process dispatch price data with automatic caching
-data = ndt.fetch_data(
-    data_type="DISPATCHPRICE",
-    start_date="2023/01/01",
-    end_date="2023/01/02",
-    regions=["NSW1", "VIC1"],
-    cache_path="./cache"  # Enable local caching
+# One call, any range — tiers are stitched automatically.
+prices = ndt.fetch(
+    "DISPATCHPRICE",
+    "2020/01/01",
+    "2026/07/01",
+    regions=["QLD1"],
 )
 
-# Data is already processed and standardized
-print(f"Downloaded {len(data)} records")
-print(data.head())
+# Interval-ending-aware resampling: the 00:30 bucket aggregates the six
+# 5-minute rows stamped 00:05..00:30, matching AEMO's own convention.
+half_hourly = ndt.resample(prices[["RRP"]], "30min")
 
-# Advanced analysis with built-in functions
-stats = ndt.calculate_price_statistics(data)
-resampled = ndt.resample_data(data, '1H')  # Resample to hourly
-windows = ndt.create_time_windows(data, window_size='4H')  # 4-hour windows
+# Frames holding several regions/units must be grouped explicitly:
+all_regions = ndt.fetch("DISPATCHPRICE", "2026/06/01", "2026/06/07")
+daily = ndt.resample(all_regions, "1D", by="REGIONID", trading_day=True)
+
+# Aggregated price+demand CSVs (aemo.com.au visualisation service):
+pd_data = ndt.fetch_price_and_demand("2024/01/01", "2024/12/31", ["NSW1"])
+
+# Discovery:
+ndt.tables()                        # curated table names
+ndt.availability("BIDPEROFFER_D")   # tier locations + known gaps
+
+# Escape hatch: any of the ~236 MMSDM tables, era-aware, all parts:
+gencon = ndt.fetch_mmsdm_table("GENCONDATA", "2026/05/01", "2026/05/31")
 ```
 
-## Core Features
+All datetimes are naive **NEM time** (fixed UTC+10, no daylight saving);
+timezone-aware datetimes are rejected rather than silently converted. AEMO
+timestamps mark the **end** of the interval they describe.
 
-- **🚀 Complete Data Pipeline**: Download → Extract → Process → Cache → Analyze in one API call
-- **📊 Core Data Types**: MMSDM dispatch data, pre-dispatch forecasts, with framework for expansion
-- **⚡ Intelligent Caching**: Metadata-based local caching with configurable TTL
-- **🔄 Advanced Processing**: Data standardization, time series resampling, statistical analysis
-- **⏰ Time-Aware**: Proper AEST timezone handling and dispatch interval management
-- **🌏 Region Support**: All NEM regions (NSW1, VIC1, QLD1, SA1, TAS1) with filtering
-- **🛡️ Production Ready**: Robust error handling, retry logic, comprehensive testing
+## Curated tables
 
-## Development Status
+`fetch()` accepts curated tables spanning four families; each is wired to
+its locations in every tier and era:
 
-NEMDataTools has reached **production readiness** with core functionality complete and thoroughly tested.
+- **Prices & demand** — `DISPATCHPRICE`, `TRADINGPRICE`,
+  `DISPATCHREGIONSUM`, `TRADINGINTERCONNECT`, `DISPATCHINTERCONNECTORRES`
+- **Generation & SCADA** — `DISPATCH_UNIT_SCADA`, `DISPATCHLOAD`,
+  `ROOFTOP_PV_ACTUAL`
+- **Forecasts** — `P5MIN_REGIONSOLUTION`, `P5MIN_INTERCONNECTORSOLN`,
+  `PREDISPATCHPRICE`, `PREDISPATCHREGIONSUM`, `PREDISPATCHLOAD`
+- **Bids & offers** — `BIDDAYOFFER_D`, `BIDPEROFFER_D`, `BIDDAYOFFER`,
+  `BIDPEROFFER` (plus pre-2021 `TRADINGREGIONSUM` for history)
 
-### ✅ **Completed Features**
+Every other MMSDM table is reachable through `fetch_mmsdm_table()`.
 
-- [x] **Complete Data Pipeline**
-    - [x] Multi-source data downloading (MMSDM, pre-dispatch, static)
-    - [x] ZIP file extraction and CSV processing
-    - [x] Intelligent caching with metadata management
-    - [x] End-to-end data standardization and validation
+## Caching
 
-- [x] **Advanced Processing Capabilities**
-    - [x] Time series resampling and statistical analysis
-    - [x] Price and demand calculation functions
-    - [x] Time window creation for analysis
-    - [x] AEST timezone and dispatch interval handling
+Downloads land under `~/.nemdatatools/` (override with
+`ndt.Cache("path")` passed as `cache=`):
 
-- [x] **Production Infrastructure**
-    - [x] Comprehensive error handling and retry logic
-    - [x] 79 test functions with 58% coverage
-    - [x] Pre-commit hooks with Black, Ruff, MyPy
-    - [x] GitHub Actions CI/CD pipeline
-    - [x] Type annotations throughout codebase
+- `raw/` mirrors nemweb paths — full provenance, a parser fix never forces
+  a re-download;
+- `parquet/` stores parsed per-table frames, so repeat reads skip zip
+  extraction and CSV parsing entirely.
 
-### 🚧 **In Progress**
+## Data attribution
 
-- [ ] **Data Type Expansion**: Adding support for remaining MMSDM tables
-- [ ] **Documentation**: API reference and advanced usage guides
-
-### 📋 **Tested Data Types**
-
-| Data Type | Status | Description |
-|-----------|--------|-------------|
-| `DISPATCHPRICE` | ✅ Fully Tested | 5-minute dispatch prices by region |
-| `DISPATCHREGIONSUM` | ✅ Fully Tested | 5-minute regional dispatch summary |
-| `DISPATCH_UNIT_SCADA` | ✅ Fully Tested | Generator SCADA readings |
-| `PREDISPATCHPRICE` | ✅ Fully Tested | Pre-dispatch price forecasts |
-| `PRICE_AND_DEMAND` | ✅ Tested | Direct CSV price and demand data |
-| `P5MIN_REGIONSOLUTION` | ⚠️ Framework Ready | 5-minute pre-dispatch (implementation complete, testing pending) |
-| Static Data Types | ✅ Framework Ready | Registration lists and boundaries |
-
-## Documentation
-
-### Development Guide
-
-Here are some documents to help you get started with developing NEMDataTools:
-
-- **Project Planning**:
-    - [Implementation Plan](./docs/dev/implementation-plan.md): Detailed plan for implementing core modules
-    - [Project Board](./docs/dev/project-structure.md): Overview of the project structure and milestones
-- **Development Workflow**:
-    - [Quickstart with UV](./docs/dev/quickstart-with-uv.md): Setting up the development environment with Universal Viewer
-    - [UV Integration Guide](./docs/dev/uv-integration.md): Using UV for dependency management
-    - [Quickstart with Pre-Commit](./docs/dev/quickstart-with-pre-commit.md): Setting up pre-commit hooks for code quality
-    - [Commitizen Guide](./docs/dev/commitizen-guide.md): Using Commitizen for standardized commit messages
-
-### API Reference
-
-Detailed documentation is available at [Documentation (WIP)](https://zhipenghe.me/nemdatatools/).
-
-
-## API Reference
-
-### Core Functions
-
-```python
-# Main data fetching function
-data = ndt.fetch_data(
-    data_type="DISPATCHPRICE",
-    start_date="2023/01/01",
-    end_date="2023/01/02",
-    regions=["NSW1", "VIC1"],
-    cache_path="./cache"
-)
-
-# Check available data types
-available_types = ndt.get_available_data_types()
-
-# Batch operations
-ndt.download_multiple_tables(
-    tables=["DISPATCHPRICE", "DISPATCHREGIONSUM"],
-    start_date="2023/01/01",
-    end_date="2023/01/02"
-)
-
-# Advanced analysis
-stats = ndt.calculate_price_statistics(data)
-resampled = ndt.resample_data(data, '1H')
-windows = ndt.create_time_windows(data, window_size='4H')
-```
-
-## Contributing
-
-Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+Data is © AEMO and provided under AEMO's terms; this package downloads
+publicly available files and does not redistribute data. See NOTICE and
+LICENSE for details.
 
 ## License
 
-NEMDataTools is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+MIT — see [LICENSE](LICENSE).
