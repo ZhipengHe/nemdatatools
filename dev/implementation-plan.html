@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NEMDataTools Implementation Status &mdash; NEMDataTools Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://zhipenghe.me/nemdatatools/dev/implementation-plan.html" />
@@ -136,36 +136,22 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-1-install-uv">Step 1: Install UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-2-clone-and-setup-the-project">Step 2: Clone and Setup the Project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-3-create-and-activate-virtual-environment">Step 3: Create and Activate Virtual Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-4-setup-configuration-files">Step 4: Setup Configuration Files</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="quickstart-with-uv.html#uv-toml">1. <code class="docutils literal notranslate"><span class="pre">.uv.toml</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart-with-uv.html#pyproject-toml">2. <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-5-install-dependencies-with-uv">Step 5: Install Dependencies with UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-6-implement-core-modules">Step 6: Implement Core Modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-7-run-tests">Step 7: Run Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-8-code-formatting-and-linting">Step 8: Code Formatting and Linting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-9-build-documentation">Step 9: Build Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#automation-script">Automation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-2-clone-the-project">Step 2: Clone the Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-3-optional-pin-the-interpreter">Step 3 (Optional): Pin the Interpreter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-4-install-dependencies-from-the-lockfile">Step 4: Install Dependencies from the Lockfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-5-run-tests">Step 5: Run Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-6-formatting-linting-and-commit-checks">Step 6: Formatting, Linting, and Commit Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#step-7-build-documentation">Step 7: Build Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart-with-uv.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="uv-integration.html">Using UV for Dependency Management in NEMDataTools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="uv-integration.html#installing-uv">Installing UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#project-setup-with-uv">Project Setup with UV</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#create-project-structure">1. Create Project Structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#create-virtual-environment-with-uv">2. Create Virtual Environment with UV</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#initialize-dependencies-with-uv">3. Initialize Dependencies with UV</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#uv-configuration">4. UV Configuration</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#development-workflow-with-uv">Development Workflow with UV</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#installing-new-dependencies">Installing New Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#environment-setup">Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uv-integration.html#development-workflow">Development Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#adding-a-dependency">Adding a Dependency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="uv-integration.html#updating-dependencies">Updating Dependencies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#managing-specific-versions">Managing Specific Versions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#locking-dependencies">Locking Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uv-integration.html#managing-version-constraints">Managing Version Constraints</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="uv-integration.html#integration-with-ci-cd">Integration with CI/CD</a></li>

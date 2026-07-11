@@ -1,92 +1,83 @@
 # Using UV for Dependency Management in NEMDataTools
 
-[UV](https://github.com/astral-sh/uv) is a fast, reliable Python package installer and resolver written in Rust. This guide explains how to leverage UV to manage dependencies in the NEMDataTools project.
+[UV](https://docs.astral.sh/uv/) is a fast, reliable Python package installer
+and resolver written in Rust. This guide explains how NEMDataTools uses UV and
+its lockfile (`uv.lock`) to manage dependencies.
 
 ## Installing UV
 
-Before setting up the project, you need to install UV:
-
 ```bash
-# Install UV using pip
-pip install uv
-
-# Or using curl (alternative method)
+# Standalone installer (recommended)
 curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Or using pip
+pip install uv
 ```
 
-## Project Setup with UV
+## Environment Setup
 
-Follow these steps to set up NEMDataTools using UV:
-
-### 1. Create Project Structure
+The repository commits a `uv.lock` file describing the exact, fully resolved
+dependency tree. One command builds the environment from it:
 
 ```bash
-# Create project directory
-mkdir -p nemdatatools
-cd nemdatatools
-
-# Create initial directory structure
-mkdir -p src/nemdatatools tests docs .github/workflows
+uv sync --locked --all-extras
 ```
 
-### 2. Create Virtual Environment with UV
+This creates `.venv`, installs the locked versions of all runtime, `dev`, and
+`docs` dependencies, and installs `nemdatatools` in editable mode. `--locked`
+fails if `uv.lock` is out of date with `pyproject.toml` instead of silently
+re-resolving — the same guarantee CI relies on.
+
+Run tools through the environment with `uv run` (no activation needed):
 
 ```bash
-# Create a virtual environment in .venv
-uv venv
-
-# Activate the virtual environment
-# On Linux/macOS:
-source .venv/bin/activate
-# On Windows:
-# .venv\Scripts\activate
+uv run pytest
+uv run pre-commit run --all-files
 ```
 
-### 3. Initialize Dependencies with UV
+To pin the interpreter version for the environment, run
+`uv python pin 3.11` (which writes a `.python-version` file) before the
+first `uv sync`; if the environment already exists, re-run
+`uv sync --locked --all-extras` so it is rebuilt on the pinned
+interpreter. UV behavior settings, if ever needed, belong in a
+`[tool.uv]` section of `pyproject.toml` or a `uv.toml` file.
 
-After setting up your `pyproject.toml` file:
+## Development Workflow
 
-```bash
-# Install the project in development mode with all dependencies
-uv pip install -e ".[dev,docs]"
-```
+### Adding a Dependency
 
-### 4. UV Configuration
+1. Add it to `pyproject.toml` (under `dependencies` or the appropriate
+   optional extra), or run `uv add <package>` to do both steps at once
+2. Re-lock and sync:
 
-Create a `.uv.toml` file in your project root for UV-specific configuration:
-
-```toml
-[pip]
-resolution = "highest"
-upgrade-strategy = "eager"
-
-[venv]
-python = "3.10"  # Specify your preferred Python version
-```
-
-## Development Workflow with UV
-
-### Installing New Dependencies
-
-When you need to add new dependencies:
-
-1. Add them to `pyproject.toml`
-2. Run:
    ```bash
-   uv pip install -e ".[dev,docs]"
+   uv lock
+   uv sync --locked --all-extras
    ```
+
+3. Commit the `pyproject.toml` and `uv.lock` changes together
 
 ### Updating Dependencies
 
-To update all dependencies to their latest compatible versions:
-
 ```bash
-uv pip install --upgrade -e ".[dev,docs]"
+# Update everything to the latest versions allowed by pyproject.toml
+uv lock --upgrade
+
+# Or update a single package
+uv lock --upgrade-package pandas
+
+# Then apply the new lock to your environment
+uv sync --locked --all-extras
 ```
 
-### Managing Specific Versions
+Routine updates arrive automatically: Dependabot opens a monthly PR that
+bumps `uv.lock` (see `.github/dependabot.yml`), and CI tests the bumped tree
+because it installs with `--locked`.
 
-UV handles specific versions well. When you need a specific version in your pyproject.toml:
+### Managing Version Constraints
+
+Constraints live in `pyproject.toml`; the lockfile records the exact versions
+chosen within them:
 
 ```toml
 dependencies = [
@@ -95,52 +86,43 @@ dependencies = [
 ]
 ```
 
-### Locking Dependencies
-
-UV can generate a lock file to ensure reproducible installations:
-
-```bash
-uv pip freeze > requirements.lock
-```
-
-To install from the lock file:
-
-```bash
-uv pip install -r requirements.lock
-```
-
 ## Integration with CI/CD
 
-For GitHub Actions, include these steps in your workflow file:
+The GitHub Actions workflows install from the lockfile the same way. The
+essential steps (see `.github/workflows/tests.yml` for the real thing — the
+repository SHA-pins its actions):
 
 ```yaml
-- name: Set up Python
-  uses: actions/setup-python@v4
+- name: Install uv and Python
+  uses: astral-sh/setup-uv@v6
   with:
-    python-version: '3.10'
+    python-version: '3.11'
+    enable-cache: true
+    cache-dependency-glob: "uv.lock"
 
-- name: Install UV
-  run: pip install uv
-
-- name: Install dependencies
-  run: uv pip install -e ".[dev]"
+- name: Install locked dependencies
+  run: uv sync --locked --extra dev
 
 - name: Run tests
-  run: pytest
+  run: uv run --no-sync pytest
 ```
 
 ## Performance Considerations
 
 UV offers several performance benefits for NEMDataTools:
 
-1. **Faster installation:** Dependencies install much faster, especially on CI/CD
-2. **More reliable resolution:** Fewer dependency conflicts
-3. **Reduced environment sizes:** More efficient management of dependencies
+1. **Faster installation:** Dependencies install much faster, especially on
+   CI/CD, where wheels are served from UV's cache
+2. **More reliable resolution:** One resolver, one lockfile, no drift between
+   local and CI environments
+3. **Reproducibility:** `uv sync --locked` produces the same environment on
+   every machine
 
 ## Troubleshooting
 
 If you encounter issues with UV:
 
-1. Check that your `.uv.toml` configuration is correct
-2. Try running with the verbose flag: `uv pip install -v -e ".[dev,docs]"`
-3. Clear the UV cache if needed: `uv cache clear`
+1. `uv sync --locked` failing with a lock mismatch means `pyproject.toml`
+   changed without re-locking — run `uv lock` and commit the result
+2. Try running with the verbose flag: `uv sync --locked --all-extras -v`
+3. Clear the UV cache if needed: `uv cache clean`
