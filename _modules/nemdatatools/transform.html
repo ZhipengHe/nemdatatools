@@ -288,7 +288,9 @@
     <span class="n">valid</span> <span class="o">=</span> <span class="n">labels_with_data</span><span class="p">[</span><span class="n">labels_with_data</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
     <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels_with_data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">result</span>
-    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">valid</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">valid</span><span class="o">.</span><span class="n">max</span><span class="p">())]</span>
+    <span class="n">in_span</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">valid</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">valid</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">trimmed</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">in_span</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">trimmed</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_daily_or_coarser</span><span class="p">(</span><span class="n">rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -299,9 +301,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">frequencies</span><span class="o">.</span><span class="n">to_offset</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Only fixed-length (Tick) frequencies have nanos; calendar rules</span>
+        <span class="c1"># raise ValueError here.</span>
+        <span class="n">nanos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="o">.</span><span class="n">nanos</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">nanos</span> <span class="o">&gt;=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1_000_000_000</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_guard_single_entity</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
