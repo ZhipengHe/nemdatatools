@@ -35,10 +35,12 @@ uv run pytest
 uv run pre-commit run --all-files
 ```
 
-To pin the interpreter version for the environment, use
-`uv python pin 3.11`, which writes a `.python-version` file. UV behavior
-settings, if ever needed, belong in a `[tool.uv]` section of
-`pyproject.toml` or a `uv.toml` file.
+To pin the interpreter version for the environment, run
+`uv python pin 3.11` (which writes a `.python-version` file) before the
+first `uv sync`; if the environment already exists, re-run
+`uv sync --locked --all-extras` so it is rebuilt on the pinned
+interpreter. UV behavior settings, if ever needed, belong in a
+`[tool.uv]` section of `pyproject.toml` or a `uv.toml` file.
 
 ## Development Workflow
 

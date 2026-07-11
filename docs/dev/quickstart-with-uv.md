@@ -27,7 +27,16 @@ git clone https://github.com/ZhipengHe/nemdatatools.git
 cd nemdatatools
 ```
 
-## Step 3: Install Dependencies from the Lockfile
+## Step 3 (Optional): Pin the Interpreter
+
+To pin the Python version used for the environment, write a
+`.python-version` file before building the environment:
+
+```bash
+uv python pin 3.11
+```
+
+## Step 4: Install Dependencies from the Lockfile
 
 ```bash
 # Creates .venv, installs the locked dependency tree, and installs
@@ -38,15 +47,6 @@ uv sync --locked --all-extras
 There is no need to activate the virtual environment: prefix commands with
 `uv run` and they execute inside `.venv`. If you prefer an activated shell,
 `source .venv/bin/activate` still works.
-
-## Step 4 (Optional): Pin the Interpreter
-
-To pin the Python version used for the environment, write a
-`.python-version` file:
-
-```bash
-uv python pin 3.11
-```
 
 ## Step 5: Run Tests
 
