@@ -6,6 +6,7 @@ import datetime
 import logging
 
 import pandas as pd
+import requests
 
 from nemdatatools import mmsdm as _mmsdm
 from nemdatatools.cache import Cache
@@ -108,7 +109,14 @@ def fetch_mmsdm_table(
     matched_any = False
     for year, month in _mmsdm.months_between(start_dt, end_dt):
         url = _mmsdm.month_url(year, month, subdir)
-        entries = list_directory(url, session=cache.session)
+        try:
+            entries = list_directory(url, session=cache.session)
+        except requests.HTTPError as exc:
+            # A month can be missing (range reaching past the newest
+            # snapshot, or before the archive begins); skip it rather
+            # than abort the months that do exist.
+            logger.warning("no MMSDM listing for %d-%02d: %s", year, month, exc)
+            continue
         probe = TableSpec(
             name=name,
             cid_key=("", ""),
@@ -175,6 +183,15 @@ def _filter_by_detected_time(
                 format=AEMO_DATETIME_FORMAT,
                 errors="coerce",
             )
+            unparsed = int(stamps.isna().sum() - data[column].isna().sum())
+            if unparsed > 0:
+                logger.warning(
+                    "%d rows in %r did not match %s and were dropped from "
+                    "the range filter",
+                    unparsed,
+                    column,
+                    AEMO_DATETIME_FORMAT,
+                )
             mask = (stamps >= start) & (stamps <= end)
             filtered = data.loc[mask].copy()
             filtered[column] = stamps[mask]
