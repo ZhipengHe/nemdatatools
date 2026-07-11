@@ -18,16 +18,16 @@ All types of contributions are encouraged and valued. See the [Table of Contents
   - [I Want To Contribute](#i-want-to-contribute)
   - [Reporting Bugs](#reporting-bugs)
   - [Suggesting Enhancements](#suggesting-enhancements)
-  <!-- - [Your First Code Contribution](#your-first-code-contribution)
-  - [Improving The Documentation](#improving-the-documentation) -->
-<!-- - [Styleguides](#styleguides)
-  - [Commit Messages](#commit-messages) -->
-<!-- - [Join The Project Team](#join-the-project-team) -->
+- [Development Setup](#development-setup)
+  - [Running the Checks](#running-the-checks)
+  - [Changing Dependencies](#changing-dependencies)
+  - [Commit Messages](#commit-messages)
+  - [Building the Documentation](#building-the-documentation)
 
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [NEM Dashboard Code of Conduct](ht tps://github.com/ZhipengHe/nemdatatools/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to <github@zhipenghe.me>.
+This project and everyone participating in it is governed by the [NEMDataTools Code of Conduct](https://github.com/ZhipengHe/nemdatatools/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to <github@zhipenghe.me>.
 
 
 ## I Have a Question
@@ -72,7 +72,7 @@ Depending on how large the project is, you may want to outsource the questioning
 A good bug report shouldn't leave others needing to chase you up for more information. Therefore, we ask you to investigate carefully, collect information and describe the issue in detail in your report. Please complete the following steps in advance to help us fix any potential bug as fast as possible.
 
 - Make sure that you are using the latest version.
-- Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the [documentation](). If you are looking for support, you might want to check [this section](#i-have-a-question)).
+- Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the [documentation](https://zhipenghe.me/nemdatatools). If you are looking for support, you might want to check [this section](#i-have-a-question)).
 - To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the [bug tracker](https://github.com/ZhipengHe/nemdatatools/issues?q=label%3Abug).
 - Also make sure to search the internet (including Stack Overflow) to see if users outside of the GitHub community have discussed the issue.
 - Collect information about the bug:
@@ -99,20 +99,20 @@ Once it's filed:
 
 - The project team will label the issue accordingly.
 - A team member will try to reproduce the issue with your provided steps. If there are no reproduction steps or no obvious way to reproduce the issue, the team will ask you for those steps and mark the issue as `needs-repro`. Bugs with the `needs-repro` tag will not be addressed until they are reproduced.
-- If the team is able to reproduce the issue, it will be marked `needs-fix`, as well as possibly other tags (such as `critical`), and the issue will be left to be [implemented by someone](#your-first-code-contribution).
+- If the team is able to reproduce the issue, it will be marked `needs-fix`, as well as possibly other tags (such as `critical`), and the issue will be left to be implemented by someone (see [Development Setup](#development-setup) to get started).
 
 <!-- You might want to create an issue template for bugs and errors that can be used as a guide and that defines the structure of the information to be included. If you do so, reference it here in the description. -->
 
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for NEM Dashboard, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
+This section guides you through submitting an enhancement suggestion for NEMDataTools, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
 
 <!-- omit in toc -->
 #### Before Submitting an Enhancement
 
 - Make sure that you are using the latest version.
-- Read the [documentation]() carefully and find out if the functionality is already covered, maybe by an individual configuration.
+- Read the [documentation](https://zhipenghe.me/nemdatatools) carefully and find out if the functionality is already covered, maybe by an individual configuration.
 - Perform a [search](https://github.com/ZhipengHe/nemdatatools/issues) to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 - Find out whether your idea fits with the scope and aims of the project. It's up to you to make a strong case to convince the project's developers of the merits of this feature. Keep in mind that we want features that will be useful to the majority of our users and not just a small subset. If you're just targeting a minority of users, consider writing an add-on/plugin library.
 
@@ -125,30 +125,81 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/Zhipen
 - Provide a **step-by-step description of the suggested enhancement** in as many details as possible.
 - **Describe the current behavior** and **explain which behavior you expected to see instead** and why. At this point you can also tell which alternatives do not work for you.
 - You may want to **include screenshots or screen recordings** which help you demonstrate the steps or point out the part which the suggestion is related to. You can use [LICEcap](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and the built-in [screen recorder in GNOME](https://help.gnome.org/users/gnome-help/stable/screen-shot-record.html.en) or [SimpleScreenRecorder](https://github.com/MaartenBaert/ssr) on Linux. <!-- this should only be included if the project has a GUI -->
-- **Explain why this enhancement would be useful** to most NEM Dashboard users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
+- **Explain why this enhancement would be useful** to most NEMDataTools users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
 <!-- You might want to create an issue template for enhancement suggestions that can be used as a guide and that defines the structure of the information to be included. If you do so, reference it here in the description. -->
 
-<!-- ### Your First Code Contribution -->
-<!-- TODO
-include Setup of env, IDE and typical getting started instructions?
+## Development Setup
 
--->
+The project uses [uv](https://docs.astral.sh/uv/) and a committed
+lockfile (`uv.lock`) for dependency management. Requires Python 3.11+
+(uv can install one for you).
 
-<!-- ### Improving The Documentation -->
-<!-- TODO
-Updating, improving and correcting the documentation
+```bash
+git clone https://github.com/ZhipengHe/nemdatatools.git
+cd nemdatatools
+uv sync --locked --all-extras
+uv run pre-commit install
+uv run pre-commit install --hook-type commit-msg
+```
 
--->
+`uv sync --locked --all-extras` creates `.venv`, installs the exact
+locked versions of the runtime, `dev`, and `docs` dependencies, and
+installs `nemdatatools` in editable mode. `--locked` fails if `uv.lock`
+is out of date with `pyproject.toml` instead of silently re-resolving —
+the same guarantee CI relies on. There is no need to activate the
+environment: prefix commands with `uv run`.
 
-<!-- ## Styleguides
-### Commit Messages -->
-<!-- TODO
+The second `pre-commit install` registers the commitizen hook that
+validates commit messages (see [Commit Messages](#commit-messages)).
 
--->
+### Running the Checks
 
-<!-- ## Join The Project Team -->
-<!-- TODO -->
+```bash
+uv run pytest                        # test suite
+uv run pytest --cov=nemdatatools     # with coverage
+uv run pre-commit run --all-files    # formatting, lint, typing, docstring coverage
+```
+
+Pre-commit runs black, isort, ruff, mypy, pyupgrade, and interrogate
+(docstring coverage) — the same checks CI runs, so a passing pre-commit
+run means a passing CI lint job.
+
+### Changing Dependencies
+
+Edit the constraint in `pyproject.toml` (or run `uv add <package>`),
+then re-lock and sync:
+
+```bash
+uv lock
+uv sync --locked --all-extras
+```
+
+Commit the `pyproject.toml` and `uv.lock` changes together — CI installs
+with `uv sync --locked`, so a stale lockfile fails the build. Routine
+version bumps arrive as monthly Dependabot PRs against `uv.lock`.
+
+### Commit Messages
+
+Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/)
+specification and are validated by the commitizen commit-msg hook.
+Either write them by hand (`type(scope): subject`, e.g.
+`fix(core): skip missing months in the MMSDM escape hatch`) or let
+commitizen prompt you:
+
+```bash
+uv run cz commit
+```
+
+### Building the Documentation
+
+The documentation is a Sphinx site under `docs/`, published to GitHub
+Pages on every push to `master`:
+
+```bash
+uv run sphinx-build -b html docs docs/_build/html
+open docs/_build/html/index.html
+```
 
 <!-- omit in toc -->
 ## Attribution

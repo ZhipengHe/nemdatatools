@@ -99,9 +99,8 @@ Downloads land under `~/.nemdatatools/` (override with
 ## Data attribution
 
 Data is © AEMO and provided under AEMO's terms; this package downloads
-publicly available files and does not redistribute data. See NOTICE and
-LICENSE for details.
+publicly available files and does not redistribute data.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](https://github.com/ZhipengHe/nemdatatools/blob/master/LICENSE).
