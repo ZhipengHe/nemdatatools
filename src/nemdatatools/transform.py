@@ -105,7 +105,9 @@ def _trim_empty_edge_buckets(
     valid = labels_with_data[labels_with_data].index
     if valid.empty or len(valid) == len(labels_with_data):
         return result
-    return result.loc[(result.index >= valid.min()) & (result.index <= valid.max())]
+    in_span = (result.index >= valid.min()) & (result.index <= valid.max())
+    trimmed: pd.DataFrame = result.loc[in_span]
+    return trimmed
 
 
 def _is_daily_or_coarser(rule: str) -> bool:
@@ -116,9 +118,12 @@ def _is_daily_or_coarser(rule: str) -> bool:
     """
     offset = pd.tseries.frequencies.to_offset(rule)
     try:
-        return bool(pd.Timedelta(offset) >= pd.Timedelta(days=1))
+        # Only fixed-length (Tick) frequencies have nanos; calendar rules
+        # raise ValueError here.
+        nanos = int(offset.nanos)
     except ValueError:
         return True
+    return nanos >= 24 * 60 * 60 * 1_000_000_000
 
 
 def _guard_single_entity(frame: pd.DataFrame) -> None:

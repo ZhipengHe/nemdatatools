@@ -106,7 +106,9 @@ def parse_listing_html(html: str, base_url: str) -> list[ListingEntry]:
     entries: list[ListingEntry] = []
     for anchor in BeautifulSoup(html, "html.parser").find_all("a"):
         href = anchor.get("href")
-        if not href:
+        # bs4 types attribute values as str-or-list (multi-valued attrs);
+        # href is never legitimately a list, so skip anything else.
+        if not href or not isinstance(href, str):
             continue
         text = anchor.get_text(strip=True)
         if text.lower() == "[to parent directory]":
