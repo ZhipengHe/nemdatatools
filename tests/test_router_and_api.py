@@ -83,6 +83,38 @@ class TestApiSurface:
         with pytest.raises(ValueError, match="before start"):
             fetch("DISPATCHPRICE", "2026/01/02", "2026/01/01")
 
+    def test_price_and_demand_rejects_reversed_range(self) -> None:
+        """The aggregated-CSV path validates ranges like fetch() does."""
+        from nemdatatools import fetch_price_and_demand
+
+        with pytest.raises(ValueError, match="before start"):
+            fetch_price_and_demand("2026/01/02", "2026/01/01")
+
+    def test_missing_key_column_raises_not_collapses(self) -> None:
+        """De-duplication never silently falls back to time-only identity."""
+        import pandas as pd
+
+        from nemdatatools.errors import CoverageError
+        from nemdatatools.router import _finalise
+
+        spec = get_table("DISPATCHPRICE")
+        data = pd.DataFrame(
+            {
+                "SETTLEMENTDATE": ["2026/05/01 00:05:00"] * 2,
+                "REGIONID": ["QLD1", "QLD1"],
+                "RRP": [50.0, 60.0],
+                # RUNNO and INTERVENTION absent
+            },
+        )
+        with pytest.raises(CoverageError, match="RUNNO"):
+            _finalise(
+                spec,
+                data,
+                datetime.datetime(2026, 5, 1),
+                datetime.datetime(2026, 5, 2),
+                None,
+            )
+
 
 class TestCacheParquet:
     """Parsed tables round-trip through the parquet layer."""

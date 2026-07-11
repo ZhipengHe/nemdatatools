@@ -100,9 +100,12 @@ def fetch_mmsdm_table(
     from nemdatatools.catalog import MmsdmLocation
 
     start_dt, end_dt = parse_date(start), parse_date(end)
+    if end_dt < start_dt:
+        raise ValueError(f"end {end!r} is before start {start!r}")
     cache = cache or Cache()
     name = table.upper()
     frames: list[pd.DataFrame] = []
+    matched_any = False
     for year, month in _mmsdm.months_between(start_dt, end_dt):
         url = _mmsdm.month_url(year, month, subdir)
         entries = list_directory(url, session=cache.session)
@@ -114,13 +117,16 @@ def fetch_mmsdm_table(
             mmsdm=MmsdmLocation(subdir, (name, f"{name}_ALL"), name),
         )
         for entry in _mmsdm.match_table_zips(entries, probe, year, month):
+            matched_any = True
             frames.append(_load_all_segments(cache, entry.url))
-    frames = [f for f in frames if not f.empty]
-    if not frames:
+    if not matched_any:
         raise CoverageError(
             f"No MMSDM files matched table {name!r} under {subdir} for the "
             "requested range; check the name against the month listing.",
         )
+    frames = [f for f in frames if not f.empty]
+    if not frames:
+        return pd.DataFrame()
     data = pd.concat(frames, ignore_index=True)
     return _filter_by_detected_time(data, start_dt, end_dt)
 

@@ -156,6 +156,13 @@ def _finalise(
         if spec.region_column is None:
             raise ValueError(f"{spec.name} has no region column to filter on")
         data = data.loc[data[spec.region_column].isin(regions)]
-    identity = [spec.time_column, *[c for c in spec.key_columns if c in data.columns]]
+    missing_keys = [c for c in spec.key_columns if c not in data.columns]
+    if missing_keys:
+        raise CoverageError(
+            f"{spec.name}: fetched payloads lack expected key column(s) "
+            f"{missing_keys!r}; de-duplicating without them could collapse "
+            "distinct rows. AEMO may have changed the schema.",
+        )
+    identity = [spec.time_column, *spec.key_columns]
     data = data.drop_duplicates(subset=identity, keep="last")
     return data.sort_values(spec.time_column).set_index(spec.time_column)

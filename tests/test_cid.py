@@ -61,6 +61,20 @@ class TestSyntheticEdgeCases:
         assert len(tables) == 2
         assert "EXTRA" in tables[TableKey("A", "ONE", 2)].frame.columns
 
+    def test_malformed_rows_skipped_not_fatal(self) -> None:
+        """Truncated rows and bad version fields skip, parsing continues."""
+        text = (
+            "I,A,ONE,notanumber,COL\n"  # bad version: header dropped
+            "D,A,ONE,1,99\n"  # orphaned D row: no active header
+            "I,A,ONE,1,COL\n"
+            "D,A\n"  # truncated D row
+            "D,A,ONE,1,1\n"
+            "D,A,ONE,1,2,extra\n"  # too many fields for the header
+        )
+        tables = parse_cid(io.StringIO(text))
+        assert len(tables) == 1
+        assert list(tables[0].frame["COL"]) == [1]
+
     def test_empty_table_yields_empty_frame(self) -> None:
         """An I row with no D rows gives an empty frame."""
         tables = parse_cid(io.StringIO("I,A,ONE,1,COL\n"))

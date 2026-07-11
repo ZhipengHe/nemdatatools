@@ -49,6 +49,21 @@ class TestEntityGrouping:
         with pytest.raises(ValueError, match="REGIONID"):
             resample(frame, "30min")
 
+    def test_missing_entity_ids_not_silently_dropped(self) -> None:
+        """Rows with a missing entity id form their own group."""
+        frame = _five_minute_frame()
+        frame["REGIONID"] = ["NSW1"] * 6 + [None] * 6
+        result = resample(frame, "1h", by="REGIONID")
+        assert len(result) == 2
+        assert result["RRP"].sum() == frame["RRP"].sum() / 6
+
+    def test_single_region_with_missing_ids_needs_grouping(self) -> None:
+        """A NaN id counts as a distinct entity for the ungrouped guard."""
+        frame = _five_minute_frame()
+        frame["REGIONID"] = ["NSW1"] * 6 + [None] * 6
+        with pytest.raises(ValueError, match="REGIONID"):
+            resample(frame, "1h")
+
     def test_by_region_keeps_series_separate(self) -> None:
         """Grouped resampling aggregates each region independently."""
         frame = _five_minute_frame()
@@ -64,14 +79,30 @@ class TestTradingDay:
     """Daily aggregates can align to the 04:00-04:00 NEM trading day."""
 
     def test_trading_day_buckets_offset_to_0400(self) -> None:
-        """Bucket edges land on 04:00 when trading_day is set."""
+        """Right-closed daily buckets align exactly to 04:00 boundaries.
+
+        Hourly stamps May 1 01:00 .. May 3 00:00 with values 0..47:
+        the bucket labelled May 1 04:00 covers stamps 01:00-04:00
+        (values 0-3), the May 2 04:00 bucket covers the next 24 hours
+        (values 4-27), the rest fall into the May 3 04:00 bucket.
+        """
         stamps = pd.date_range("2026-05-01 01:00", periods=48, freq="1h")
         frame = pd.DataFrame(
-            {"RRP": np.ones(48)},
+            {"RRP": np.arange(48.0)},
             index=pd.DatetimeIndex(stamps, name="SETTLEMENTDATE"),
         )
         result = resample(frame, "1D", trading_day=True)
-        assert all(ts.hour == 4 for ts in result.index)
+        assert list(result.index) == [
+            pd.Timestamp("2026-05-01 04:00"),
+            pd.Timestamp("2026-05-02 04:00"),
+            pd.Timestamp("2026-05-03 04:00"),
+        ]
+        assert result["RRP"].tolist() == [1.5, 15.5, 37.5]
+
+    def test_trading_day_rejects_sub_daily_rules(self) -> None:
+        """The 04:00 offset makes no sense below daily aggregation."""
+        with pytest.raises(ValueError, match="daily-or-coarser"):
+            resample(_five_minute_frame(), "30min", trading_day=True)
 
 
 class TestValidation:

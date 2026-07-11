@@ -46,6 +46,8 @@ def fetch_price_and_demand(
 
     """
     start_dt, end_dt = parse_date(start), parse_date(end)
+    if end_dt < start_dt:
+        raise ValueError(f"end {end!r} is before start {start!r}")
     cache = cache or Cache()
     frames = []
     for year, month in months_between(start_dt, end_dt):

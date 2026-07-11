@@ -51,6 +51,11 @@ def resample(
     """
     if not isinstance(frame.index, pd.DatetimeIndex):
         raise ValueError("frame must be indexed by interval-ending timestamps")
+    if trading_day and not _is_daily_or_coarser(rule):
+        raise ValueError(
+            "trading_day aligns buckets to the 04:00 NEM trading day and "
+            f"only applies to daily-or-coarser rules, not {rule!r}",
+        )
 
     group_cols = [by] if isinstance(by, str) else list(by or [])
     if not group_cols:
@@ -69,17 +74,38 @@ def resample(
         label="right",
         offset=TRADING_DAY_OFFSET if trading_day else None,
     )
-    grouped = frame.groupby([*group_cols, grouper])
+    # dropna=False keeps rows whose entity id is missing as their own
+    # group instead of silently discarding them.
+    grouped = frame.groupby([*group_cols, grouper], dropna=False)
     result = grouped.agg(targets).reset_index(group_cols)
     return result
 
 
+def _is_daily_or_coarser(rule: str) -> bool:
+    """Tell whether a resample rule spans at least one day.
+
+    Calendar-based rules (weekly, monthly, ...) have no fixed length and
+    are always daily-or-coarser.
+    """
+    offset = pd.tseries.frequencies.to_offset(rule)
+    try:
+        return bool(pd.Timedelta(offset) >= pd.Timedelta(days=1))
+    except ValueError:
+        return True
+
+
 def _guard_single_entity(frame: pd.DataFrame) -> None:
-    """Reject ungrouped frames that clearly hold several entities."""
+    """Reject ungrouped frames that clearly hold several entities.
+
+    Missing ids count as their own entity so NaN rows cannot be blended
+    into a real series unnoticed.
+    """
     for column in ("REGIONID", "REGION", "DUID", "INTERCONNECTORID"):
-        if column in frame.columns and frame[column].nunique() > 1:
+        if column not in frame.columns:
+            continue
+        distinct = frame[column].nunique(dropna=False)
+        if distinct > 1:
             raise ValueError(
-                f"frame holds {frame[column].nunique()} distinct "
-                f"{column} values; pass by={column!r} so entities are "
-                "not averaged together",
+                f"frame holds {distinct} distinct {column} values; pass "
+                f"by={column!r} so entities are not averaged together",
             )

@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import csv
 import io
+import logging
 import zipfile
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -24,6 +25,8 @@ from pathlib import Path
 from typing import IO
 
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -101,6 +104,13 @@ def _parse_zip(archive: zipfile.ZipFile) -> list[CidTable]:
     return tables
 
 
+def _row_key(row: list[str]) -> TableKey | None:
+    """Build a segment key from a tagged row, or None when malformed."""
+    if len(row) < 4 or not row[3].strip().isdigit():
+        return None
+    return TableKey(row[1], row[2], int(row[3]))
+
+
 def _parse_rows(rows: Iterator[list[str]]) -> list[CidTable]:
     """Group tagged rows into per-table DataFrames."""
     columns: dict[TableKey, list[str]] = {}
@@ -112,15 +122,30 @@ def _parse_rows(rows: Iterator[list[str]]) -> list[CidTable]:
             continue
         tag = row[0]
         if tag == "I":
-            current = TableKey(row[1], row[2], int(row[3]))
+            key = _row_key(row)
+            if key is None:
+                # A malformed header would misattach following D rows, so
+                # detach until the next valid header.
+                logger.warning("skipping malformed I row: %r", row[:4])
+                current = None
+                continue
+            current = key
             columns.setdefault(current, row[4:])
             data.setdefault(current, [])
         elif tag == "D" and current is not None:
             # D rows echo component/table/version in fields 1-3; trust the
             # explicit fields rather than assuming they match `current` —
             # AEMO files have been observed to interleave segments.
-            key = TableKey(row[1], row[2], int(row[3]))
-            target = key if key in columns else current
+            key = _row_key(row)
+            target = key if key is not None and key in columns else current
+            if len(row) - 4 != len(columns[target]):
+                logger.warning(
+                    "skipping D row with %d fields where %d expected (%s)",
+                    len(row) - 4,
+                    len(columns[target]),
+                    target,
+                )
+                continue
             data[target].append(row[4:])
 
     tables: list[CidTable] = []
