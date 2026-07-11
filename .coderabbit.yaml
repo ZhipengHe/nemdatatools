@@ -1,0 +1,96 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit configuration for nemdatatools.
+# Design goals, in priority order:
+#   1. Never review lockfiles or generated output (uv.lock diffs on
+#      Dependabot PRs, coverage HTML, built docs, distributions).
+#   2. Enforce the workflow-hardening discipline: GitHub Actions stay
+#      commit-SHA-pinned and every workflow declares permissions.
+#   3. Guard the two domain invariants of the public API: naive NEM-time
+#      datetimes, and listing-then-matching nemweb files instead of
+#      constructing filenames.
+
+language: 'en-US'
+early_access: false
+
+reviews:
+  profile: 'chill'
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    ignore_title_keywords:
+      - 'WIP'
+      - 'DO NOT MERGE'
+      - '[skip ci]'
+    base_branches:
+      - 'master'
+
+  # Never review: the lockfile (Dependabot bumps it monthly; the diff is
+  # machine-generated noise) and generated build/coverage output.
+  path_filters:
+    - '!**/uv.lock'
+    - '!dist/**'
+    - '!htmlcov/**'
+    - '!docs/_build/**'
+
+  path_instructions:
+    - path: '.github/workflows/*.{yml,yaml}'
+      instructions: |
+        - Remote GitHub Actions (`uses: owner/repo@ref`) must be pinned
+          to a full 40-character commit SHA with a trailing version
+          comment (e.g. `actions/checkout@<sha>  # v4.3.1`). Flag any
+          `@v<number>`, `@main`, `@master`, branch, or short-SHA pin.
+          Tag pins resolve to tag-object SHAs, not commit SHAs, so they
+          are not equivalent. Do not apply this rule to local actions
+          (`uses: ./...`).
+        - `permissions:` must be declared at workflow or job level. Flag
+          workflows missing an explicit `permissions:` block.
+        - CI installs dependencies with `uv sync --locked` and runs tools
+          via `uv run --no-sync`. Flag steps that install with pip or
+          `uv pip install` (they bypass uv.lock), and flag a bare
+          `uv run` after an extras-aware sync (its implicit sync can
+          drift the environment).
+
+    - path: 'src/nemdatatools/**/*.py'
+      instructions: |
+        - Public API datetimes are naive and interpreted in NEM time
+          (Australia/Brisbane, fixed UTC+10, no DST). Timezone-aware
+          input must raise TypeError. Flag code that silently strips or
+          converts tzinfo, defaults to the system-local timezone, or
+          introduces Australia/Sydney (DST would corrupt NEM
+          timestamps).
+        - nemweb files are discovered by listing the directory and
+          matching names, never by constructing filenames or URLs from
+          patterns (AEMO's naming drifts across eras and packages). Flag
+          string-built CURRENT/ARCHIVE/MMSDM file URLs that skip the
+          listing step.
+
+  tools:
+    ruff:
+      enabled: true
+    actionlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    markdownlint:
+      enabled: true
+    shellcheck:
+      enabled: true
+    gitleaks:
+      enabled: true
+    # languagetool is noisy on NEM-domain docs (AEMO, MMSDM, NEMWEB,
+    # DISPATCHIS, and other market terminology) — disable explicitly.
+    languagetool:
+      enabled: false
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
