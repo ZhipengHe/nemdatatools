@@ -101,6 +101,8 @@ def parse_listing_html(html: str, base_url: str) -> list[ListingEntry]:
         Entries in listing order, excluding the parent-directory link.
 
     """
+    if not base_url.endswith("/"):
+        base_url += "/"
     entries: list[ListingEntry] = []
     for anchor in BeautifulSoup(html, "html.parser").find_all("a"):
         href = anchor.get("href")

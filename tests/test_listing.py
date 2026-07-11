@@ -44,6 +44,18 @@ class TestReportsCurrentListing:
         )
         assert all("/TradingIS_Reports" in e.url for e in entries)
 
+    def test_base_url_without_trailing_slash(self) -> None:
+        """Direct callers may omit the trailing slash; results are equal."""
+        with_slash = parse_listing_html(
+            _read("listing_reports_current_unquoted.html"),
+            base_url="https://nemweb.com.au/Reports/Current/TradingIS_Reports/",
+        )
+        without = parse_listing_html(
+            _read("listing_reports_current_unquoted.html"),
+            base_url="https://nemweb.com.au/Reports/Current/TradingIS_Reports",
+        )
+        assert with_slash == without
+
 
 class TestDataArchiveListing:
     """Data_Archive pages: percent-encoded '#' in names, trailing-slash dirs."""

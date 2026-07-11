@@ -132,7 +132,13 @@ def _parse_rows(rows: Iterator[list[str]]) -> list[CidTable]:
             current = key
             columns.setdefault(current, row[4:])
             data.setdefault(current, [])
-        elif tag == "D" and current is not None:
+        elif tag == "D":
+            if current is None:
+                logger.warning(
+                    "dropping D row with no active table header: %r",
+                    row[:4],
+                )
+                continue
             # D rows echo component/table/version in fields 1-3; trust the
             # explicit fields rather than assuming they match `current` —
             # AEMO files have been observed to interleave segments.

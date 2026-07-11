@@ -88,10 +88,11 @@ def _fetch_window(
             continue
         try:
             frame = cache.load_table(entry.url, spec.cid_key)
-        except requests.HTTPError as exc:
+        except requests.RequestException as exc:
             # Files at the edge of the rolling retention window can vanish
-            # between listing and download; their rows are served by the
-            # ARCHIVE tier, so skip rather than fail the whole request.
+            # between listing and download, and single payloads can hit
+            # transient connection failures; skip rather than fail the
+            # whole request (retention-edge rows come from ARCHIVE anyway).
             logger.warning("skipping %s: %s", entry.name, exc)
             continue
         if not frame.empty:
