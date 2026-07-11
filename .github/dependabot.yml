@@ -1,0 +1,46 @@
+# Automated version updates. Three layers of defense:
+#   1. Dependabot security advisories surface CVEs immediately (separate channel;
+#      automated security fixes are enabled at the repo level).
+#   2. Monthly version-update cadence — batches transitive churn into a small
+#      sweep instead of weekly noise.
+#   3. Cooldown windows let fresh releases age before adoption, limiting exposure
+#      to supply-chain attacks on newly-published versions
+#      (e.g. tj-actions/changed-files 2024, shai-hulud npm worm 2024, rspack 2025).
+#      Tiered: patches soak 3 days, minors 7, majors 14. Security PRs bypass
+#      cooldown — known-CVE fixes still land immediately.
+#
+# GitHub Actions ecosystem does NOT support cooldown. Actions are SHA-pinned
+# via the trailing `# vX.Y.Z` comments in workflow files; review each upgrade
+# PR manually before merging.
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+
+  # The package is locked with uv.lock. The `pip` ecosystem reads
+  # pyproject.toml / requirements*.txt / Pipfile / poetry.lock but does NOT
+  # touch uv.lock, so it would miss the transitive tree that CI installs
+  # with `uv sync`. The dedicated `uv` ecosystem reads uv.lock directly.
+  # Dev tooling lives in [project.optional-dependencies] (extras), which
+  # Dependabot classifies as production — so the runtime-deps group below
+  # carries both runtime and tooling updates.
+  # Refs: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+  - package-ecosystem: 'uv'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
+    groups:
+      runtime-deps:
+        dependency-type: 'production'
+        update-types: ['minor', 'patch']
+      dev-deps:
+        dependency-type: 'development'
+        update-types: ['minor', 'patch']

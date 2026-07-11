@@ -5,78 +5,55 @@ on:
     branches: [ master ]
     paths:
       - 'docs/**'
+      - 'src/**'
       - 'pyproject.toml'
+      - 'uv.lock'
       - 'README.md'
   pull_request:
     branches: [ master ]
     paths:
       - 'docs/**'
+      - 'src/**'
       - 'pyproject.toml'
+      - 'uv.lock'
       - 'README.md'
   workflow_dispatch:
-    inputs:
-      force_build:
-        description: 'Force a documentation build'
-        required: false
-        default: false
-        type: boolean
 
-# Schedule a monthly build of the documentation
+  # Schedule a monthly build of the documentation
   schedule:
     - cron: '0 0 1 * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   docs:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    # The Pages deploy action pushes with its own token input (defaults to
+    # github.token), so the checkout credential does not need to persist.
+    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       with:
-        python-version: '3.10'
-        cache-dependency-path: |
-          pyproject.toml
-          requirements*.txt
+        persist-credentials: false
 
-    - name: Cache UV installation
-      uses: actions/cache@v4
+    - name: Install uv and Python
+      uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
       with:
-        path: ~/.cargo/bin/uv
-        key: ${{ runner.os }}-uv-${{ hashFiles('~/.cargo/bin/uv') }}
+        python-version: '3.11'
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
 
-    - name: Install UV
+    - name: Install locked dependencies
       run: |
-        if [ ! -f ~/.cargo/bin/uv ]; then
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-        fi
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-
-    - name: Cache Python virtual environment
-      uses: actions/cache@v4
-      id: venv-cache
-      with:
-        path: .venv
-        key: ${{ runner.os }}-venv-docs-${{ hashFiles('pyproject.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-venv-docs-
-
-    - name: Create and Activate Virtual Environment
-      if: steps.venv-cache.outputs.cache-hit != 'true'
-      run: |
-        uv venv .venv
-
-    - name: Activate Virtual Environment
-      run: |
-        echo "VIRTUAL_ENV=.venv" >> $GITHUB_ENV
-        echo "$PWD/.venv/bin" >> $GITHUB_PATH
-
-    - name: Install dependencies
-      run: |
-        uv pip install -e ".[docs]"
+        uv sync --locked --extra docs
 
     - name: Build documentation
       run: |
@@ -87,18 +64,18 @@ jobs:
         fi
 
         cd docs
-        sphinx-build -b html -v . _build/html
+        uv run --no-sync sphinx-build -b html -v . _build/html
         touch _build/html/.nojekyll
 
     - name: Archive documentation
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: documentation
         path: docs/_build/html
 
     - name: Deploy to GitHub Pages
       if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
-      uses: JamesIves/github-pages-deploy-action@v4
+      uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
       with:
         folder: docs/_build/html
         branch: gh-pages
