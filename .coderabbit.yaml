@@ -4,11 +4,13 @@
 # Design goals, in priority order:
 #   1. Never review lockfiles or generated output (uv.lock diffs on
 #      Dependabot PRs, coverage HTML, built docs, distributions).
-#   2. Enforce the workflow-hardening discipline: GitHub Actions stay
-#      commit-SHA-pinned and every workflow declares permissions.
-#   3. Guard the two domain invariants of the public API: naive NEM-time
-#      datetimes, and listing-then-matching nemweb files instead of
-#      constructing filenames.
+#   2. Flag drift from the workflow-hardening discipline: GitHub Actions
+#      stay commit-SHA-pinned and every workflow declares permissions.
+#      Reviews are advisory (request_changes_workflow: false) — findings
+#      surface as comments, not merge-blocking reviews.
+#   3. Flag violations of the two domain invariants of the public API:
+#      naive NEM-time datetimes, and listing-then-matching nemweb files
+#      instead of constructing filenames.
 
 language: 'en-US'
 early_access: false
