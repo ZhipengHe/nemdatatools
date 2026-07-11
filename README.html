@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEMDataTools Documentation &mdash; NEMDataTools Documentation</title>
+  <title>NEMDataTools &mdash; NEMDataTools Documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
@@ -45,28 +45,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">NEMDataTools Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#from-pypi-recommended">From PyPI (Recommended)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#from-testpypi-pre-releases">From TestPyPI (Pre-releases)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#from-source-development">From Source (Development)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#core-features">Core Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#development-status">Development Status</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#completed-features">✅ <strong>Completed Features</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#in-progress">🚧 <strong>In Progress</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tested-data-types">📋 <strong>Tested Data Types</strong></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation-structure">Documentation Structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#core-functions">Core Functions</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-attribution">Data attribution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 </ul>
 </li>
@@ -240,7 +225,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">NEMDataTools Documentation</li>
+      <li class="breadcrumb-item active">NEMDataTools</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -250,217 +235,130 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="nemdatatools-documentation">
-<h1>NEMDataTools Documentation<a class="headerlink" href="#nemdatatools-documentation" title="Link to this heading"></a></h1>
-<p>An MIT-licensed Python package for accessing and preprocessing data from the Australian Energy Market Operator (AEMO) for the National Electricity Market (NEM).</p>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>NEMDataTools provides a production-ready interface for:</p>
-<ul class="simple">
-<li><p><strong>Complete data pipeline</strong>: Download → Extract → Process → Cache → Analyze</p></li>
-<li><p><strong>Multi-source support</strong>: MMSDM, pre-dispatch, and static data</p></li>
-<li><p><strong>Advanced processing</strong>: Time series resampling, statistical analysis</p></li>
-<li><p><strong>Intelligent caching</strong>: Metadata-based local caching with configurable TTL</p></li>
-<li><p><strong>Production features</strong>: Error handling, retry logic, comprehensive testing</p></li>
-</ul>
-<p>This package is designed for researchers, analysts, and developers who need reliable access to AEMO data.</p>
-</section>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<section id="from-pypi-recommended">
-<h3>From PyPI (Recommended)<a class="headerlink" href="#from-pypi-recommended" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemdatatools
-</pre></div>
-</div>
-</section>
-<section id="from-testpypi-pre-releases">
-<h3>From TestPyPI (Pre-releases)<a class="headerlink" href="#from-testpypi-pre-releases" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--index-url<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>nemdatatools
-</pre></div>
-</div>
-</section>
-<section id="from-source-development">
-<h3>From Source (Development)<a class="headerlink" href="#from-source-development" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ZhipengHe/nemdatatools.git
-<span class="nb">cd</span><span class="w"> </span>nemdatatools
-
-<span class="c1"># Install in development mode with all dependencies</span>
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev,docs]&quot;</span>
-
-<span class="c1"># Or install just the core package</span>
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
-</pre></div>
-</div>
-</section>
-<section id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>Python 3.10 or higher</p></li>
-<li><p>pandas, numpy, requests, pyarrow, tqdm</p></li>
-</ul>
-</section>
-</section>
-<section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nemdatatools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ndt</span>
-
-<span class="c1"># Download and process dispatch price data with automatic caching</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span>
-    <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023/01/01&quot;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2023/01/02&quot;</span><span class="p">,</span>
-    <span class="n">regions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NSW1&quot;</span><span class="p">,</span> <span class="s2">&quot;VIC1&quot;</span><span class="p">],</span>
-    <span class="n">cache_path</span><span class="o">=</span><span class="s2">&quot;./cache&quot;</span>  <span class="c1"># Enable local caching</span>
-<span class="p">)</span>
-
-<span class="c1"># Data is already processed and standardized</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> records&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-
-<span class="c1"># Advanced analysis with built-in functions</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">calculate_price_statistics</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">resampled</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">resample_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;1H&#39;</span><span class="p">)</span>  <span class="c1"># Resample to hourly</span>
-<span class="n">windows</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">create_time_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="s1">&#39;4H&#39;</span><span class="p">)</span>  <span class="c1"># 4-hour windows</span>
-</pre></div>
-</div>
-</section>
-<section id="core-features">
-<h2>Core Features<a class="headerlink" href="#core-features" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><strong>🚀 Complete Data Pipeline</strong>: Download → Extract → Process → Cache → Analyze in one API call</p></li>
-<li><p><strong>📊 Core Data Types</strong>: MMSDM dispatch data, pre-dispatch forecasts, with framework for expansion</p></li>
-<li><p><strong>⚡ Intelligent Caching</strong>: Metadata-based local caching with configurable TTL</p></li>
-<li><p><strong>🔄 Advanced Processing</strong>: Data standardization, time series resampling, statistical analysis</p></li>
-<li><p><strong>⏰ Time-Aware</strong>: Proper AEST timezone handling and dispatch interval management</p></li>
-<li><p><strong>🌏 Region Support</strong>: All NEM regions (NSW1, VIC1, QLD1, SA1, TAS1) with filtering</p></li>
-<li><p><strong>🛡️ Production Ready</strong>: Robust error handling, retry logic, comprehensive testing</p></li>
-</ul>
-</section>
-<section id="development-status">
-<h2>Development Status<a class="headerlink" href="#development-status" title="Link to this heading"></a></h2>
-<p>NEMDataTools has reached <strong>production readiness</strong> with core functionality complete and thoroughly tested.</p>
-<section id="completed-features">
-<h3>✅ <strong>Completed Features</strong><a class="headerlink" href="#completed-features" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>[x] <strong>Complete Data Pipeline</strong></p>
-<ul>
-<li><p>[x] Multi-source data downloading (MMSDM, pre-dispatch, static)</p></li>
-<li><p>[x] ZIP file extraction and CSV processing</p></li>
-<li><p>[x] Intelligent caching with metadata management</p></li>
-<li><p>[x] End-to-end data standardization and validation</p></li>
-</ul>
-</li>
-<li><p>[x] <strong>Advanced Processing Capabilities</strong></p>
-<ul>
-<li><p>[x] Time series resampling and statistical analysis</p></li>
-<li><p>[x] Price and demand calculation functions</p></li>
-<li><p>[x] Time window creation for analysis</p></li>
-<li><p>[x] AEST timezone and dispatch interval handling</p></li>
-</ul>
-</li>
-<li><p>[x] <strong>Production Infrastructure</strong></p>
-<ul>
-<li><p>[x] Comprehensive error handling and retry logic</p></li>
-<li><p>[x] 79 test functions with 58% coverage</p></li>
-<li><p>[x] Pre-commit hooks with Black, Ruff, MyPy</p></li>
-<li><p>[x] GitHub Actions CI/CD pipeline</p></li>
-<li><p>[x] Type annotations throughout codebase</p></li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="in-progress">
-<h3>🚧 <strong>In Progress</strong><a class="headerlink" href="#in-progress" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>[ ] <strong>Data Type Expansion</strong>: Adding support for remaining MMSDM tables</p></li>
-<li><p>[ ] <strong>Documentation</strong>: API reference and advanced usage guides</p></li>
-</ul>
-</section>
-<section id="tested-data-types">
-<h3>📋 <strong>Tested Data Types</strong><a class="headerlink" href="#tested-data-types" title="Link to this heading"></a></h3>
+  <section id="nemdatatools">
+<h1>NEMDataTools<a class="headerlink" href="#nemdatatools" title="Link to this heading"></a></h1>
+<p>An MIT-licensed Python package for accessing and preprocessing Australian
+Energy Market Operator (AEMO) data for the National Electricity Market (NEM).</p>
+<section id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h2>
+<p>AEMO publishes the same market data at three ages, and NEMDataTools models
+that system directly instead of hard-coding one source per table:</p>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Data Type</p></th>
-<th class="head"><p>Status</p></th>
-<th class="head"><p>Description</p></th>
+<tr class="row-odd"><th class="head"><p>Tier</p></th>
+<th class="head"><p>Location</p></th>
+<th class="head"><p>Granularity</p></th>
+<th class="head"><p>Retention</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DISPATCHPRICE</span></code></p></td>
-<td><p>✅ Fully Tested</p></td>
-<td><p>5-minute dispatch prices by region</p></td>
+<tr class="row-even"><td><p>Reports CURRENT</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nemweb.com.au/Reports/Current/</span></code></p></td>
+<td><p>one file per event</p></td>
+<td><p>rolling days (varies per package)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DISPATCHREGIONSUM</span></code></p></td>
-<td><p>✅ Fully Tested</p></td>
-<td><p>5-minute regional dispatch summary</p></td>
+<tr class="row-odd"><td><p>Reports ARCHIVE</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nemweb.com.au/Reports/Archive/</span></code></p></td>
+<td><p>daily bundles</p></td>
+<td><p>~13 months</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DISPATCH_UNIT_SCADA</span></code></p></td>
-<td><p>✅ Fully Tested</p></td>
-<td><p>Generator SCADA readings</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PREDISPATCHPRICE</span></code></p></td>
-<td><p>✅ Fully Tested</p></td>
-<td><p>Pre-dispatch price forecasts</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PRICE_AND_DEMAND</span></code></p></td>
-<td><p>✅ Tested</p></td>
-<td><p>Direct CSV price and demand data</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">P5MIN_REGIONSOLUTION</span></code></p></td>
-<td><p>⚠️ Framework Ready</p></td>
-<td><p>5-minute pre-dispatch (implementation complete, testing pending)</p></td>
-</tr>
-<tr class="row-even"><td><p>Static Data Types</p></td>
-<td><p>✅ Framework Ready</p></td>
-<td><p>Registration lists and boundaries</p></td>
+<tr class="row-even"><td><p>MMSDM Data Archive</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nemweb.com.au/Data_Archive/</span></code></p></td>
+<td><p>monthly snapshots</p></td>
+<td><p>2009 → ~6 weeks ago</p></td>
 </tr>
 </tbody>
 </table>
+<p>One <code class="docutils literal notranslate"><span class="pre">fetch()</span></code> call stitches whichever tiers a date range needs. Remote files
+are discovered by reading directory listings and pattern-matching — never by
+constructing filenames — so AEMO’s filename-format changes (such as the
+August 2024 <code class="docutils literal notranslate"><span class="pre">PUBLIC_DVD_*</span></code> → <code class="docutils literal notranslate"><span class="pre">PUBLIC_ARCHIVE#*</span></code> switch) and multi-part
+archives are handled transparently, including all <code class="docutils literal notranslate"><span class="pre">FILEnn</span></code> parts of large
+tables. Known holes in a table’s history (for example the bid tables removed
+at the 2021 five-minute-settlement transition) raise a clear error naming
+the substitute table instead of returning silently partial data.</p>
 </section>
-</section>
-<section id="documentation-structure">
-<h2>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><strong>Development Guides</strong>: Setup instructions and development workflow</p></li>
-<li><p><strong>API Reference</strong>: Coming soon - detailed function documentation</p></li>
-<li><p><strong>Examples</strong>: Coming soon - working code examples and tutorials</p></li>
-</ul>
-</section>
-<section id="api-reference">
-<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
-<section id="core-functions">
-<h3>Core Functions<a class="headerlink" href="#core-functions" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Main data fetching function</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span>
-    <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023/01/01&quot;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2023/01/02&quot;</span><span class="p">,</span>
-    <span class="n">regions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NSW1&quot;</span><span class="p">,</span> <span class="s2">&quot;VIC1&quot;</span><span class="p">],</span>
-    <span class="n">cache_path</span><span class="o">=</span><span class="s2">&quot;./cache&quot;</span>
-<span class="p">)</span>
-
-<span class="c1"># Check available data types</span>
-<span class="n">available_types</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">get_available_data_types</span><span class="p">()</span>
-
-<span class="c1"># Batch operations</span>
-<span class="n">ndt</span><span class="o">.</span><span class="n">download_multiple_tables</span><span class="p">(</span>
-    <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span> <span class="s2">&quot;DISPATCHREGIONSUM&quot;</span><span class="p">],</span>
-    <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023/01/01&quot;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2023/01/02&quot;</span>
-<span class="p">)</span>
-
-<span class="c1"># Advanced analysis</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">calculate_price_statistics</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">resampled</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">resample_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;1H&#39;</span><span class="p">)</span>
-<span class="n">windows</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">create_time_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="s1">&#39;4H&#39;</span><span class="p">)</span>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemdatatools
 </pre></div>
 </div>
+<p>Requires Python 3.10+. Dependencies: pandas, pyarrow, requests,
+beautifulsoup4.</p>
 </section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nemdatatools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ndt</span>
+
+<span class="c1"># One call, any range — tiers are stitched automatically. Start small:</span>
+<span class="c1"># a week is a quick download; multi-year ranges (e.g. 2020 -&gt; today)</span>
+<span class="c1"># work the same way but fetch months of archive files on first run.</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span>
+    <span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2026/06/01&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2026/06/07&quot;</span><span class="p">,</span>
+    <span class="n">regions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;QLD1&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Interval-ending-aware resampling: the 00:30 bucket aggregates the six</span>
+<span class="c1"># 5-minute rows stamped 00:05..00:30, matching AEMO&#39;s own convention.</span>
+<span class="n">half_hourly</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">prices</span><span class="p">[[</span><span class="s2">&quot;RRP&quot;</span><span class="p">]],</span> <span class="s2">&quot;30min&quot;</span><span class="p">)</span>
+
+<span class="c1"># Frames holding several regions/units must be grouped explicitly:</span>
+<span class="n">all_regions</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/06/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/06/07&quot;</span><span class="p">)</span>
+<span class="n">daily</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">all_regions</span><span class="p">,</span> <span class="s2">&quot;1D&quot;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;REGIONID&quot;</span><span class="p">,</span> <span class="n">trading_day</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Aggregated price+demand CSVs (aemo.com.au visualisation service):</span>
+<span class="n">pd_data</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch_price_and_demand</span><span class="p">(</span><span class="s2">&quot;2024/01/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024/12/31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;NSW1&quot;</span><span class="p">])</span>
+
+<span class="c1"># Discovery:</span>
+<span class="n">ndt</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>                        <span class="c1"># curated table names</span>
+<span class="n">ndt</span><span class="o">.</span><span class="n">availability</span><span class="p">(</span><span class="s2">&quot;BIDPEROFFER_D&quot;</span><span class="p">)</span>   <span class="c1"># tier locations + known gaps</span>
+
+<span class="c1"># Escape hatch: any of the ~236 MMSDM tables, era-aware, all parts:</span>
+<span class="n">gencon</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch_mmsdm_table</span><span class="p">(</span><span class="s2">&quot;GENCONDATA&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/05/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/05/31&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All datetimes are naive <strong>NEM time</strong> (fixed UTC+10, no daylight saving);
+timezone-aware datetimes are rejected rather than silently converted. AEMO
+timestamps mark the <strong>end</strong> of the interval they describe.</p>
+</section>
+<section id="curated-tables">
+<h2>Curated tables<a class="headerlink" href="#curated-tables" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">fetch()</span></code> accepts curated tables spanning four families; each is wired to
+its locations in every tier and era:</p>
+<ul class="simple">
+<li><p><strong>Prices &amp; demand</strong> — <code class="docutils literal notranslate"><span class="pre">DISPATCHPRICE</span></code>, <code class="docutils literal notranslate"><span class="pre">TRADINGPRICE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DISPATCHREGIONSUM</span></code>, <code class="docutils literal notranslate"><span class="pre">TRADINGINTERCONNECT</span></code>, <code class="docutils literal notranslate"><span class="pre">DISPATCHINTERCONNECTORRES</span></code></p></li>
+<li><p><strong>Generation &amp; SCADA</strong> — <code class="docutils literal notranslate"><span class="pre">DISPATCH_UNIT_SCADA</span></code>, <code class="docutils literal notranslate"><span class="pre">DISPATCHLOAD</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ROOFTOP_PV_ACTUAL</span></code></p></li>
+<li><p><strong>Forecasts</strong> — <code class="docutils literal notranslate"><span class="pre">P5MIN_REGIONSOLUTION</span></code>, <code class="docutils literal notranslate"><span class="pre">P5MIN_INTERCONNECTORSOLN</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PREDISPATCHPRICE</span></code>, <code class="docutils literal notranslate"><span class="pre">PREDISPATCHREGIONSUM</span></code>, <code class="docutils literal notranslate"><span class="pre">PREDISPATCHLOAD</span></code></p></li>
+<li><p><strong>Bids &amp; offers</strong> — <code class="docutils literal notranslate"><span class="pre">BIDDAYOFFER_D</span></code>, <code class="docutils literal notranslate"><span class="pre">BIDPEROFFER_D</span></code>, <code class="docutils literal notranslate"><span class="pre">BIDDAYOFFER</span></code>,
+<code class="docutils literal notranslate"><span class="pre">BIDPEROFFER</span></code> (plus pre-2021 <code class="docutils literal notranslate"><span class="pre">TRADINGREGIONSUM</span></code> for history)</p></li>
+</ul>
+<p>Every other MMSDM table is reachable through <code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code>.</p>
+</section>
+<section id="caching">
+<h2>Caching<a class="headerlink" href="#caching" title="Link to this heading"></a></h2>
+<p>Downloads land under <code class="docutils literal notranslate"><span class="pre">~/.nemdatatools/</span></code> (override with
+<code class="docutils literal notranslate"><span class="pre">ndt.Cache(&quot;path&quot;)</span></code> passed as <code class="docutils literal notranslate"><span class="pre">cache=</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">raw/</span></code> mirrors nemweb paths — full provenance, a parser fix never forces
+a re-download;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parquet/</span></code> stores parsed per-table frames, so repeat reads skip zip
+extraction and CSV parsing entirely.</p></li>
+</ul>
+</section>
+<section id="data-attribution">
+<h2>Data attribution<a class="headerlink" href="#data-attribution" title="Link to this heading"></a></h2>
+<p>Data is © AEMO and provided under AEMO’s terms; this package downloads
+publicly available files and does not redistribute data. See NOTICE and
+LICENSE for details.</p>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
-<p>NEMDataTools is released under the MIT License.</p>
+<p>MIT — see <a class="reference internal" href="#LICENSE"><span class="xref myst">LICENSE</span></a>.</p>
 </section>
 </section>
 
