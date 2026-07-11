@@ -9,8 +9,9 @@
 #      Tiered: patches soak 3 days, minors 7, majors 14. Security PRs bypass
 #      cooldown — known-CVE fixes still land immediately.
 #
-# GitHub Actions ecosystem does NOT support cooldown. Workflow actions are
-# tag-pinned (e.g. `@v4`); review each upgrade PR manually before merging.
+# GitHub Actions ecosystem does NOT support cooldown. Actions are SHA-pinned
+# via the trailing `# vX.Y.Z` comments in workflow files; review each upgrade
+# PR manually before merging.
 version: 2
 updates:
   - package-ecosystem: 'github-actions'
