@@ -198,7 +198,7 @@ Pages on every push to `master`:
 
 ```bash
 uv run sphinx-build -b html docs docs/_build/html
-open docs/_build/html/index.html
+uv run python -m webbrowser docs/_build/html/index.html
 ```
 
 <!-- omit in toc -->

@@ -12,6 +12,8 @@ understood to be NEM time. Timezone-aware datetimes are rejected with a
 another zone:
 
 ```python
+import datetime
+
 aware.astimezone(datetime.timezone(datetime.timedelta(hours=10))).replace(tzinfo=None)
 ```
 
