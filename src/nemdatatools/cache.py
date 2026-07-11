@@ -49,6 +49,7 @@ class Cache:
         self._last_download = 0.0
 
     def _raw_path(self, url: str) -> Path:
+        """Local mirror path of a nemweb URL under raw/."""
         path = urllib.parse.unquote(urllib.parse.urlparse(url).path)
         return self.root / "raw" / path.lstrip("/")
 
@@ -74,6 +75,12 @@ class Cache:
         logger.info("downloading %s", url)
         response = self.session.get(url, timeout=600)
         self._last_download = time.monotonic()
+        if response.status_code == 403:
+            # nemweb's CDN intermittently answers 403 for files that exist;
+            # one spaced retry recovers most of them.
+            time.sleep(2.0)
+            response = self.session.get(url, timeout=600)
+            self._last_download = time.monotonic()
         response.raise_for_status()
         target.parent.mkdir(parents=True, exist_ok=True)
         tmp = target.with_suffix(target.suffix + ".part")
@@ -119,6 +126,7 @@ class Cache:
         return pd.read_parquet(marker)
 
     def _parquet_path(self, url: str, cid_key: tuple[str, str]) -> Path:
+        """Parquet memo path for one (payload, table) pair."""
         raw = self._raw_path(url)
         rel = raw.relative_to(self.root / "raw")
         return (
