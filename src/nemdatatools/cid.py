@@ -72,18 +72,32 @@ def parse_cid_zip(zip_path: str | Path) -> list[CidTable]:
         Concatenated results of :func:`parse_cid` over each inner CSV.
 
     """
-    tables: list[CidTable] = []
     with zipfile.ZipFile(zip_path) as archive:
-        for inner in archive.namelist():
-            if inner.lower().endswith(".csv"):
-                with archive.open(inner) as raw:
-                    text = io.TextIOWrapper(
-                        raw,
-                        encoding="utf-8",
-                        errors="replace",
-                        newline="",
-                    )
-                    tables.extend(_parse_rows(csv.reader(text)))
+        return _parse_zip(archive)
+
+
+def _parse_zip(archive: zipfile.ZipFile) -> list[CidTable]:
+    """Parse CSVs in an open zip, recursing one level into nested zips.
+
+    Reports ARCHIVE bundles are daily zips whose entries are the original
+    five-minute zips, so one level of nesting is expected.
+    """
+    tables: list[CidTable] = []
+    for inner in archive.namelist():
+        lowered = inner.lower()
+        if lowered.endswith(".csv"):
+            with archive.open(inner) as raw:
+                text = io.TextIOWrapper(
+                    raw,
+                    encoding="utf-8",
+                    errors="replace",
+                    newline="",
+                )
+                tables.extend(_parse_rows(csv.reader(text)))
+        elif lowered.endswith(".zip"):
+            with archive.open(inner) as raw:
+                nested = zipfile.ZipFile(io.BytesIO(raw.read()))
+                tables.extend(_parse_zip(nested))
     return tables
 
 

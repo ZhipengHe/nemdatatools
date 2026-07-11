@@ -1,0 +1,138 @@
+"""Reports CURRENT and ARCHIVE tiers.
+
+Reports CURRENT holds individual event files with a per-package rolling
+retention of days to weeks; Reports ARCHIVE repackages the same files as
+daily zip-of-zips bundles kept for roughly thirteen months. File names
+embed a publish timestamp; rows are always re-filtered by settlement time
+afterwards, so timestamp matching only needs to be generous, not exact.
+"""
+
+from __future__ import annotations
+
+import datetime
+import logging
+import re
+
+import pandas as pd
+
+from nemdatatools.cache import Cache
+from nemdatatools.catalog import TableSpec
+from nemdatatools.listing import BASE_URL, list_directory
+
+logger = logging.getLogger(__name__)
+
+# Files are stamped with publish time, which can trail the settlement
+# intervals they carry (daily reports publish the following day).
+_STAMP_SLACK = datetime.timedelta(days=1)
+
+_TIMESTAMP = re.compile(r"_(\d{8,14})[_.]")
+
+
+def _stamp_of(name: str) -> datetime.datetime | None:
+    """Extract the publish timestamp embedded in a payload filename."""
+    match = _TIMESTAMP.search(name)
+    if not match:
+        return None
+    digits = match.group(1)
+    formats = {8: "%Y%m%d", 12: "%Y%m%d%H%M", 14: "%Y%m%d%H%M%S"}
+    fmt = formats.get(len(digits))
+    if fmt is None:
+        return None
+    try:
+        return datetime.datetime.strptime(digits, fmt)
+    except ValueError:
+        return None
+
+
+def _fetch_window(
+    spec: TableSpec,
+    base: str,
+    package: str,
+    start: datetime.datetime,
+    end: datetime.datetime,
+    cache: Cache,
+) -> pd.DataFrame:
+    """Fetch every payload of a package stamped inside the window."""
+    if spec.report is None:
+        raise ValueError(f"{spec.name} has no Reports location")
+    url = f"{base}/{package}/"
+    entries = list_directory(url, session=cache.session)
+    frames: list[pd.DataFrame] = []
+    for entry in entries:
+        if entry.is_dir or not entry.name.startswith(spec.report.file_prefix):
+            continue
+        if not entry.name.lower().endswith(".zip"):
+            continue
+        stamp = _stamp_of(entry.name)
+        if stamp is None:
+            logger.debug("skipping unstamped file %s", entry.name)
+            continue
+        if not (start - _STAMP_SLACK <= stamp <= end + _STAMP_SLACK):
+            continue
+        frame = cache.load_table(entry.url, spec.cid_key)
+        if not frame.empty:
+            frames.append(frame)
+    if not frames:
+        return pd.DataFrame()
+    return pd.concat(frames, ignore_index=True)
+
+
+def fetch_current(
+    spec: TableSpec,
+    start: datetime.datetime,
+    end: datetime.datetime,
+    cache: Cache,
+) -> pd.DataFrame:
+    """Fetch a table from Reports CURRENT for a time window.
+
+    Args:
+        spec: Table to fetch; ``spec.report`` must be set.
+        start: Window start (naive NEM time).
+        end: Window end (naive NEM time).
+        cache: Download/parse cache.
+
+    Returns:
+        Rows from every matching payload; row-level time filtering is the
+        router's responsibility.
+
+    """
+    if spec.report is None:
+        raise ValueError(f"{spec.name} has no Reports location")
+    return _fetch_window(
+        spec,
+        f"{BASE_URL}/Reports/Current",
+        spec.report.package,
+        start,
+        end,
+        cache,
+    )
+
+
+def fetch_archive(
+    spec: TableSpec,
+    start: datetime.datetime,
+    end: datetime.datetime,
+    cache: Cache,
+) -> pd.DataFrame:
+    """Fetch a table from Reports ARCHIVE daily bundles for a time window.
+
+    Args:
+        spec: Table to fetch; ``spec.report.archive_package`` must be set.
+        start: Window start (naive NEM time).
+        end: Window end (naive NEM time).
+        cache: Download/parse cache.
+
+    Returns:
+        Rows from every bundle whose date stamp intersects the window.
+
+    """
+    if spec.report is None or spec.report.archive_package is None:
+        raise ValueError(f"{spec.name} has no Reports ARCHIVE location")
+    return _fetch_window(
+        spec,
+        f"{BASE_URL}/Reports/Archive",
+        spec.report.archive_package,
+        start,
+        end,
+        cache,
+    )
