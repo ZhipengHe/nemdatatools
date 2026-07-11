@@ -67,7 +67,7 @@ jobs:
     - name: Create and Activate Virtual Environment
       if: steps.venv-cache.outputs.cache-hit != 'true'
       run: |
-        uv venv .venv
+        uv venv --clear .venv
 
     - name: Activate Virtual Environment
       run: |
