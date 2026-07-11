@@ -45,6 +45,10 @@ myst_enable_extensions = [
     "deflist",
 ]
 
+# Generate anchors for headings so GitHub-style #section links in included
+# Markdown files (README.md, CONTRIBUTING.md) resolve.
+myst_heading_anchors = 3
+
 # Add .md to source suffixes
 source_suffix = {
     ".rst": "restructuredtext",

@@ -1,25 +1,36 @@
-.. NEMDataTools documentation master file, created by
-   sphinx-quickstart on Sun Mar  9 23:13:01 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+NEMDataTools documentation
+==========================
 
-Welcome to NEMDataTools documentation
-=====================================
+NEMDataTools is an MIT-licensed Python package for accessing and
+preprocessing Australian Energy Market Operator (AEMO) data for the
+National Electricity Market (NEM). One :func:`nemdatatools.fetch` call
+serves a table over any date range by stitching AEMO's three publication
+tiers — the MMSDM monthly archive, Reports ARCHIVE daily bundles, and
+Reports CURRENT files — with known availability gaps failing loudly.
 
 .. toctree::
    :maxdepth: 2
    :caption: Overview
 
    README
-   data-profile
 
 .. toctree::
    :maxdepth: 2
-   :caption: Developer Guide
+   :caption: User Guide
 
-   dev/project-structure
-   dev/implementation-plan
-   dev/quickstart-with-uv
-   dev/uv-integration
-   dev/quickstart-with-pre-commit
-   dev/commitizen-guide
+   guide/data-sources
+   guide/tables
+   guide/time-and-resampling
+   guide/caching
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+
+   api
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Development
+
+   contributing
