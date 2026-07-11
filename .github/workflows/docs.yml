@@ -5,78 +5,49 @@ on:
     branches: [ master ]
     paths:
       - 'docs/**'
+      - 'src/**'
       - 'pyproject.toml'
       - 'README.md'
   pull_request:
     branches: [ master ]
     paths:
       - 'docs/**'
+      - 'src/**'
       - 'pyproject.toml'
       - 'README.md'
   workflow_dispatch:
-    inputs:
-      force_build:
-        description: 'Force a documentation build'
-        required: false
-        default: false
-        type: boolean
 
-# Schedule a monthly build of the documentation
+  # Schedule a monthly build of the documentation
   schedule:
     - cron: '0 0 1 * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   docs:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
     steps:
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-    - name: Set up Python
-      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+    - name: Install uv and Python
+      uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
       with:
         python-version: '3.11'
-        cache-dependency-path: |
-          pyproject.toml
-          requirements*.txt
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
 
-    - name: Cache UV installation
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-      with:
-        path: ~/.cargo/bin/uv
-        key: ${{ runner.os }}-uv-${{ hashFiles('~/.cargo/bin/uv') }}
-
-    - name: Install UV
+    - name: Install locked dependencies
       run: |
-        if [ ! -f ~/.cargo/bin/uv ]; then
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-        fi
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-
-    - name: Cache Python virtual environment
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-      id: venv-cache
-      with:
-        path: .venv
-        key: ${{ runner.os }}-venv-docs-${{ hashFiles('pyproject.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-venv-docs-
-
-    - name: Create and Activate Virtual Environment
-      if: steps.venv-cache.outputs.cache-hit != 'true'
-      run: |
-        uv venv --clear .venv
-
-    - name: Activate Virtual Environment
-      run: |
-        echo "VIRTUAL_ENV=.venv" >> $GITHUB_ENV
-        echo "$PWD/.venv/bin" >> $GITHUB_PATH
-
-    - name: Install dependencies
-      run: |
-        uv pip install -e ".[docs]"
+        uv sync --locked --extra docs
 
     - name: Build documentation
       run: |
@@ -87,7 +58,7 @@ jobs:
         fi
 
         cd docs
-        sphinx-build -b html -v . _build/html
+        uv run --no-sync sphinx-build -b html -v . _build/html
         touch _build/html/.nojekyll
 
     - name: Archive documentation

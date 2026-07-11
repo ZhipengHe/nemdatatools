@@ -1,0 +1,56 @@
+# Shared build-and-QA job for the PyPI and TestPyPI publish workflows:
+# installs the locked dependency tree, runs tests, lint, and type checks,
+# builds the distributions, and uploads them as the `release-dists` artifact.
+name: Release Build
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+        with:
+          python-version: "3.11"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install locked dependencies
+        run: |
+          uv sync --locked --all-extras
+
+      - name: Run tests
+        run: |
+          uv run --no-sync pytest tests/ --cov=src/nemdatatools --cov-report=term-missing
+
+      - name: Run linting
+        run: |
+          uv run --no-sync ruff check src/ tests/
+          uv run --no-sync ruff format --check src/ tests/
+
+      - name: Run type checking
+        run: |
+          uv run --no-sync mypy src/nemdatatools --ignore-missing-imports
+
+      - name: Build release distributions
+        run: |
+          uv build
+
+      - name: Check build artifacts
+        run: |
+          uv run --no-sync twine check dist/*
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-dists
+          path: dist/
