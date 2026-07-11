@@ -1,38 +1,39 @@
-"""NEMDataTools: Tools for accessing and preprocessing AEMO data."""
+"""NEMDataTools: access and preprocess AEMO National Electricity Market data.
+
+The package models AEMO's publication system directly: one request for a
+table over a date range is served by stitching the MMSDM monthly archive,
+Reports ARCHIVE daily bundles, and Reports CURRENT files, with known
+availability gaps failing loudly. All timestamps are naive NEM time
+(fixed UTC+10).
+"""
 
 try:
     from ._version import __version__
-except ImportError:
+except ImportError:  # pragma: no cover - version file written at build time
     __version__ = "unknown"
 
-from nemdatatools.batch_commands import (
-    download_multiple_tables,
-    download_yearly_data,
+from nemdatatools.api import availability, fetch, fetch_mmsdm_table, tables
+from nemdatatools.cache import Cache
+from nemdatatools.catalog import NEM_REGIONS
+from nemdatatools.errors import (
+    AvailabilityGapError,
+    CoverageError,
+    NemDataError,
 )
-from nemdatatools.data_source import NEM_REGIONS, DataSource
-from nemdatatools.downloader import (
-    check_connection,
-    fetch_data,
-    get_available_data_types,
-)
-from nemdatatools.processor import (
-    calculate_demand_statistics,
-    calculate_price_statistics,
-    create_time_windows,
-    resample_data,
-)
+from nemdatatools.price_demand import fetch_price_and_demand
+from nemdatatools.transform import resample
 
-# Define what's accessible via import *
 __all__ = [
     "NEM_REGIONS",
-    "DataSource",
-    "calculate_demand_statistics",
-    "calculate_price_statistics",
-    "check_connection",
-    "create_time_windows",
-    "download_multiple_tables",
-    "download_yearly_data",
-    "fetch_data",
-    "get_available_data_types",
-    "resample_data",
+    "AvailabilityGapError",
+    "Cache",
+    "CoverageError",
+    "NemDataError",
+    "__version__",
+    "availability",
+    "fetch",
+    "fetch_mmsdm_table",
+    "fetch_price_and_demand",
+    "resample",
+    "tables",
 ]

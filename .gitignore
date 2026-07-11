@@ -45,3 +45,4 @@ docs/_build/
 # local development
 cache/
 data/
+.claude/
