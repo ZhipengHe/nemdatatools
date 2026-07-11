@@ -122,7 +122,12 @@ class Cache:
             frame = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
             path = self._parquet_path(url, key)
             path.parent.mkdir(parents=True, exist_ok=True)
-            frame.to_parquet(path)
+            # Write-then-replace like download(): an interrupted direct
+            # write would leave a corrupt marker that poisons every
+            # future cache hit for this (payload, table).
+            tmp = path.with_suffix(path.suffix + ".part")
+            frame.to_parquet(tmp)
+            tmp.replace(path)
         return pd.read_parquet(marker)
 
     def _parquet_path(self, url: str, cid_key: tuple[str, str]) -> Path:

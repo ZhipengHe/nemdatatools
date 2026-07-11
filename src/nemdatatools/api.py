@@ -132,15 +132,34 @@ def fetch_mmsdm_table(
 
 
 def _load_all_segments(cache: Cache, url: str) -> pd.DataFrame:
-    """Load and concatenate every C/I/D segment of a payload."""
+    """Load the dominant table from a payload's C/I/D segments.
+
+    Generic MMSDM payloads normally carry exactly one logical table
+    (possibly at several schema versions, which share an identity and
+    concatenate cleanly). If a payload unexpectedly carries several
+    distinct tables, blindly concatenating them would union their
+    columns into a meaningless frame — instead the table with the most
+    rows is kept and the dropped identities are logged.
+    """
     from nemdatatools.cid import parse_cid_zip
 
     path = cache.download(url)
-    tables_ = parse_cid_zip(path)
-    if not tables_:
+    by_identity: dict[tuple[str, str], list[pd.DataFrame]] = {}
+    for segment in parse_cid_zip(path):
+        key = (segment.key.component, segment.key.table)
+        by_identity.setdefault(key, []).append(segment.frame)
+    if not by_identity:
         return pd.DataFrame()
-    frames = [t.frame for t in tables_]
-    return pd.concat(frames, ignore_index=True)
+    dominant = max(by_identity, key=lambda k: sum(len(f) for f in by_identity[k]))
+    dropped = sorted(k for k in by_identity if k != dominant)
+    if dropped:
+        logger.warning(
+            "payload %s carries extra table segments %s; keeping %s",
+            path.name,
+            dropped,
+            dominant,
+        )
+    return pd.concat(by_identity[dominant], ignore_index=True)
 
 
 def _filter_by_detected_time(

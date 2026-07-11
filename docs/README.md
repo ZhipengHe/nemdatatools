@@ -37,11 +37,13 @@ beautifulsoup4.
 ```python
 import nemdatatools as ndt
 
-# One call, any range — tiers are stitched automatically.
+# One call, any range — tiers are stitched automatically. Start small:
+# a week is a quick download; multi-year ranges (e.g. 2020 -> today)
+# work the same way but fetch months of archive files on first run.
 prices = ndt.fetch(
     "DISPATCHPRICE",
-    "2020/01/01",
-    "2026/07/01",
+    "2026/06/01",
+    "2026/06/07",
     regions=["QLD1"],
 )
 

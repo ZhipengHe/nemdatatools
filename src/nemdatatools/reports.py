@@ -157,7 +157,9 @@ def latest_archive_stamp(
     coverage_ends = [
         stamps[1]
         for entry in list_directory(url, session=cache.session)
-        if entry.name.startswith(spec.report.file_prefix)
+        if not entry.is_dir
+        and entry.name.lower().endswith(".zip")
+        and entry.name.startswith(spec.report.file_prefix)
         and (stamps := _stamp_range(entry.name)) is not None
     ]
     return max(coverage_ends, default=None)

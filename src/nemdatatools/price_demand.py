@@ -12,9 +12,11 @@ import datetime
 import logging
 
 import pandas as pd
+import requests
 
 from nemdatatools.cache import Cache
 from nemdatatools.catalog import NEM_REGIONS
+from nemdatatools.errors import CoverageError
 from nemdatatools.mmsdm import months_between
 from nemdatatools.timeutils import parse_date
 
@@ -53,8 +55,20 @@ def fetch_price_and_demand(
     for year, month in months_between(start_dt, end_dt):
         for region in regions or NEM_REGIONS:
             url = _URL.format(year=year, month=month, region=region)
-            path = cache.download(url)
+            try:
+                path = cache.download(url)
+            except requests.RequestException as exc:
+                # One unpublished month must not abort the rest of the
+                # range; the all-failed case below still fails loudly.
+                logger.warning("skipping %s: %s", url.rsplit("/", 1)[-1], exc)
+                continue
             frames.append(pd.read_csv(path))
+    if not frames:
+        raise CoverageError(
+            "No price-and-demand CSVs could be fetched for the requested "
+            "range/regions; check the region ids and that the months are "
+            "published.",
+        )
     data = pd.concat(frames, ignore_index=True)
     data["SETTLEMENTDATE"] = pd.to_datetime(data["SETTLEMENTDATE"])
     mask = (data["SETTLEMENTDATE"] >= start_dt) & (data["SETTLEMENTDATE"] <= end_dt)

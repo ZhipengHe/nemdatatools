@@ -18,12 +18,12 @@ NEM_TZ = datetime.timezone(datetime.timedelta(hours=10), name="NEM")
 AEMO_DATETIME_FORMAT = "%Y/%m/%d %H:%M:%S"
 
 
-def parse_date(value: str | datetime.datetime) -> datetime.datetime:
+def parse_date(value: str | datetime.datetime | datetime.date) -> datetime.datetime:
     """Parse user-supplied date input into a naive NEM-time datetime.
 
     Args:
-        value: A naive datetime, or a string in ``YYYY/MM/DD`` or
-            ``YYYY/MM/DD HH:MM:SS`` form.
+        value: A naive datetime, a date (midnight assumed), or a string in
+            ``YYYY/MM/DD`` or ``YYYY/MM/DD HH:MM:SS`` form.
 
     Returns:
         A naive :class:`datetime.datetime` interpreted as NEM time.
@@ -41,6 +41,12 @@ def parse_date(value: str | datetime.datetime) -> datetime.datetime:
                 ".replace(tzinfo=None) first.",
             )
         return value
+    if isinstance(value, datetime.date):
+        return datetime.datetime(value.year, value.month, value.day)
+    if not isinstance(value, str):
+        raise TypeError(
+            f"Expected a str, datetime, or date, got {type(value).__name__}",
+        )
 
     for fmt in (AEMO_DATETIME_FORMAT, "%Y/%m/%d"):
         try:
