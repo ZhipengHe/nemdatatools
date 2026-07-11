@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-12
+
 ### Changed (v0.2 rewrite — breaking)
 - Rebuilt the package around AEMO's three-tier publication model
   (Reports CURRENT / Reports ARCHIVE / MMSDM monthly archive). One
@@ -45,6 +47,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ROOFTOP_PV_ACTUAL`.
 - REPORTS_CURRENT date filtering contradicting its documentation could
   return an empty DataFrame for same-day ranges.
+- The request-range-keyed cache could clip boundary days between two
+  adjacent fetches; the artifact-keyed cache cannot (#3).
+
+### Removed
+- **Python 3.10 support** — the package now requires Python 3.11+.
+- The v0.1 public API: `fetch_data`, `download_multiple_tables`,
+  `download_yearly_data`, `calculate_price_statistics`,
+  `calculate_demand_statistics`, `create_time_windows`, `resample_data`,
+  `check_connection`, `get_available_data_types`.
+
+### Infrastructure
+- CI installs from the committed `uv.lock`, workflow actions are pinned
+  to commit SHAs, and Dependabot manages dependency updates on a
+  monthly cadence.
+- CodeRabbit review configuration (advisory, non-blocking).
+
+## [0.1.1rc1] and earlier
 
 ### Added (pre-rewrite)
 - Project structure setup:
@@ -58,4 +77,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Add `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` files
 - Create GitHub Actions workflow for testing (`.github/workflows/test.yml`)
 
-[Unreleased]: /
+[Unreleased]: https://github.com/ZhipengHe/nemdatatools/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/ZhipengHe/nemdatatools/compare/v0.1.1rc1...v0.2.0
