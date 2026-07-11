@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nemdatatools.router &mdash; NEMDataTools Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://zhipenghe.me/nemdatatools/_modules/nemdatatools/router.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#data-attribution">Data attribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/tables.html">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#aggregated-price-and-demand">Aggregated price and demand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#politeness">Politeness</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#fetching-data">Fetching data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch_price_and_demand"><code class="docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch_mmsdm_table"><code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#discovery">Discovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.tables"><code class="docutils literal notranslate"><span class="pre">tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.availability"><code class="docutils literal notranslate"><span class="pre">availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.NEM_REGIONS"><code class="docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.Cache"><code class="docutils literal notranslate"><span class="pre">Cache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#nemdatatools.Cache.download"><code class="docutils literal notranslate"><span class="pre">Cache.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#nemdatatools.Cache.load_table"><code class="docutils literal notranslate"><span class="pre">Cache.load_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#errors">Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.NemDataError"><code class="docutils literal notranslate"><span class="pre">NemDataError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.AvailabilityGapError"><code class="docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.CoverageError"><code class="docutils literal notranslate"><span class="pre">CoverageError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#i-have-a-question">I Have a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#i-want-to-contribute">I Want To Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#reporting-bugs">Reporting Bugs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#before-submitting-a-bug-report">Before Submitting a Bug Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#suggesting-enhancements">Suggesting Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#before-submitting-an-enhancement">Before Submitting an Enhancement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#development-setup">Development Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#running-the-checks">Running the Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#changing-dependencies">Changing Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#commit-messages">Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">nemdatatools.router</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for nemdatatools.router</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Date-range routing across AEMO&#39;s publication tiers.</span>
+
+<span class="sd">A request for a table over ``[start, end]`` is served by stitching tiers by</span>
+<span class="sd">age: MMSDM monthly snapshots for everything they already cover, then</span>
+<span class="sd">Reports ARCHIVE daily bundles, then Reports CURRENT for the freshest days.</span>
+<span class="sd">Tier overlap is resolved by row-identity de-duplication rather than by</span>
+<span class="sd">trusting tier boundaries to be exact.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools</span><span class="w"> </span><span class="kn">import</span> <span class="n">mmsdm</span><span class="p">,</span> <span class="n">reports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableSpec</span><span class="p">,</span> <span class="n">get_table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">AvailabilityGapError</span><span class="p">,</span> <span class="n">CoverageError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.timeutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">AEMO_DATETIME_FORMAT</span><span class="p">,</span> <span class="n">parse_date</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="fetch">
+<a class="viewcode-back" href="../../api.html#nemdatatools.fetch">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span>
+    <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">regions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">Cache</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch one table over a date range, stitching tiers as needed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table: Curated table name (see :func:`nemdatatools.tables`).</span>
+<span class="sd">        start: Range start, inclusive, naive NEM time.</span>
+<span class="sd">        end: Range end, inclusive, naive NEM time.</span>
+<span class="sd">        regions: Optional NEM region filter, for tables with a region</span>
+<span class="sd">            column.</span>
+<span class="sd">        cache: Download/parse cache; a default one under</span>
+<span class="sd">            ``~/.nemdatatools`` is used when omitted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Rows sorted by the table&#39;s time column, which becomes the index.</span>
+<span class="sd">        De-duplicated on the table&#39;s identity columns where tiers overlap.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        AvailabilityGapError: If the range crosses a known hole in the</span>
+<span class="sd">            table&#39;s history (the message names the substitute table).</span>
+<span class="sd">        CoverageError: If part of the range cannot be served by any tier.</span>
+<span class="sd">        KeyError: If the table is not in the curated catalog.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">get_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="n">start_dt</span><span class="p">,</span> <span class="n">end_dt</span> <span class="o">=</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">end_dt</span> <span class="o">&lt;</span> <span class="n">start_dt</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;end </span><span class="si">{</span><span class="n">end</span><span class="si">!r}</span><span class="s2"> is before start </span><span class="si">{</span><span class="n">start</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_check_gaps</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">start_dt</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">)</span>
+
+    <span class="n">frames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span> <span class="ow">or</span> <span class="n">Cache</span><span class="p">()</span>
+    <span class="n">mmsdm_end</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">mmsdm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">mmsdm</span><span class="o">.</span><span class="n">latest_month</span><span class="p">(</span><span class="n">cache</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="n">mmsdm_end</span> <span class="o">=</span> <span class="n">_end_of_month</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mmsdm</span><span class="o">.</span><span class="n">months_between</span><span class="p">(</span><span class="n">start_dt</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">end_dt</span><span class="p">,</span> <span class="n">mmsdm_end</span><span class="p">)):</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mmsdm</span><span class="o">.</span><span class="n">fetch_month</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">cache</span><span class="p">))</span>
+
+    <span class="n">needs_reports</span> <span class="o">=</span> <span class="n">mmsdm_end</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end_dt</span> <span class="o">&gt;</span> <span class="n">mmsdm_end</span>
+    <span class="k">if</span> <span class="n">needs_reports</span><span class="p">:</span>
+        <span class="n">rem_start</span> <span class="o">=</span> <span class="n">start_dt</span>
+        <span class="k">if</span> <span class="n">mmsdm_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rem_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start_dt</span><span class="p">,</span> <span class="n">mmsdm_end</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CoverageError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: the range after &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mmsdm_end</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2"> is not yet in the MMSDM archive and &quot;</span>
+                <span class="s2">&quot;the table has no Reports package; retry once AEMO &quot;</span>
+                <span class="s2">&quot;publishes the next monthly snapshot.&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">current_start</span> <span class="o">=</span> <span class="n">rem_start</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">archive_package</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reports</span><span class="o">.</span><span class="n">fetch_archive</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">rem_start</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">,</span> <span class="n">cache</span><span class="p">))</span>
+            <span class="c1"># A bundle stamped with a date covers that whole day, so CURRENT</span>
+            <span class="c1"># only needs to serve days newer than the newest bundle.</span>
+            <span class="n">newest_bundle</span> <span class="o">=</span> <span class="n">reports</span><span class="o">.</span><span class="n">latest_archive_stamp</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">newest_bundle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">current_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rem_start</span><span class="p">,</span> <span class="n">newest_bundle</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_start</span> <span class="o">&lt;=</span> <span class="n">end_dt</span><span class="p">:</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">reports</span><span class="o">.</span><span class="n">fetch_current</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">current_start</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">,</span> <span class="n">cache</span><span class="p">),</span>
+            <span class="p">)</span>
+
+    <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frames</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="n">empty</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_finalise</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">start_dt</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">,</span> <span class="n">regions</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_gaps</span><span class="p">(</span>
+    <span class="n">spec</span><span class="p">:</span> <span class="n">TableSpec</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when the requested range crosses a known availability gap.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">gap</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">gaps</span><span class="p">:</span>
+        <span class="n">gap_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">gap</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">gap_end</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_end_of_month</span><span class="p">(</span><span class="o">*</span><span class="n">gap</span><span class="o">.</span><span class="n">end</span><span class="p">)</span> <span class="k">if</span> <span class="n">gap</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">max</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">gap_end</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">&gt;=</span> <span class="n">gap_start</span><span class="p">:</span>
+            <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2"> onward&quot;</span>
+                <span class="k">if</span> <span class="n">gap</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2"> to &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AvailabilityGapError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is unavailable </span><span class="si">{</span><span class="n">bounds</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">gap</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;Re-request around the gap for the covered part.&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_end_of_month</span><span class="p">(</span><span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Last representable instant of a month.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">month</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finalise</span><span class="p">(</span>
+    <span class="n">spec</span><span class="p">:</span> <span class="n">TableSpec</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">regions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter, de-duplicate, sort, and index the stitched rows.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">time_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">CoverageError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: fetched payloads lack the expected time column &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="si">!r}</span><span class="s2">; AEMO may have changed the schema.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">],</span>
+        <span class="nb">format</span><span class="o">=</span><span class="n">AEMO_DATETIME_FORMAT</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">regions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">region_column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no region column to filter on&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">region_column</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">regions</span><span class="p">)]</span>
+    <span class="n">missing_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">key_columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">missing_keys</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">CoverageError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: fetched payloads lack expected key column(s) &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">missing_keys</span><span class="si">!r}</span><span class="s2">; de-duplicating without them could collapse &quot;</span>
+            <span class="s2">&quot;distinct rows. AEMO may have changed the schema.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">identity</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">,</span> <span class="o">*</span><span class="n">spec</span><span class="o">.</span><span class="n">key_columns</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

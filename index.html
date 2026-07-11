@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to NEMDataTools documentation &mdash; NEMDataTools Documentation</title>
+  <title>NEMDataTools documentation &mdash; NEMDataTools Documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
@@ -54,144 +54,103 @@
 <li class="toctree-l2"><a class="reference internal" href="README.html#license">License</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="data-profile.html">NEM Data Profile</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#nem-data-types">NEM Data Types</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#mmsdm-url-structure">MMSDM URL Structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#special-cases">Special Cases</a></li>
 </ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#aemo-data-tables">AEMO Data Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#regional-reference-nodes">Regional Reference Nodes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#data-access-frequency">Data Access Frequency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#key-field-descriptions">Key Field Descriptions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#common-fields">Common Fields</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#generation-and-dispatch-fields">Generation and Dispatch Fields</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#bidding-fields">Bidding Fields</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#data-model-relationships">Data Model Relationships</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#recent-changes">Recent Changes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#nemdatatools-implementation-status">NEMDataTools Implementation Status</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#fully-supported-data-types">✅ Fully Supported Data Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#framework-ready-implementation-complete-testing-pending">⚠️ Framework Ready (Implementation Complete, Testing Pending)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data-profile.html#configured-but-not-yet-tested">📋 Configured But Not Yet Tested</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#data-quality-considerations">Data Quality Considerations</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dev/project-structure.html">NEMDataTools Project Board</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-1-project-setup-milestones-1-2-completed">Phase 1: Project Setup (Milestones 1-2) ✅ <strong>COMPLETED</strong></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-1-development-environment-setup-completed">Milestone 1: Development Environment Setup ✅ <strong>COMPLETED</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-2-core-module-skeletons-completed">Milestone 2: Core Module Skeletons ✅ <strong>COMPLETED</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-2-core-functionality-implementation-milestones-3-4">Phase 2: Core Functionality Implementation (Milestones 3-4)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-3-time-utilities-and-cache-management">Milestone 3: Time Utilities and Cache Management</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-4-data-downloading">Milestone 4: Data Downloading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/tables.html">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#aggregated-price-and-demand">Aggregated price and demand</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-3-data-processing-milestones-5-6">Phase 3: Data Processing (Milestones 5-6)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-5-basic-data-processing">Milestone 5: Basic Data Processing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/project-structure.html#milestone-6-advanced-processing">Milestone 6: Advanced Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-4-documentation-and-examples-milestone-7">Phase 4: Documentation and Examples (Milestone 7)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-5-quality-assurance-and-release-milestone-8">Phase 5: Quality Assurance and Release (Milestone 8)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-6-continuous-improvement-ongoing">Phase 6: Continuous Improvement (Ongoing)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#development-practices">Development Practices</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dev/implementation-plan.html">NEMDataTools Implementation Status</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#core-components">Core Components</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#downloader-module">1. Downloader Module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#cache-manager-implemented">2. Cache Manager ✅ <strong>IMPLEMENTED</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#time-utilities-implemented">3. Time Utilities ✅ <strong>IMPLEMENTED</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#data-processor">4. Data Processor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#data-type-handlers-implemented">5. Data Type Handlers ✅ <strong>IMPLEMENTED</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#batch-commands-implemented">6. Batch Commands ✅ <strong>IMPLEMENTED</strong></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#implemented-functionalities">Implemented Functionalities:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#implementation-details">Implementation Details:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#example-usage">Example Usage:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#key-parameters">Key Parameters:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev/implementation-plan.html#error-handling-strategy">Error Handling Strategy:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#politeness">Politeness</a></li>
 </ul>
 </li>
 </ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#development-timeline">Development Timeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#id1">Implementation Details</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#aemo-data-access">AEMO Data Access</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#caching-strategy">Caching Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/implementation-plan.html#error-handling">Error Handling</a></li>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#fetching-data">Fetching data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.fetch_price_and_demand"><code class="docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.fetch_mmsdm_table"><code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#future-extensions">Future Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#discovery">Discovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.tables"><code class="docutils literal notranslate"><span class="pre">tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.availability"><code class="docutils literal notranslate"><span class="pre">availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.NEM_REGIONS"><code class="docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev/quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-1-install-uv">Step 1: Install UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-2-clone-the-project">Step 2: Clone the Project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-3-optional-pin-the-interpreter">Step 3 (Optional): Pin the Interpreter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-4-install-dependencies-from-the-lockfile">Step 4: Install Dependencies from the Lockfile</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-5-run-tests">Step 5: Run Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-6-formatting-linting-and-commit-checks">Step 6: Formatting, Linting, and Commit Checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-7-build-documentation">Step 7: Build Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev/uv-integration.html">Using UV for Dependency Management in NEMDataTools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#installing-uv">Installing UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#environment-setup">Environment Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#development-workflow">Development Workflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/uv-integration.html#adding-a-dependency">Adding a Dependency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/uv-integration.html#updating-dependencies">Updating Dependencies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/uv-integration.html#managing-version-constraints">Managing Version Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.Cache"><code class="docutils literal notranslate"><span class="pre">Cache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#nemdatatools.Cache.download"><code class="docutils literal notranslate"><span class="pre">Cache.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#nemdatatools.Cache.load_table"><code class="docutils literal notranslate"><span class="pre">Cache.load_table()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#integration-with-ci-cd">Integration with CI/CD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#performance-considerations">Performance Considerations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev/quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-1-update-pyproject-toml-to-include-pre-commit">Step 1: Update <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to include pre-commit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-2-install-pre-commit-using-uv">Step 2: Install pre-commit using UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-3-create-a-pre-commit-configuration">Step 3: Create a pre-commit configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-4-install-the-pre-commit-hooks">Step 4: Install the pre-commit hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-5-run-pre-commit-manually-optional">Step 5: Run pre-commit manually (optional)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#using-pre-commit-with-uv">Using pre-commit with UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#integration-with-your-development-workflow">Integration with your development workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#customizing-pre-commit-configuration">Customizing pre-commit configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#commit-message-convention-with-commitizen">Commit message convention with commitizen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#troubleshooting-pre-commit">Troubleshooting pre-commit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#additional-tips">Additional Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#errors">Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.NemDataError"><code class="docutils literal notranslate"><span class="pre">NemDataError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.AvailabilityGapError"><code class="docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.CoverageError"><code class="docutils literal notranslate"><span class="pre">CoverageError</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev/commitizen-guide.html">Commitizen Conventional Commit Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#what-is-commitizen">What is Commitizen?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#commit-message-format">Commit Message Format</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/commitizen-guide.html#types">Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/commitizen-guide.html#scope">Scope</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/commitizen-guide.html#description">Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/commitizen-guide.html#examples">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#creating-commits-with-commitizen">Creating Commits with Commitizen</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev/commitizen-guide.html#interactive-mode">Interactive Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev/commitizen-guide.html#conventional-git-commit">Conventional git commit</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#i-have-a-question">I Have a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#i-want-to-contribute">I Want To Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#reporting-bugs">Reporting Bugs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html#before-submitting-a-bug-report">Before Submitting a Bug Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html#how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#breaking-changes">Breaking Changes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#referencing-issues">Referencing Issues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#benefits-of-using-commitizen">Benefits of Using Commitizen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#commitizen-cli-commands">Commitizen CLI Commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#integration-with-nemdatatools">Integration with NEMDataTools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#customizing-commitizen">Customizing Commitizen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#suggesting-enhancements">Suggesting Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html#before-submitting-an-enhancement">Before Submitting an Enhancement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html#how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#development-setup">Development Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#running-the-checks">Running the Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#changing-dependencies">Changing Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commit-messages">Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#attribution">Attribution</a></li>
 </ul>
 </li>
 </ul>
@@ -210,7 +169,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to NEMDataTools documentation</li>
+      <li class="breadcrumb-item active">NEMDataTools documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -220,8 +179,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-nemdatatools-documentation">
-<h1>Welcome to NEMDataTools documentation<a class="headerlink" href="#welcome-to-nemdatatools-documentation" title="Link to this heading"></a></h1>
+  <section id="nemdatatools-documentation">
+<h1>NEMDataTools documentation<a class="headerlink" href="#nemdatatools-documentation" title="Link to this heading"></a></h1>
+<p>NEMDataTools is an MIT-licensed Python package for accessing and
+preprocessing Australian Energy Market Operator (AEMO) data for the
+National Electricity Market (NEM). One <a class="reference internal" href="api.html#nemdatatools.fetch" title="nemdatatools.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">nemdatatools.fetch()</span></code></a> call
+serves a table over any date range by stitching AEMO’s three publication
+tiers — the MMSDM monthly archive, Reports ARCHIVE daily bundles, and
+Reports CURRENT files — with known availability gaps failing loudly.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul>
@@ -235,87 +200,60 @@
 <li class="toctree-l2"><a class="reference internal" href="README.html#license">License</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="data-profile.html">NEM Data Profile</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#nem-data-types">NEM Data Types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#aemo-data-tables">AEMO Data Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#regional-reference-nodes">Regional Reference Nodes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#data-access-frequency">Data Access Frequency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#key-field-descriptions">Key Field Descriptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#data-model-relationships">Data Model Relationships</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#recent-changes">Recent Changes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#nemdatatools-implementation-status">NEMDataTools Implementation Status</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-profile.html#data-quality-considerations">Data Quality Considerations</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guide/data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide/tables.html">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#aggregated-price-and-demand">Aggregated price and demand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide/time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide/caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#politeness">Politeness</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dev/project-structure.html">NEMDataTools Project Board</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-1-project-setup-milestones-1-2-completed">Phase 1: Project Setup (Milestones 1-2) ✅ <strong>COMPLETED</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-2-core-functionality-implementation-milestones-3-4">Phase 2: Core Functionality Implementation (Milestones 3-4)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-3-data-processing-milestones-5-6">Phase 3: Data Processing (Milestones 5-6)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-4-documentation-and-examples-milestone-7">Phase 4: Documentation and Examples (Milestone 7)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-5-quality-assurance-and-release-milestone-8">Phase 5: Quality Assurance and Release (Milestone 8)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#phase-6-continuous-improvement-ongoing">Phase 6: Continuous Improvement (Ongoing)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/project-structure.html#development-practices">Development Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#fetching-data">Fetching data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#discovery">Discovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#transforms">Transforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#errors">Errors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev/implementation-plan.html">NEMDataTools Implementation Status</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#core-components">Core Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#development-timeline">Development Timeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#id1">Implementation Details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/implementation-plan.html#future-extensions">Future Extensions</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dev/quickstart-with-uv.html">Quick Start Guide: Setting Up NEMDataTools with UV</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-1-install-uv">Step 1: Install UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-2-clone-the-project">Step 2: Clone the Project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-3-optional-pin-the-interpreter">Step 3 (Optional): Pin the Interpreter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-4-install-dependencies-from-the-lockfile">Step 4: Install Dependencies from the Lockfile</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-5-run-tests">Step 5: Run Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-6-formatting-linting-and-commit-checks">Step 6: Formatting, Linting, and Commit Checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#step-7-build-documentation">Step 7: Build Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-uv.html#next-steps">Next Steps</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dev/uv-integration.html">Using UV for Dependency Management in NEMDataTools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#installing-uv">Installing UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#environment-setup">Environment Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#development-workflow">Development Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#integration-with-ci-cd">Integration with CI/CD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#performance-considerations">Performance Considerations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/uv-integration.html#troubleshooting">Troubleshooting</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dev/quickstart-with-pre-commit.html">Adding pre-commit to NEMDataTools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-1-update-pyproject-toml-to-include-pre-commit">Step 1: Update <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to include pre-commit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-2-install-pre-commit-using-uv">Step 2: Install pre-commit using UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-3-create-a-pre-commit-configuration">Step 3: Create a pre-commit configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-4-install-the-pre-commit-hooks">Step 4: Install the pre-commit hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#step-5-run-pre-commit-manually-optional">Step 5: Run pre-commit manually (optional)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#using-pre-commit-with-uv">Using pre-commit with UV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#integration-with-your-development-workflow">Integration with your development workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#customizing-pre-commit-configuration">Customizing pre-commit configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#commit-message-convention-with-commitizen">Commit message convention with commitizen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#troubleshooting-pre-commit">Troubleshooting pre-commit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/quickstart-with-pre-commit.html#additional-tips">Additional Tips</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dev/commitizen-guide.html">Commitizen Conventional Commit Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#what-is-commitizen">What is Commitizen?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#commit-message-format">Commit Message Format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#creating-commits-with-commitizen">Creating Commits with Commitizen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#breaking-changes">Breaking Changes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#referencing-issues">Referencing Issues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#benefits-of-using-commitizen">Benefits of Using Commitizen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#commitizen-cli-commands">Commitizen CLI Commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#integration-with-nemdatatools">Integration with NEMDataTools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev/commitizen-guide.html#customizing-commitizen">Customizing Commitizen</a></li>
-</ul>
-</li>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to NEMDataTools</a></li>
 </ul>
 </div>
 </section>

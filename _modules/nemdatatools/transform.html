@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nemdatatools.transform &mdash; NEMDataTools Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://zhipenghe.me/nemdatatools/_modules/nemdatatools/transform.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#data-attribution">Data attribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/tables.html">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#aggregated-price-and-demand">Aggregated price and demand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#politeness">Politeness</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#fetching-data">Fetching data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch_price_and_demand"><code class="docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch_mmsdm_table"><code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#discovery">Discovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.tables"><code class="docutils literal notranslate"><span class="pre">tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.availability"><code class="docutils literal notranslate"><span class="pre">availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.NEM_REGIONS"><code class="docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.Cache"><code class="docutils literal notranslate"><span class="pre">Cache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#nemdatatools.Cache.download"><code class="docutils literal notranslate"><span class="pre">Cache.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#nemdatatools.Cache.load_table"><code class="docutils literal notranslate"><span class="pre">Cache.load_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#errors">Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.NemDataError"><code class="docutils literal notranslate"><span class="pre">NemDataError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.AvailabilityGapError"><code class="docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.CoverageError"><code class="docutils literal notranslate"><span class="pre">CoverageError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#i-have-a-question">I Have a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#i-want-to-contribute">I Want To Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#reporting-bugs">Reporting Bugs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#before-submitting-a-bug-report">Before Submitting a Bug Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#suggesting-enhancements">Suggesting Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#before-submitting-an-enhancement">Before Submitting an Enhancement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#development-setup">Development Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#running-the-checks">Running the Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#changing-dependencies">Changing Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#commit-messages">Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">nemdatatools.transform</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for nemdatatools.transform</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Time-series transforms with AEMO interval-ending semantics.</span>
+
+<span class="sd">AEMO timestamps mark the END of the interval they describe: the row</span>
+<span class="sd">stamped 00:05 covers 00:00-00:05. Aggregating such series with pandas</span>
+<span class="sd">defaults (``closed=&#39;left&#39;, label=&#39;left&#39;``) shifts every result by one</span>
+<span class="sd">interval and mixes trading periods; the helpers here fix ``closed`` and</span>
+<span class="sd">``label`` to ``&#39;right&#39;`` so, for example, the 00:30 half-hour aggregates</span>
+<span class="sd">the six 5-minute rows stamped 00:05 through 00:30 — matching how AEMO</span>
+<span class="sd">itself derives 30-minute trading prices from 5-minute dispatch prices.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># The NEM trading day runs 04:00 to 04:00, not midnight to midnight.</span>
+<span class="n">TRADING_DAY_OFFSET</span> <span class="o">=</span> <span class="s2">&quot;4h&quot;</span>
+
+<span class="n">AggSpec</span> <span class="o">=</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="resample">
+<a class="viewcode-back" href="../../api.html#nemdatatools.resample">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">agg</span><span class="p">:</span> <span class="n">AggSpec</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="n">by</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">trading_day</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resample interval-ending AEMO data to a coarser interval.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        frame: Data indexed by a DatetimeIndex of interval-ending</span>
+<span class="sd">            timestamps (as returned by :func:`nemdatatools.fetch`).</span>
+<span class="sd">        rule: Target interval, e.g. ``&quot;30min&quot;``, ``&quot;1h&quot;``, ``&quot;1D&quot;``.</span>
+<span class="sd">        agg: Aggregation for numeric columns — a single function name, or</span>
+<span class="sd">            a column-to-function mapping (non-mapped columns are dropped).</span>
+<span class="sd">        by: Identity column(s) to group by first, e.g. ``&quot;REGIONID&quot;`` or</span>
+<span class="sd">            ``&quot;DUID&quot;``. Required when the frame carries more than one</span>
+<span class="sd">            entity, otherwise their values would be averaged together.</span>
+<span class="sd">        trading_day: When aggregating to days or coarser, align buckets to</span>
+<span class="sd">            the 04:00-04:00 NEM trading day instead of midnight.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Aggregated rows labelled with interval-ending timestamps, grouped</span>
+<span class="sd">        columns preserved as regular columns.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the index is not a DatetimeIndex, or the frame has</span>
+<span class="sd">            several entities and ``by`` was not given.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;frame must be indexed by interval-ending timestamps&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trading_day</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_is_daily_or_coarser</span><span class="p">(</span><span class="n">rule</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;trading_day aligns buckets to the 04:00 NEM trading day and &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;only applies to daily-or-coarser rules, not </span><span class="si">{</span><span class="n">rule</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">group_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">by</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">by</span> <span class="ow">or</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">group_cols</span><span class="p">:</span>
+        <span class="n">_guard_single_entity</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">agg</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">numeric</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">agg</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">numeric</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">group_cols</span><span class="p">}</span>
+
+    <span class="c1"># Trading-day alignment is done by shifting the index rather than via</span>
+    <span class="c1"># Grouper&#39;s offset parameter, whose semantics changed in pandas 3.0;</span>
+    <span class="c1"># the shift is equivalent and behaves the same on pandas 2 and 3.</span>
+    <span class="n">shift</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">TRADING_DAY_OFFSET</span><span class="p">)</span> <span class="k">if</span> <span class="n">trading_day</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">work</span> <span class="o">=</span> <span class="n">frame</span> <span class="k">if</span> <span class="n">shift</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">frame</span><span class="o">.</span><span class="n">set_axis</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="n">shift</span><span class="p">)</span>
+    <span class="n">grouper</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
+        <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># dropna=False keeps rows whose entity id is missing as their own</span>
+    <span class="c1"># group instead of silently discarding them.</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="o">*</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">grouper</span><span class="p">],</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">group_cols</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shift</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="n">shift</span>
+    <span class="k">return</span> <span class="n">_trim_empty_edge_buckets</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">targets</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_trim_empty_edge_buckets</span><span class="p">(</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">value_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop leading/trailing buckets that contain no observations.</span>
+
+<span class="sd">    pandas 3 emits an empty right-closed bin before the first observation</span>
+<span class="sd">    where pandas 2 trims it; normalising here keeps output identical</span>
+<span class="sd">    across versions. Interior empty buckets are kept — they are real</span>
+<span class="sd">    holes in the data, not binning artifacts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">value_columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="n">populated</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">value_columns</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">labels_with_data</span> <span class="o">=</span> <span class="n">populated</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">labels_with_data</span><span class="p">[</span><span class="n">labels_with_data</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+    <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels_with_data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">valid</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">valid</span><span class="o">.</span><span class="n">max</span><span class="p">())]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_daily_or_coarser</span><span class="p">(</span><span class="n">rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tell whether a resample rule spans at least one day.</span>
+
+<span class="sd">    Calendar-based rules (weekly, monthly, ...) have no fixed length and</span>
+<span class="sd">    are always daily-or-coarser.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">frequencies</span><span class="o">.</span><span class="n">to_offset</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_guard_single_entity</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reject ungrouped frames that clearly hold several entities.</span>
+
+<span class="sd">    Missing ids count as their own entity so NaN rows cannot be blended</span>
+<span class="sd">    into a real series unnoticed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;REGIONID&quot;</span><span class="p">,</span> <span class="s2">&quot;REGION&quot;</span><span class="p">,</span> <span class="s2">&quot;DUID&quot;</span><span class="p">,</span> <span class="s2">&quot;INTERCONNECTORID&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">frame</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">distinct</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">distinct</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;frame holds </span><span class="si">{</span><span class="n">distinct</span><span class="si">}</span><span class="s2"> distinct </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2"> values; pass &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;by=</span><span class="si">{</span><span class="n">column</span><span class="si">!r}</span><span class="s2"> so entities are not averaged together&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

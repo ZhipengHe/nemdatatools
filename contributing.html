@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing to NEMDataTools &mdash; NEMDataTools Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://zhipenghe.me/nemdatatools/contributing.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API Reference" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="README.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#data-attribution">Data attribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guide/data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide/tables.html">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/tables.html#aggregated-price-and-demand">Aggregated price and demand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide/time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guide/caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide/caching.html#politeness">Politeness</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#fetching-data">Fetching data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.fetch_price_and_demand"><code class="docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.fetch_mmsdm_table"><code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#discovery">Discovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.tables"><code class="docutils literal notranslate"><span class="pre">tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.availability"><code class="docutils literal notranslate"><span class="pre">availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.NEM_REGIONS"><code class="docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.Cache"><code class="docutils literal notranslate"><span class="pre">Cache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#nemdatatools.Cache.download"><code class="docutils literal notranslate"><span class="pre">Cache.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#nemdatatools.Cache.load_table"><code class="docutils literal notranslate"><span class="pre">Cache.load_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#errors">Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.NemDataError"><code class="docutils literal notranslate"><span class="pre">NemDataError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.AvailabilityGapError"><code class="docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#nemdatatools.CoverageError"><code class="docutils literal notranslate"><span class="pre">CoverageError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-have-a-question">I Have a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-want-to-contribute">I Want To Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reporting-bugs">Reporting Bugs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#before-submitting-a-bug-report">Before Submitting a Bug Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#suggesting-enhancements">Suggesting Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#before-submitting-an-enhancement">Before Submitting an Enhancement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#development-setup">Development Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-checks">Running the Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changing-dependencies">Changing Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commit-messages">Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contributing to NEMDataTools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contributing.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!-- omit in toc -->
+<section id="contributing-to-nemdatatools">
+<h1>Contributing to NEMDataTools<a class="headerlink" href="#contributing-to-nemdatatools" title="Link to this heading"></a></h1>
+<p>First off, thanks for taking the time to contribute! ❤️</p>
+<p>All types of contributions are encouraged and valued. See the <a class="reference internal" href="#table-of-contents">Table of Contents</a> for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉</p>
+<blockquote>
+<div><p>And if you like the project, but just don’t have time to contribute, that’s fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:</p>
+<ul class="simple">
+<li><p>Star the project</p></li>
+<li><p>Refer this project in your project’s readme</p></li>
+<li><p>Mention the project at local meetups and tell your friends/colleagues</p></li>
+</ul>
+</div></blockquote>
+<!-- omit in toc -->
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#code-of-conduct">Code of Conduct</a></p></li>
+<li><p><a class="reference internal" href="#i-have-a-question">I Have a Question</a></p>
+<ul>
+<li><p><a class="reference internal" href="#i-want-to-contribute">I Want To Contribute</a></p></li>
+<li><p><a class="reference internal" href="#reporting-bugs">Reporting Bugs</a></p></li>
+<li><p><a class="reference internal" href="#suggesting-enhancements">Suggesting Enhancements</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#development-setup">Development Setup</a></p>
+<ul>
+<li><p><a class="reference internal" href="#running-the-checks">Running the Checks</a></p></li>
+<li><p><a class="reference internal" href="#changing-dependencies">Changing Dependencies</a></p></li>
+<li><p><a class="reference internal" href="#commit-messages">Commit Messages</a></p></li>
+<li><p><a class="reference internal" href="#building-the-documentation">Building the Documentation</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="code-of-conduct">
+<h2>Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Link to this heading"></a></h2>
+<p>This project and everyone participating in it is governed by the <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/blob/master/CODE_OF_CONDUCT.md">NEMDataTools Code of Conduct</a>. By participating, you are expected to uphold this code. Please report unacceptable behavior to <a class="reference external" href="mailto:github&#37;&#52;&#48;zhipenghe&#46;me">github<span>&#64;</span>zhipenghe<span>&#46;</span>me</a>.</p>
+</section>
+<section id="i-have-a-question">
+<h2>I Have a Question<a class="headerlink" href="#i-have-a-question" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>If you want to ask a question, we assume that you have read the available <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools">Documentation</a>.</p>
+</div></blockquote>
+<p>Before you ask a question, it is best to search for existing <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/issues">Issues</a> that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It is also advisable to search the internet for answers first.</p>
+<p>If you then still feel the need to ask a question and need clarification, we recommend the following:</p>
+<ul class="simple">
+<li><p>Open an <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/issues/new">Issue</a>.</p></li>
+<li><p>Provide as much context as you can about what you’re running into.</p></li>
+<li><p>Provide project and platform versions (nodejs, npm, etc), depending on what seems relevant.</p></li>
+</ul>
+<p>We will then take care of the issue as soon as possible.</p>
+<!--
+You might want to create a separate issue tag for questions and include it in this description. People should then tag their issues accordingly.
+
+Depending on how large the project is, you may want to outsource the questioning, e.g. to Stack Overflow or Gitter. You may add additional contact and information possibilities:
+- IRC
+- Slack
+- Gitter
+- Stack Overflow tag
+- Blog
+- FAQ
+- Roadmap
+- E-Mail List
+- Forum
+-->
+</section>
+<section id="i-want-to-contribute">
+<h2>I Want To Contribute<a class="headerlink" href="#i-want-to-contribute" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p class="rubric" id="legal-notice">Legal Notice <!-- omit in toc --></p>
+<p>When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project licence.</p>
+</div></blockquote>
+<section id="reporting-bugs">
+<h3>Reporting Bugs<a class="headerlink" href="#reporting-bugs" title="Link to this heading"></a></h3>
+<!-- omit in toc -->
+<section id="before-submitting-a-bug-report">
+<h4>Before Submitting a Bug Report<a class="headerlink" href="#before-submitting-a-bug-report" title="Link to this heading"></a></h4>
+<p>A good bug report shouldn’t leave others needing to chase you up for more information. Therefore, we ask you to investigate carefully, collect information and describe the issue in detail in your report. Please complete the following steps in advance to help us fix any potential bug as fast as possible.</p>
+<ul class="simple">
+<li><p>Make sure that you are using the latest version.</p></li>
+<li><p>Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the <a class="reference external" href="https://zhipenghe.me/nemdatatools">documentation</a>. If you are looking for support, you might want to check <a class="reference internal" href="#i-have-a-question">this section</a>).</p></li>
+<li><p>To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/issues?q=label%3Abug">bug tracker</a>.</p></li>
+<li><p>Also make sure to search the internet (including Stack Overflow) to see if users outside of the GitHub community have discussed the issue.</p></li>
+<li><p>Collect information about the bug:</p>
+<ul>
+<li><p>Stack trace (Traceback)</p></li>
+<li><p>OS, Platform and Version (Windows, Linux, macOS, x86, ARM)</p></li>
+<li><p>Version of the interpreter, compiler, SDK, runtime environment, package manager, depending on what seems relevant.</p></li>
+<li><p>Possibly your input and the output</p></li>
+<li><p>Can you reliably reproduce the issue? And can you also reproduce it with older versions?</p></li>
+</ul>
+</li>
+</ul>
+<!-- omit in toc -->
+</section>
+<section id="how-do-i-submit-a-good-bug-report">
+<h4>How Do I Submit a Good Bug Report?<a class="headerlink" href="#how-do-i-submit-a-good-bug-report" title="Link to this heading"></a></h4>
+<blockquote>
+<div><p>You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead sensitive bugs must be sent by email to <a class="reference external" href="mailto:github&#37;&#52;&#48;zhipenghe&#46;me">github<span>&#64;</span>zhipenghe<span>&#46;</span>me</a>.</p>
+</div></blockquote>
+<!-- You may add a PGP key to allow the messages to be sent encrypted as well. -->
+<p>We use GitHub issues to track bugs and errors. If you run into an issue with the project:</p>
+<ul class="simple">
+<li><p>Open an <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/issues/new">Issue</a>.</p></li>
+<li><p>Explain the behavior you would expect and the actual behavior.</p></li>
+<li><p>Please provide as much context as possible and describe the <em>reproduction steps</em> that someone else can follow to recreate the issue on their own. This usually includes your code. For good bug reports you should isolate the problem and create a reduced test case.</p></li>
+<li><p>Provide the information you collected in the previous section.</p></li>
+</ul>
+<p>Once it’s filed:</p>
+<ul class="simple">
+<li><p>The project team will label the issue accordingly.</p></li>
+<li><p>A team member will try to reproduce the issue with your provided steps. If there are no reproduction steps or no obvious way to reproduce the issue, the team will ask you for those steps and mark the issue as <code class="docutils literal notranslate"><span class="pre">needs-repro</span></code>. Bugs with the <code class="docutils literal notranslate"><span class="pre">needs-repro</span></code> tag will not be addressed until they are reproduced.</p></li>
+<li><p>If the team is able to reproduce the issue, it will be marked <code class="docutils literal notranslate"><span class="pre">needs-fix</span></code>, as well as possibly other tags (such as <code class="docutils literal notranslate"><span class="pre">critical</span></code>), and the issue will be left to be implemented by someone (see <a class="reference internal" href="#development-setup">Development Setup</a> to get started).</p></li>
+</ul>
+<!-- You might want to create an issue template for bugs and errors that can be used as a guide and that defines the structure of the information to be included. If you do so, reference it here in the description. -->
+</section>
+</section>
+<section id="suggesting-enhancements">
+<h3>Suggesting Enhancements<a class="headerlink" href="#suggesting-enhancements" title="Link to this heading"></a></h3>
+<p>This section guides you through submitting an enhancement suggestion for NEMDataTools, <strong>including completely new features and minor improvements to existing functionality</strong>. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.</p>
+<!-- omit in toc -->
+<section id="before-submitting-an-enhancement">
+<h4>Before Submitting an Enhancement<a class="headerlink" href="#before-submitting-an-enhancement" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Make sure that you are using the latest version.</p></li>
+<li><p>Read the <a class="reference external" href="https://zhipenghe.me/nemdatatools">documentation</a> carefully and find out if the functionality is already covered, maybe by an individual configuration.</p></li>
+<li><p>Perform a <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/issues">search</a> to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.</p></li>
+<li><p>Find out whether your idea fits with the scope and aims of the project. It’s up to you to make a strong case to convince the project’s developers of the merits of this feature. Keep in mind that we want features that will be useful to the majority of our users and not just a small subset. If you’re just targeting a minority of users, consider writing an add-on/plugin library.</p></li>
+</ul>
+<!-- omit in toc -->
+</section>
+<section id="how-do-i-submit-a-good-enhancement-suggestion">
+<h4>How Do I Submit a Good Enhancement Suggestion?<a class="headerlink" href="#how-do-i-submit-a-good-enhancement-suggestion" title="Link to this heading"></a></h4>
+<p>Enhancement suggestions are tracked as <a class="reference external" href="https://github.com/ZhipengHe/nemdatatools/issues">GitHub issues</a>.</p>
+<ul class="simple">
+<li><p>Use a <strong>clear and descriptive title</strong> for the issue to identify the suggestion.</p></li>
+<li><p>Provide a <strong>step-by-step description of the suggested enhancement</strong> in as many details as possible.</p></li>
+<li><p><strong>Describe the current behavior</strong> and <strong>explain which behavior you expected to see instead</strong> and why. At this point you can also tell which alternatives do not work for you.</p></li>
+<li><p>You may want to <strong>include screenshots or screen recordings</strong> which help you demonstrate the steps or point out the part which the suggestion is related to. You can use <a class="reference external" href="https://www.cockos.com/licecap/">LICEcap</a> to record GIFs on macOS and Windows, and the built-in <a class="reference external" href="https://help.gnome.org/users/gnome-help/stable/screen-shot-record.html.en">screen recorder in GNOME</a> or <a class="reference external" href="https://github.com/MaartenBaert/ssr">SimpleScreenRecorder</a> on Linux. <!-- this should only be included if the project has a GUI --></p></li>
+<li><p><strong>Explain why this enhancement would be useful</strong> to most NEMDataTools users. You may also want to point out the other projects that solved it better and which could serve as inspiration.</p></li>
+</ul>
+<!-- You might want to create an issue template for enhancement suggestions that can be used as a guide and that defines the structure of the information to be included. If you do so, reference it here in the description. -->
+</section>
+</section>
+</section>
+<section id="development-setup">
+<h2>Development Setup<a class="headerlink" href="#development-setup" title="Link to this heading"></a></h2>
+<p>The project uses <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> and a committed
+lockfile (<code class="docutils literal notranslate"><span class="pre">uv.lock</span></code>) for dependency management. Requires Python 3.11+
+(uv can install one for you).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ZhipengHe/nemdatatools.git
+<span class="nb">cd</span><span class="w"> </span>nemdatatools
+uv<span class="w"> </span>sync<span class="w"> </span>--locked<span class="w"> </span>--all-extras
+uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>install
+uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>install<span class="w"> </span>--hook-type<span class="w"> </span>commit-msg
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span> <span class="pre">--locked</span> <span class="pre">--all-extras</span></code> creates <code class="docutils literal notranslate"><span class="pre">.venv</span></code>, installs the exact
+locked versions of the runtime, <code class="docutils literal notranslate"><span class="pre">dev</span></code>, and <code class="docutils literal notranslate"><span class="pre">docs</span></code> dependencies, and
+installs <code class="docutils literal notranslate"><span class="pre">nemdatatools</span></code> in editable mode. <code class="docutils literal notranslate"><span class="pre">--locked</span></code> fails if <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code>
+is out of date with <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> instead of silently re-resolving —
+the same guarantee CI relies on. There is no need to activate the
+environment: prefix commands with <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span></code>.</p>
+<p>The second <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> registers the commitizen hook that
+validates commit messages (see <a class="reference internal" href="#commit-messages">Commit Messages</a>).</p>
+<section id="running-the-checks">
+<h3>Running the Checks<a class="headerlink" href="#running-the-checks" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w">                        </span><span class="c1"># test suite</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>nemdatatools<span class="w">     </span><span class="c1"># with coverage</span>
+uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w">    </span><span class="c1"># formatting, lint, typing, docstring coverage</span>
+</pre></div>
+</div>
+<p>Pre-commit runs black, isort, ruff, mypy, pyupgrade, and interrogate
+(docstring coverage) — the same checks CI runs, so a passing pre-commit
+run means a passing CI lint job.</p>
+</section>
+<section id="changing-dependencies">
+<h3>Changing Dependencies<a class="headerlink" href="#changing-dependencies" title="Link to this heading"></a></h3>
+<p>Edit the constraint in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (or run <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">add</span> <span class="pre">&lt;package&gt;</span></code>),
+then re-lock and sync:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>lock
+uv<span class="w"> </span>sync<span class="w"> </span>--locked<span class="w"> </span>--all-extras
+</pre></div>
+</div>
+<p>Commit the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> changes together — CI installs
+with <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span> <span class="pre">--locked</span></code>, so a stale lockfile fails the build. Routine
+version bumps arrive as monthly Dependabot PRs against <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code>.</p>
+</section>
+<section id="commit-messages">
+<h3>Commit Messages<a class="headerlink" href="#commit-messages" title="Link to this heading"></a></h3>
+<p>Commit messages follow the <a class="reference external" href="https://www.conventionalcommits.org/">Conventional Commits</a>
+specification and are validated by the commitizen commit-msg hook.
+Either write them by hand (<code class="docutils literal notranslate"><span class="pre">type(scope):</span> <span class="pre">subject</span></code>, e.g.
+<code class="docutils literal notranslate"><span class="pre">fix(core):</span> <span class="pre">skip</span> <span class="pre">missing</span> <span class="pre">months</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">MMSDM</span> <span class="pre">escape</span> <span class="pre">hatch</span></code>) or let
+commitizen prompt you:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>cz<span class="w"> </span>commit
+</pre></div>
+</div>
+</section>
+<section id="building-the-documentation">
+<h3>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading"></a></h3>
+<p>The documentation is a Sphinx site under <code class="docutils literal notranslate"><span class="pre">docs/</span></code>, published to GitHub
+Pages on every push to <code class="docutils literal notranslate"><span class="pre">master</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
+uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>webbrowser<span class="w"> </span>docs/_build/html/index.html
+</pre></div>
+</div>
+<!-- omit in toc -->
+</section>
+</section>
+<section id="attribution">
+<h2>Attribution<a class="headerlink" href="#attribution" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>This guide is based on the <a class="reference external" href="https://contributing.md/generator">contributing.md</a>!</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ISSUE_TEMPLATE</span></code> and <code class="docutils literal notranslate"><span class="pre">PULL_REQUEST_TEMPLATE</span></code> are adapted from <a class="reference external" href="https://github.com/langflow-ai/langflow/">LangFlow</a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

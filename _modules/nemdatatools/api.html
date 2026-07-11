@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nemdatatools.api &mdash; NEMDataTools Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://zhipenghe.me/nemdatatools/_modules/nemdatatools/api.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#data-attribution">Data attribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/tables.html">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/tables.html#aggregated-price-and-demand">Aggregated price and demand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/caching.html#politeness">Politeness</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#fetching-data">Fetching data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch_price_and_demand"><code class="docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.fetch_mmsdm_table"><code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#discovery">Discovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.tables"><code class="docutils literal notranslate"><span class="pre">tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.availability"><code class="docutils literal notranslate"><span class="pre">availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.NEM_REGIONS"><code class="docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.Cache"><code class="docutils literal notranslate"><span class="pre">Cache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#nemdatatools.Cache.download"><code class="docutils literal notranslate"><span class="pre">Cache.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#nemdatatools.Cache.load_table"><code class="docutils literal notranslate"><span class="pre">Cache.load_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#errors">Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.NemDataError"><code class="docutils literal notranslate"><span class="pre">NemDataError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.AvailabilityGapError"><code class="docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#nemdatatools.CoverageError"><code class="docutils literal notranslate"><span class="pre">CoverageError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#i-have-a-question">I Have a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#i-want-to-contribute">I Want To Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#reporting-bugs">Reporting Bugs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#before-submitting-a-bug-report">Before Submitting a Bug Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#suggesting-enhancements">Suggesting Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#before-submitting-an-enhancement">Before Submitting an Enhancement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../contributing.html#how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#development-setup">Development Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#running-the-checks">Running the Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#changing-dependencies">Changing Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#commit-messages">Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">nemdatatools.api</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for nemdatatools.api</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Public API of nemdatatools.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools</span><span class="w"> </span><span class="kn">import</span> <span class="n">mmsdm</span> <span class="k">as</span> <span class="n">_mmsdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">TABLES</span><span class="p">,</span> <span class="n">TableSpec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoverageError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.listing</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_directory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.timeutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">AEMO_DATETIME_FORMAT</span><span class="p">,</span> <span class="n">parse_date</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;availability&quot;</span><span class="p">,</span> <span class="s2">&quot;fetch&quot;</span><span class="p">,</span> <span class="s2">&quot;fetch_mmsdm_table&quot;</span><span class="p">,</span> <span class="s2">&quot;tables&quot;</span><span class="p">]</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="tables">
+<a class="viewcode-back" href="../../api.html#nemdatatools.tables">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tables</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List the curated table names accepted by :func:`fetch`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">TABLES</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="availability">
+<a class="viewcode-back" href="../../api.html#nemdatatools.availability">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">availability</span><span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Describe where and when a curated table is available.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table: Curated table name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A mapping with the table&#39;s tier locations and known MMSDM gaps,</span>
+<span class="sd">        suitable for printing.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_table</span>
+
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">get_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;time_column&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="o">.</span><span class="n">time_column</span><span class="p">,</span>
+        <span class="s2">&quot;mmsdm&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">mmsdm</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="s2">&quot;subdir&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="o">.</span><span class="n">mmsdm</span><span class="o">.</span><span class="n">subdir</span><span class="p">,</span>
+                <span class="s2">&quot;dvd_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">mmsdm</span><span class="o">.</span><span class="n">dvd_names</span><span class="p">),</span>
+                <span class="s2">&quot;archive_name&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="o">.</span><span class="n">mmsdm</span><span class="o">.</span><span class="n">archive_name</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;reports_current&quot;</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">spec</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">package</span><span class="p">,</span>
+        <span class="s2">&quot;reports_archive&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">spec</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">archive_package</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;gaps&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;ongoing&quot;</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">reason</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">gaps</span>
+        <span class="p">],</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="fetch_mmsdm_table">
+<a class="viewcode-back" href="../../api.html#nemdatatools.fetch_mmsdm_table">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_mmsdm_table</span><span class="p">(</span>
+    <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">subdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;DATA&quot;</span><span class="p">,</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">Cache</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch any MMSDM table by name, without curated metadata.</span>
+
+<span class="sd">    Escape hatch for the ~236 archive tables outside the curated catalog:</span>
+<span class="sd">    files are still discovered by listing-and-matching in both filename</span>
+<span class="sd">    eras and all FILEnn parts are fetched, but no Reports stitching, gap</span>
+<span class="sd">    checking, or de-duplication is applied. The time column is</span>
+<span class="sd">    auto-detected for range filtering; rows are returned unfiltered when</span>
+<span class="sd">    none is recognised.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table: MMSDM filename table token, e.g. ``&quot;GENCONDATA&quot;``.</span>
+<span class="sd">        start: Range start, inclusive, naive NEM time.</span>
+<span class="sd">        end: Range end, inclusive, naive NEM time.</span>
+<span class="sd">        subdir: Snapshot subdirectory (``DATA``, ``P5MIN_ALL_DATA`` or</span>
+<span class="sd">            ``PREDISP_ALL_DATA``).</span>
+<span class="sd">        cache: Download/parse cache; a default one is used when omitted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        All rows of the table across the months covering the range.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        CoverageError: If no month in the range carries the table.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">MmsdmLocation</span>
+
+    <span class="n">start_dt</span><span class="p">,</span> <span class="n">end_dt</span> <span class="o">=</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">end_dt</span> <span class="o">&lt;</span> <span class="n">start_dt</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;end </span><span class="si">{</span><span class="n">end</span><span class="si">!r}</span><span class="s2"> is before start </span><span class="si">{</span><span class="n">start</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span> <span class="ow">or</span> <span class="n">Cache</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">frames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">matched_any</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">_mmsdm</span><span class="o">.</span><span class="n">months_between</span><span class="p">(</span><span class="n">start_dt</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">_mmsdm</span><span class="o">.</span><span class="n">month_url</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">entries</span> <span class="o">=</span> <span class="n">list_directory</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="c1"># A month can be missing (range reaching past the newest</span>
+            <span class="c1"># snapshot, or before the archive begins); skip it rather</span>
+            <span class="c1"># than abort the months that do exist.</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;no MMSDM listing for </span><span class="si">%d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">probe</span> <span class="o">=</span> <span class="n">TableSpec</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">cid_key</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">time_column</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">key_columns</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">mmsdm</span><span class="o">=</span><span class="n">MmsdmLocation</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ALL&quot;</span><span class="p">),</span> <span class="n">name</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">_mmsdm</span><span class="o">.</span><span class="n">match_table_zips</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">probe</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+            <span class="n">matched_any</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_load_all_segments</span><span class="p">(</span><span class="n">cache</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matched_any</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">CoverageError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;No MMSDM files matched table </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> under </span><span class="si">{</span><span class="n">subdir</span><span class="si">}</span><span class="s2"> for the &quot;</span>
+            <span class="s2">&quot;requested range; check the name against the month listing.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frames</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="n">empty</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_filter_by_detected_time</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">start_dt</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_all_segments</span><span class="p">(</span><span class="n">cache</span><span class="p">:</span> <span class="n">Cache</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the dominant table from a payload&#39;s C/I/D segments.</span>
+
+<span class="sd">    Generic MMSDM payloads normally carry exactly one logical table</span>
+<span class="sd">    (possibly at several schema versions, which share an identity and</span>
+<span class="sd">    concatenate cleanly). If a payload unexpectedly carries several</span>
+<span class="sd">    distinct tables, blindly concatenating them would union their</span>
+<span class="sd">    columns into a meaningless frame — instead the table with the most</span>
+<span class="sd">    rows is kept and the dropped identities are logged.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">nemdatatools.cid</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_cid_zip</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">by_identity</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">parse_cid_zip</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">component</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">by_identity</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">by_identity</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">dominant</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">by_identity</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">by_identity</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="n">dropped</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">by_identity</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">dominant</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dropped</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;payload </span><span class="si">%s</span><span class="s2"> carries extra table segments </span><span class="si">%s</span><span class="s2">; keeping </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">dropped</span><span class="p">,</span>
+            <span class="n">dominant</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">by_identity</span><span class="p">[</span><span class="n">dominant</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_by_detected_time</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Range-filter on the first recognised AEMO time column, if any.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;SETTLEMENTDATE&quot;</span><span class="p">,</span> <span class="s2">&quot;INTERVAL_DATETIME&quot;</span><span class="p">,</span> <span class="s2">&quot;DATETIME&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">stamps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">],</span>
+                <span class="nb">format</span><span class="o">=</span><span class="n">AEMO_DATETIME_FORMAT</span><span class="p">,</span>
+                <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">unparsed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">stamps</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">unparsed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> rows in </span><span class="si">%r</span><span class="s2"> did not match </span><span class="si">%s</span><span class="s2"> and were dropped from &quot;</span>
+                    <span class="s2">&quot;the range filter&quot;</span><span class="p">,</span>
+                    <span class="n">unparsed</span><span class="p">,</span>
+                    <span class="n">column</span><span class="p">,</span>
+                    <span class="n">AEMO_DATETIME_FORMAT</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">stamps</span> <span class="o">&gt;=</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">stamps</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">)</span>
+            <span class="n">filtered</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">filtered</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">stamps</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">filtered</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="s2">&quot;no recognised time column; returning all rows of the fetched months&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

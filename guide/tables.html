@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tables: curated catalog and escape hatch &mdash; NEMDataTools Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://zhipenghe.me/nemdatatools/guide/tables.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Time conventions and resampling" href="time-and-resampling.html" />
+    <link rel="prev" title="Data sources and tier stitching" href="data-sources.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NEMDataTools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#data-attribution">Data attribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data-sources.html">Data sources and tier stitching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-sources.html#the-three-publication-tiers">The three publication tiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-sources.html#how-a-fetch-is-routed">How a fetch is routed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-sources.html#discovery-not-construction">Discovery, not construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-sources.html#failing-loudly">Failing loudly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-sources.html#the-one-exception-price-and-demand-csvs">The one exception: price-and-demand CSVs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tables: curated catalog and escape hatch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#curated-tables">Curated tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inspecting-availability">Inspecting availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#region-filtering">Region filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#escape-hatch-any-mmsdm-table">Escape hatch: any MMSDM table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aggregated-price-and-demand">Aggregated price and demand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-and-resampling.html">Time conventions and resampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="time-and-resampling.html#nem-time">NEM time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time-and-resampling.html#interval-ending-timestamps">Interval-ending timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time-and-resampling.html#grouping-multi-entity-frames">Grouping multi-entity frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time-and-resampling.html#aggregation-functions">Aggregation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time-and-resampling.html#the-nem-trading-day">The NEM trading day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#custom-cache-location">Custom cache location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#politeness">Politeness</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#fetching-data">Fetching data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.fetch_price_and_demand"><code class="docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.fetch_mmsdm_table"><code class="docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#discovery">Discovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.tables"><code class="docutils literal notranslate"><span class="pre">tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.availability"><code class="docutils literal notranslate"><span class="pre">availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.NEM_REGIONS"><code class="docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.Cache"><code class="docutils literal notranslate"><span class="pre">Cache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api.html#nemdatatools.Cache.download"><code class="docutils literal notranslate"><span class="pre">Cache.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api.html#nemdatatools.Cache.load_table"><code class="docutils literal notranslate"><span class="pre">Cache.load_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#errors">Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.NemDataError"><code class="docutils literal notranslate"><span class="pre">NemDataError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.AvailabilityGapError"><code class="docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#nemdatatools.CoverageError"><code class="docutils literal notranslate"><span class="pre">CoverageError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing to NEMDataTools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#i-have-a-question">I Have a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#i-want-to-contribute">I Want To Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#reporting-bugs">Reporting Bugs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../contributing.html#before-submitting-a-bug-report">Before Submitting a Bug Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../contributing.html#how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#suggesting-enhancements">Suggesting Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../contributing.html#before-submitting-an-enhancement">Before Submitting an Enhancement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../contributing.html#how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#development-setup">Development Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#running-the-checks">Running the Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#changing-dependencies">Changing Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#commit-messages">Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NEMDataTools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tables: curated catalog and escape hatch</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guide/tables.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tables-curated-catalog-and-escape-hatch">
+<h1>Tables: curated catalog and escape hatch<a class="headerlink" href="#tables-curated-catalog-and-escape-hatch" title="Link to this heading"></a></h1>
+<section id="curated-tables">
+<h2>Curated tables<a class="headerlink" href="#curated-tables" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../api.html#nemdatatools.fetch" title="nemdatatools.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a> accepts curated tables spanning four
+families; each is wired to its locations in every tier and filename era:</p>
+<ul class="simple">
+<li><p><strong>Prices &amp; demand</strong> — <code class="docutils literal notranslate"><span class="pre">DISPATCHPRICE</span></code>, <code class="docutils literal notranslate"><span class="pre">TRADINGPRICE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DISPATCHREGIONSUM</span></code>, <code class="docutils literal notranslate"><span class="pre">TRADINGINTERCONNECT</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DISPATCHINTERCONNECTORRES</span></code></p></li>
+<li><p><strong>Generation &amp; SCADA</strong> — <code class="docutils literal notranslate"><span class="pre">DISPATCH_UNIT_SCADA</span></code>, <code class="docutils literal notranslate"><span class="pre">DISPATCHLOAD</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ROOFTOP_PV_ACTUAL</span></code></p></li>
+<li><p><strong>Forecasts</strong> — <code class="docutils literal notranslate"><span class="pre">P5MIN_REGIONSOLUTION</span></code>, <code class="docutils literal notranslate"><span class="pre">P5MIN_INTERCONNECTORSOLN</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PREDISPATCHPRICE</span></code>, <code class="docutils literal notranslate"><span class="pre">PREDISPATCHREGIONSUM</span></code>, <code class="docutils literal notranslate"><span class="pre">PREDISPATCHLOAD</span></code></p></li>
+<li><p><strong>Bids &amp; offers</strong> — <code class="docutils literal notranslate"><span class="pre">BIDDAYOFFER_D</span></code>, <code class="docutils literal notranslate"><span class="pre">BIDPEROFFER_D</span></code>, <code class="docutils literal notranslate"><span class="pre">BIDDAYOFFER</span></code>,
+<code class="docutils literal notranslate"><span class="pre">BIDPEROFFER</span></code> (plus pre-2021 <code class="docutils literal notranslate"><span class="pre">TRADINGREGIONSUM</span></code> for history)</p></li>
+</ul>
+<p>List them programmatically with <a class="reference internal" href="../api.html#nemdatatools.tables" title="nemdatatools.tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">tables()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nemdatatools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ndt</span>
+
+<span class="n">ndt</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="inspecting-availability">
+<h2>Inspecting availability<a class="headerlink" href="#inspecting-availability" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../api.html#nemdatatools.availability" title="nemdatatools.availability"><code class="xref py py-func docutils literal notranslate"><span class="pre">availability()</span></code></a> describes where a curated table lives
+and any known holes in its history:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">availability</span><span class="p">(</span><span class="s2">&quot;BIDPEROFFER_D&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">gap</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;gaps&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;gap </span><span class="si">{</span><span class="n">gap</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">gap</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">gap</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result names the MMSDM subdirectory and filenames in both eras, the
+Reports CURRENT and ARCHIVE packages, and each gap’s bounds and reason.
+Requesting a range that crosses a gap raises
+<a class="reference internal" href="../api.html#nemdatatools.AvailabilityGapError" title="nemdatatools.AvailabilityGapError"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvailabilityGapError</span></code></a> naming the substitute table,
+instead of returning silently partial data.</p>
+</section>
+<section id="region-filtering">
+<h2>Region filtering<a class="headerlink" href="#region-filtering" title="Link to this heading"></a></h2>
+<p>Tables with a region column accept a <code class="docutils literal notranslate"><span class="pre">regions=</span></code> filter using the five
+NEM region identifiers (available as
+<a class="reference internal" href="../api.html#nemdatatools.NEM_REGIONS" title="nemdatatools.NEM_REGIONS"><code class="xref py py-data docutils literal notranslate"><span class="pre">NEM_REGIONS</span></code></a>): <code class="docutils literal notranslate"><span class="pre">NSW1</span></code>, <code class="docutils literal notranslate"><span class="pre">QLD1</span></code>, <code class="docutils literal notranslate"><span class="pre">SA1</span></code>, <code class="docutils literal notranslate"><span class="pre">TAS1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">VIC1</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prices</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;DISPATCHPRICE&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/06/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/06/07&quot;</span><span class="p">,</span> <span class="n">regions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;QLD1&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="escape-hatch-any-mmsdm-table">
+<h2>Escape hatch: any MMSDM table<a class="headerlink" href="#escape-hatch-any-mmsdm-table" title="Link to this heading"></a></h2>
+<p>Every other MMSDM table — roughly 236 of them — is reachable through
+<a class="reference internal" href="../api.html#nemdatatools.fetch_mmsdm_table" title="nemdatatools.fetch_mmsdm_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_mmsdm_table()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gencon</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch_mmsdm_table</span><span class="p">(</span><span class="s2">&quot;GENCONDATA&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/05/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2026/05/31&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Files are still discovered by listing-and-matching in both filename eras
+and all <code class="docutils literal notranslate"><span class="pre">FILEnn</span></code> parts are fetched, but no Reports stitching, gap
+checking, or de-duplication is applied — the newest data available is
+the newest MMSDM monthly snapshot (~6 weeks behind). The time column is
+auto-detected for range filtering (<code class="docutils literal notranslate"><span class="pre">SETTLEMENTDATE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">INTERVAL_DATETIME</span></code>, or <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code>); when none is recognised, all rows
+of the fetched months are returned.</p>
+<p>Snapshot subdirectories other than the default <code class="docutils literal notranslate"><span class="pre">DATA</span></code> are selected with
+<code class="docutils literal notranslate"><span class="pre">subdir=</span></code> — <code class="docutils literal notranslate"><span class="pre">P5MIN_ALL_DATA</span></code> and <code class="docutils literal notranslate"><span class="pre">PREDISP_ALL_DATA</span></code> hold the complete
+5-minute pre-dispatch and pre-dispatch runs.</p>
+</section>
+<section id="aggregated-price-and-demand">
+<h2>Aggregated price and demand<a class="headerlink" href="#aggregated-price-and-demand" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../api.html#nemdatatools.fetch_price_and_demand" title="nemdatatools.fetch_price_and_demand"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_price_and_demand()</span></code></a> fetches AEMO’s aggregated
+5-minute price and demand CSVs by region — a lightweight alternative to
+<code class="docutils literal notranslate"><span class="pre">DISPATCHPRICE</span></code>/<code class="docutils literal notranslate"><span class="pre">DISPATCHREGIONSUM</span></code> when only regional price and demand
+are needed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd_data</span> <span class="o">=</span> <span class="n">ndt</span><span class="o">.</span><span class="n">fetch_price_and_demand</span><span class="p">(</span><span class="s2">&quot;2024/01/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024/12/31&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;NSW1&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>It returns <code class="docutils literal notranslate"><span class="pre">REGION</span></code>, <code class="docutils literal notranslate"><span class="pre">TOTALDEMAND</span></code>, <code class="docutils literal notranslate"><span class="pre">RRP</span></code>, and <code class="docutils literal notranslate"><span class="pre">PERIODTYPE</span></code> indexed by
+<code class="docutils literal notranslate"><span class="pre">SETTLEMENTDATE</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data-sources.html" class="btn btn-neutral float-left" title="Data sources and tier stitching" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="time-and-resampling.html" class="btn btn-neutral float-right" title="Time conventions and resampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhipeng He.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
