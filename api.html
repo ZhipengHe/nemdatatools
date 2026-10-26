@@ -15,8 +15,8 @@
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -294,7 +294,7 @@ suitable for printing.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="nemdatatools.NEM_REGIONS">
-<span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">NEM_REGIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('NSW1',</span> <span class="pre">'QLD1',</span> <span class="pre">'SA1',</span> <span class="pre">'TAS1',</span> <span class="pre">'VIC1')</span></em><a class="headerlink" href="#nemdatatools.NEM_REGIONS" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">NEM_REGIONS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('NSW1',</span> <span class="pre">'QLD1',</span> <span class="pre">'SA1',</span> <span class="pre">'TAS1',</span> <span class="pre">'VIC1')</span></span><a class="headerlink" href="#nemdatatools.NEM_REGIONS" title="Link to this definition"></a></dt>
 <dd><p>Built-in immutable sequence.</p>
 <p>If no argument is given, the constructor returns an empty tuple.
 If iterable is specified the tuple is initialized from iterable’s items.</p>
@@ -339,7 +339,7 @@ columns preserved as regular columns.</p>
 <h2>Caching<a class="headerlink" href="#caching" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="nemdatatools.Cache">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">Cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PosixPath('/home/runner/.nemdatatools')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nemdatatools/cache.html#Cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.Cache" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">Cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PosixPath('/home/runner/.nemdatatools')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nemdatatools/cache.html#Cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.Cache" title="Link to this definition"></a></dt>
 <dd><p>Raw-download and parsed-table cache rooted at one directory.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="nemdatatools.Cache.download">
@@ -386,13 +386,13 @@ carries no such segment.</p>
 <h2>Errors<a class="headerlink" href="#errors" title="Link to this heading"></a></h2>
 <dl class="py exception">
 <dt class="sig sig-object py" id="nemdatatools.NemDataError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">NemDataError</span></span><a class="reference internal" href="_modules/nemdatatools/errors.html#NemDataError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.NemDataError" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">NemDataError</span></span><a class="reference internal" href="_modules/nemdatatools/errors.html#NemDataError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.NemDataError" title="Link to this definition"></a></dt>
 <dd><p>Base class for nemdatatools errors.</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="nemdatatools.AvailabilityGapError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">AvailabilityGapError</span></span><a class="reference internal" href="_modules/nemdatatools/errors.html#AvailabilityGapError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.AvailabilityGapError" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">AvailabilityGapError</span></span><a class="reference internal" href="_modules/nemdatatools/errors.html#AvailabilityGapError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.AvailabilityGapError" title="Link to this definition"></a></dt>
 <dd><p>The requested range crosses a known hole in a table’s history.</p>
 <p>The message names the gap and the substitute table to use across it;
 callers who want partial data can re-request around the gap bounds.</p>
@@ -400,7 +400,7 @@ callers who want partial data can re-request around the gap bounds.</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="nemdatatools.CoverageError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">CoverageError</span></span><a class="reference internal" href="_modules/nemdatatools/errors.html#CoverageError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.CoverageError" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">nemdatatools.</span></span><span class="sig-name descname"><span class="pre">CoverageError</span></span><a class="reference internal" href="_modules/nemdatatools/errors.html#CoverageError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nemdatatools.CoverageError" title="Link to this definition"></a></dt>
 <dd><p>No publication tier can serve part of the requested range.</p>
 </dd></dl>
 
