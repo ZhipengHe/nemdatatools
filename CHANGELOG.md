@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Raised the minimum `pandas` to 2.2.2 and `numpy` to 1.26.0. The previous
+  minimums (`pandas>=1.3.0`, `numpy>=1.20.0`) predate Python 3.11, and they
+  admitted pandas 1.5 and 2.0, under which the parquet cache fails.
+
 ## [0.2.0] - 2026-07-12
 
 ### Changed (v0.2 rewrite — breaking)
