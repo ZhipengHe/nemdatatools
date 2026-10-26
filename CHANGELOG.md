@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-26
+
 ### Fixed
 - Raised the minimum `pandas` to 2.2.2 and `numpy` to 1.26.0. The previous
   minimums (`pandas>=1.3.0`, `numpy>=1.20.0`) predate Python 3.11, and they
@@ -82,5 +84,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Add `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` files
 - Create GitHub Actions workflow for testing (`.github/workflows/test.yml`)
 
-[Unreleased]: https://github.com/ZhipengHe/nemdatatools/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/ZhipengHe/nemdatatools/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/ZhipengHe/nemdatatools/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/ZhipengHe/nemdatatools/compare/v0.1.1rc1...v0.2.0
