@@ -132,7 +132,7 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/Zhipen
 ## Development Setup
 
 The project uses [uv](https://docs.astral.sh/uv/) and a committed
-lockfile (`uv.lock`) for dependency management. Requires Python 3.11+
+lockfile (`uv.lock`) for dependency management. Requires Python 3.11.5+
 (uv can install one for you).
 
 ```bash

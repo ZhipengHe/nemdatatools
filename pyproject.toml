@@ -7,7 +7,7 @@ name = "nemdatatools"
 dynamic = ["version"]
 description = "Tools for accessing and preprocessing AEMO data for the National Electricity Market"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11.5"
 authors = [
     {name = "Zhipeng He", email = "zhipeng.he@hdr.qut.edu.au"},
 ]
