@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- The minimum Python version is now 3.11.5 (was 3.11). soupsieve 4, which
+  beautifulsoup4 uses and which fixes two denial-of-service advisories,
+  requires Python 3.11.5.
+
 ## [0.2.1] - 2026-10-26
 
 ### Fixed
